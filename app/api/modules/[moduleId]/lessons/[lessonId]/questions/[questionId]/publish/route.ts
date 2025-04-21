@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+/* import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -44,3 +44,4 @@ export const POST = async (
     return new Response("Internal Server Error", { status: 500 });
   }
 };
+ */
