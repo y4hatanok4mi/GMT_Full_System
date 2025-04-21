@@ -1,14 +1,3 @@
-import {
-  SidebarInset,
-  SidebarTrigger
-} from '@/components/ui/sidebar'
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-} from "@/components/ui/breadcrumb";
-import { Separator } from '@/components/ui/separator';
 import prisma from '@/lib/prisma';
 import { auth } from '@/auth';
 import Image from 'next/image';
