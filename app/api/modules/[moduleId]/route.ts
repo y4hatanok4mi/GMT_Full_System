@@ -92,7 +92,7 @@ export const DELETE = async (
     }
   };
   
-  export async function POST(req: Request, { params }: { params: { moduleId: string } }) {
+/*   export async function POST(req: Request, { params }: { params: { moduleId: string } }) {
     const { moduleId } = params;
   
     try {
@@ -126,5 +126,5 @@ export const DELETE = async (
       console.error("Error marking module as complete:", error);
       return NextResponse.json({ error: "Failed to mark module as complete" }, { status: 500 });
     }
-  }
+  } */
   
