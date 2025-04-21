@@ -1,7 +1,10 @@
 "use client"
 
 import { useState } from "react";
-import { ShapeVisualization } from "./shape-visual";
+import dynamic from "next/dynamic";
+
+const ShapeVisualization = dynamic(() => import("./shape-visual"), { ssr: false });
+
 
 const VolumeCalculator = () => {
   const [shape, setShape] = useState<string>("cube");

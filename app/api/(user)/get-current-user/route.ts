@@ -1,13 +1,14 @@
+export const dynamic = 'force-dynamic';
+
 import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
   try {
-
     const user = await auth();
     const userId = user?.user.id;
-    
+
     if (!userId) {
       return NextResponse.json({ error: "User not found" }, { status: 401 });
     }

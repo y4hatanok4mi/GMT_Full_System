@@ -52,4 +52,6 @@ const ShapeVisualization = ({
   return <div ref={canvasRef}></div>; // The canvas will be rendered inside this div
 };
 
-export { ShapeVisualization };
+
+export default ShapeVisualization;
+

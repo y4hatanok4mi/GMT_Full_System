@@ -29,7 +29,6 @@ import FloatingShape from "@/components/floating-shapes";
 export default function SignIn() {
     const { data: session, status } = useSession();
     const pathname = usePathname();
-    const params = useSearchParams();
     const router = useRouter();
 
     const [globalError, setGlobalError] = useState<string>("");
