@@ -21,11 +21,9 @@ interface LessonDiscussionProps {
     lessonId: string;
     questionId: string;
   };
-  userId: string;
-  isCompleted: boolean;
 }
 
-const LessonDiscussion = ({ params, userId, isCompleted }: LessonDiscussionProps) => {
+const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
   const { moduleId, lessonId } = params;
   const [questions, setQuestions] = useState<any[]>([]);
   const [lessonName, setLessonName] = useState<string>('');
