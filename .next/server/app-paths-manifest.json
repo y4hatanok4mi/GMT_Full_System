@@ -1,11 +1,15 @@
 {
   "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
   "/api/(user)/get-current-user/route": "app/api/(user)/get-current-user/route.js",
-  "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/page": "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/page.js",
-  "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page.js",
-  "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page.js",
+  "/api/modules/route": "app/api/modules/route.js",
+  "/api/(user)/getuserbyrole/route": "app/api/(user)/getuserbyrole/route.js",
+  "/api/(user)/user-control/route": "app/api/(user)/user-control/route.js",
   "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page.js",
+  "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page.js",
+  "/(dashboard)/admin/page": "app/(dashboard)/admin/page.js",
   "/(dashboard)/student/modules/page": "app/(dashboard)/student/modules/page.js",
-  "/(dashboard)/admin/page": "app/(dashboard)/admin/page.js"
+  "/(dashboard)/admin/reports/modules-report/page": "app/(dashboard)/admin/reports/modules-report/page.js",
+  "/(dashboard)/admin/reports/students-report/page": "app/(dashboard)/admin/reports/students-report/page.js",
+  "/(dashboard)/admin/(management)/data-management/modules/page": "app/(dashboard)/admin/(management)/data-management/modules/page.js",
+  "/(dashboard)/admin/(management)/data-management/users-management/page": "app/(dashboard)/admin/(management)/data-management/users-management/page.js"
 }

@@ -10,7 +10,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
-        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
+        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/modules-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/students-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/auth/signin/page": "action-browser",
@@ -21,7 +24,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "action-browser",
-        "app/(dashboard)/student/modules/page": "action-browser"
+        "app/(dashboard)/student/modules/page": "action-browser",
+        "app/(dashboard)/admin/reports/modules-report/page": "action-browser",
+        "app/(dashboard)/admin/reports/students-report/page": "action-browser",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "action-browser"
       }
     },
     "bca1375e1cf25e905944430fe37678dcb5f61b6c": {
@@ -34,7 +40,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
-        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
+        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/modules-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/students-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/auth/signin/page": "action-browser",
@@ -45,7 +54,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "action-browser",
-        "app/(dashboard)/student/modules/page": "action-browser"
+        "app/(dashboard)/student/modules/page": "action-browser",
+        "app/(dashboard)/admin/reports/modules-report/page": "action-browser",
+        "app/(dashboard)/admin/reports/students-report/page": "action-browser",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "action-browser"
       }
     },
     "f55cb74d753224e3b15669da89a40191c0c7fa12": {
@@ -58,7 +70,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
-        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
+        "app/(dashboard)/student/modules/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/modules-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/reports/students-report/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "(action-browser)/./node_modules/next/dist/build/webpack/loaders/next-flight-action-entry-loader.js?actions=%5B%5B%22C%3A%5C%5CUsers%5C%5Clecar%5C%5CDownloads%5C%5CGMT_Full_System%5C%5Capp%5C%5Cactions%5C%5CauthActions.ts%22%2C%5B%22handleSignUp%22%2C%22handleSignOut%22%2C%22handleCredentialsSignin%22%5D%5D%5D&__client_imported__=true!"
       },
       "layer": {
         "app/auth/signin/page": "action-browser",
@@ -69,7 +84,10 @@
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": "action-browser",
         "app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": "action-browser",
-        "app/(dashboard)/student/modules/page": "action-browser"
+        "app/(dashboard)/student/modules/page": "action-browser",
+        "app/(dashboard)/admin/reports/modules-report/page": "action-browser",
+        "app/(dashboard)/admin/reports/students-report/page": "action-browser",
+        "app/(dashboard)/admin/(management)/data-management/users-management/page": "action-browser"
       }
     }
   },
