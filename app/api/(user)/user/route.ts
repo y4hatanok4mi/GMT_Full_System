@@ -1,4 +1,3 @@
-// app/api/user-count/route.ts
 import prisma from '@/lib/prisma'
 import { userRole } from '@prisma/client'
 
