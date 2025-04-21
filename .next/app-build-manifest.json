@@ -82,6 +82,17 @@
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/admin/(management)/data-management/users-management/page.js"
+    ],
+    "/(dashboard)/student/modules/[moduleId]/overview/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/student/modules/[moduleId]/overview/page.css",
+      "static/chunks/app/(dashboard)/student/modules/[moduleId]/overview/page.js"
+    ],
+    "/(dashboard)/student/modules/[moduleId]/lessons/[lessonId]/chapters/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/student/modules/[moduleId]/lessons/[lessonId]/chapters/page.js"
     ]
   }
 }
