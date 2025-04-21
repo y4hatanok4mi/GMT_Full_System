@@ -15,11 +15,11 @@ export const POST = async (
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const module = await prisma.module.findUnique({
+    const moduleData = await prisma.module.findUnique({
       where: { id: moduleId, instructorId: id },
     });
 
-    if (!module) {
+    if (!moduleData) {
       return new Response("Module not found", { status: 404 });
     }
 
