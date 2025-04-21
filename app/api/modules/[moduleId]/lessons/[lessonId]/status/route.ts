@@ -1,9 +1,8 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
-import LessonProgress from "@/components/lessons/lesson-progress";
-import { progress } from "framer-motion";
 
-export async function GET({ params }: { params: { lessonId: string } }) {
+// GET lesson completion status
+export async function GET(request: Request, { params }: { params: { lessonId: string } }) {
   const { lessonId } = params;
 
   try {
@@ -22,7 +21,8 @@ export async function GET({ params }: { params: { lessonId: string } }) {
   }
 }
 
-export async function POST({ params, request }: { params: { moduleId: string; lessonId: string }; request: Request }) {
+// POST to mark lesson completed and add points
+export async function POST(request: Request, { params }: { params: { moduleId: string; lessonId: string } }) {
   const { lessonId } = params;
   const { userId, points } = await request.json();
 
