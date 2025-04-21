@@ -1,12 +1,8 @@
 'use client';
 
-import AngleCanvas from '@/components/games/angle-canvas';
-import Quiz from '@/components/games/angle-quiz';
-import { useState } from 'react';
 import Link from "next/link";
 
 const StartVolumeTool = () => {
-  const [angle, setAngle] = useState<number>(45); // Default to an acute angle
 
   return (
     <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center justify-center">
