@@ -1,6 +1,5 @@
 import { VolumeCalculator } from "@/components/games/volume-calculator";
 
-
 const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100 p-4 mt-8 flex flex-col items-center w-full lg:w-3/4 mx-auto">
