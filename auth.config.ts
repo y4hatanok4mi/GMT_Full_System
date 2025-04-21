@@ -84,4 +84,5 @@ export default {
     signIn: "/auth/signin",
     newUser: "/auth/signup",
   },
+  trustHost: true
 } satisfies NextAuthConfig;
