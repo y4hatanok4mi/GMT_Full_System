@@ -31,7 +31,7 @@ model User {
   joined              Joined[]
   modulesCompleted    CompletedModule[]
   certificate         Certificate[]
-  lessonOrder         LessonOrder[]
+  chapterOrder       ChapterOrder[]
   verificationTokens  VerificationToken[]
   passwordResetTokens PasswordResetToken[]
 }
@@ -174,7 +174,6 @@ model Module {
   joined      Joined[]
   completedBy CompletedModule[]
   certificate Certificate[]
-  lessonOrder LessonOrder[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -219,45 +218,15 @@ model Lesson {
   moduleId String
   module   Module @relation(fields: [moduleId], references: [id])
 
-  categoryId String?
-  category   Category? @relation(fields: [categoryId], references: [id])
-
   progress LessonProgress[]
-
   chapter Chapter[]
-
   resources Resource[]
-
   enrollments Enrollment[]
-
   question Question[]
-
   exerciseResult ExerciseResult[]
 
-  lessonOrder LessonOrder[]
-
-  lessonContentOrder LessonContentOrder[]
-
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-}
-
-model LessonOrder {
-  id       String @id @default(uuid())
-  userId   Int
-  moduleId String
-  lessonId String
-  order    Int
-
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@unique([userId, moduleId, lessonId])
-  @@index([userId, moduleId])
 }
 
 model LessonProgress {
@@ -276,30 +245,19 @@ model LessonProgress {
   @@index([lessonId])
 }
 
-model LessonContentOrder {
-  id          String @id @default(uuid())
-  lessonId    String
-  lesson      Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  contentId   String
-  contentType String
-  order       Int
-
-  @@unique([lessonId, order])
-  @@index([lessonId, order])
-}
-
 model Category {
   id     String   @id @default(uuid())
   name   String   @unique
-  lesson Lesson[]
+  chapter Chapter[]
 }
 
 model UserPreferences {
   id             String @id @default(uuid())
   userId         Int    @unique
   user           User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  primaryStyle   String @default("Visual")
+  primaryStyle   String
   secondaryStyle String
+  tertiaryStyle   String
 }
 
 model Chapter {
@@ -310,21 +268,11 @@ model Chapter {
   description String?
   isPublished Boolean           @default(false)
   isCompleted Boolean           @default(false)
+  chapterOrder ChapterOrder[]
   progress    ChapterProgress[]
 
-  lessonId String
-  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([lessonId])
-}
-
-model Resource {
-  id      String @id @default(uuid())
-  name    String
-  fileUrl String
+  categoryId String?
+  category   Category? @relation(fields: [categoryId], references: [id])
 
   lessonId String
   lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
@@ -334,6 +282,24 @@ model Resource {
 
   @@index([lessonId])
 }
+
+model ChapterOrder {
+  id        String   @id @default(uuid())
+  userId    Int
+  chapterId String
+  lessonId  String
+  order     Int
+
+  chapter Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, chapterId])
+  @@index([userId, lessonId])
+}
+
 
 model ChapterProgress {
   id     String @id @default(uuid())
@@ -348,6 +314,20 @@ model ChapterProgress {
 
   @@unique([userId, chapterId])
   @@index([chapterId])
+}
+
+model Resource {
+  id      String @id @default(uuid())
+  name    String
+  fileUrl String
+
+  lessonId String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lessonId])
 }
 
 model Enrollment {

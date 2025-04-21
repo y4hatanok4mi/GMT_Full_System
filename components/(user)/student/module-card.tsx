@@ -65,7 +65,7 @@ export const ModuleCard = async () => {
                         alt={name}
                         width={80}
                         height={80}
-                        className="rounded-full object-contain"
+                        className="rounded-md object-cover w-40 h-20"
                       />
                     ) : (
                       <div className="w-12 h-12 bg-gray-400 rounded-full flex items-center justify-center">

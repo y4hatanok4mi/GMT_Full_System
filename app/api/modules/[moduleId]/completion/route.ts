@@ -22,3 +22,4 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
     return NextResponse.json({ error: "Failed to fetch completion status" }, { status: 500 });
   }
 }
+

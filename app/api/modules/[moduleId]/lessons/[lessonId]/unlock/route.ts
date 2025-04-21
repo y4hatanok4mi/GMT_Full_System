@@ -13,20 +13,20 @@ export const POST = async (
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    // 🔥 Fetch the first lesson from LessonOrder for this user
-    const firstLessonOrder = await prisma.lessonOrder.findFirst({
-      where: { moduleId, userId: Number(userId) },
-      orderBy: { order: "asc" },
-      select: { lessonId: true },
+    // 🔥 Fetch the first lesson in the module based on the order field of the Lesson model
+    const firstLesson = await prisma.lesson.findFirst({
+      where: { moduleId },
+      orderBy: { order: "asc" }, // Ordering lessons by the 'order' field in Lesson model
+      select: { id: true }, // Selecting only the lesson ID for efficiency
     });
 
-    if (!firstLessonOrder) {
-      return new NextResponse("No lessons found in LessonOrder", { status: 404 });
+    if (!firstLesson) {
+      return new NextResponse("No lessons found in this module", { status: 404 });
     }
 
     // 🔍 Check if progress already exists for this lesson
     const existingProgress = await prisma.lessonProgress.findUnique({
-      where: { userId_lessonId: { userId: Number(userId), lessonId: firstLessonOrder.lessonId } },
+      where: { userId_lessonId: { userId: Number(userId), lessonId: firstLesson.id } },
     });
 
     if (existingProgress) {
@@ -35,9 +35,9 @@ export const POST = async (
 
     // 🔓 Unlock the first lesson for the user in LessonProgress
     const lessonProgress = await prisma.lessonProgress.upsert({
-      where: { userId_lessonId: { userId: Number(userId), lessonId: firstLessonOrder.lessonId } },
+      where: { userId_lessonId: { userId: Number(userId), lessonId: firstLesson.id } },
       update: { isLocked: false },
-      create: { userId: Number(userId), lessonId: firstLessonOrder.lessonId, isLocked: false, isCompleted: false },
+      create: { userId: Number(userId), lessonId: firstLesson.id, isLocked: false, isCompleted: false },
     });
 
     return NextResponse.json({ message: "First lesson unlocked!", lessonProgress }, { status: 200 });

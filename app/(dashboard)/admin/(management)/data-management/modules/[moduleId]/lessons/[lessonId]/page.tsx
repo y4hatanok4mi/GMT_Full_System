@@ -23,7 +23,6 @@ import { ChaptersForm } from "@/components/lessons/chapters-form";
 import { QuestionsForm } from "@/components/lessons/questions-form";
 import PublishButton from "@/components/publish-button";
 import Delete from "@/components/delete";
-import { LessonCategoryForm } from "@/components/lessons/category-form";
 
 const LessonsPage = async ({
     params
@@ -141,15 +140,6 @@ const LessonsPage = async ({
                                     moduleId={moduleId}
                                 />
 
-                                <LessonCategoryForm
-                                    initialData={lesson}
-                                    lessonId={lesson.id}
-                                    moduleId={moduleId}
-                                    options={categories.map((category) => ({
-                                        label: category.name,
-                                        value: category.id,
-                                    }))}
-                                />
                             </div>
                             <div className="space-y-6">
                                 <div>

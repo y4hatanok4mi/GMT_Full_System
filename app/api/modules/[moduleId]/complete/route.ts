@@ -17,29 +17,25 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
-    // ✅ Fetch total number of lessons assigned to the user in LessonOrder
-    const totalOrderedLessons = await prisma.lessonOrder.count({
-      where: { moduleId, userId },
+    // ✅ Count total number of lessons in this module
+    const totalLessons = await prisma.lesson.count({
+      where: { moduleId },
     });
 
-    const completedOrderedLessons = await prisma.lessonOrder.count({
+    // ✅ Count completed lessons for the user in this module
+    const completedLessons = await prisma.lessonProgress.count({
       where: {
-        moduleId,
         userId,
+        isCompleted: true,
         lesson: {
-          progress: {
-            some: {
-              userId,
-              isCompleted: true,
-            },
-          },
+          moduleId,
         },
       },
     });
 
-    // ✅ Check if all assigned lessons are completed
-    if (completedOrderedLessons === totalOrderedLessons && totalOrderedLessons > 0) {
-      // ✅ Check if the module is already completed for the user
+    // ✅ Check if all lessons in the module are completed
+    if (completedLessons === totalLessons && totalLessons > 0) {
+      // ✅ Check if the module is already marked completed
       const existingCompletedModule = await prisma.completedModule.findUnique({
         where: {
           userId_moduleId: {
@@ -50,7 +46,7 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       });
 
       if (!existingCompletedModule) {
-        // ✅ Insert record into CompletedModule table
+        // ✅ Insert a record into CompletedModule
         await prisma.completedModule.create({
           data: { userId, moduleId },
         });
@@ -66,9 +62,9 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
 
     return NextResponse.json(
       {
-        error: "Not all assigned lessons are completed.",
-        completedOrderedLessons,
-        totalOrderedLessons,
+        error: "Not all lessons in the module are completed.",
+        completedLessons,
+        totalLessons,
       },
       { status: 400 }
     );

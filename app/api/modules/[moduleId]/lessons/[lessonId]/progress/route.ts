@@ -17,16 +17,48 @@ export const POST = async (
 
     const { moduleId, lessonId } = params;
 
-    // ✅ Fetch the current lesson order
-    const currentLessonOrder = await prisma.lessonOrder.findUnique({
-      where: { userId_moduleId_lessonId: { userId, moduleId, lessonId } },
+    // ✅ Fetch the current lesson to get its order
+    const currentLesson = await prisma.lesson.findUnique({
+      where: { id: lessonId },
     });
 
-    if (!currentLessonOrder) {
-      return NextResponse.json({ error: "Lesson order not found." }, { status: 404 });
+    if (!currentLesson) {
+      return NextResponse.json({ error: "Lesson not found." }, { status: 404 });
     }
 
-    // ✅ Check existing progress
+    // ✅ Check if all chapters in the lesson are completed
+    const chapterOrders = await prisma.chapterOrder.findMany({
+      where: {
+        userId,
+        chapter: {
+          lessonId,
+        },
+      },
+    });
+
+    const chapterStatuses = await Promise.all(
+      chapterOrders.map((order) =>
+        prisma.chapterProgress.findUnique({
+          where: {
+            userId_chapterId: {
+              userId,
+              chapterId: order.chapterId,
+            },
+          },
+          select: {
+            isCompleted: true,
+          },
+        })
+      )
+    );
+
+    const allChaptersCompleted = chapterStatuses.every((progress) => progress?.isCompleted);
+
+    if (!allChaptersCompleted) {
+      return NextResponse.json({ message: "Complete all chapters before unlocking the lesson." }, { status: 400 });
+    }
+
+    // ✅ Check if lesson is already completed
     const existingProgress = await prisma.lessonProgress.findUnique({
       where: { userId_lessonId: { userId, lessonId } },
     });
@@ -35,44 +67,41 @@ export const POST = async (
       return NextResponse.json({ message: "Lesson already completed!" }, { status: 200 });
     }
 
-    // ✅ Mark the lesson as completed
+    // ✅ Mark lesson as completed
     await prisma.lessonProgress.upsert({
       where: { userId_lessonId: { userId, lessonId } },
       update: { isCompleted: true, isLocked: false },
       create: { userId, lessonId, isCompleted: true, isLocked: false },
     });
 
-    // ✅ Add 10 points only for the first completion
+    // ✅ Award points on first completion
     await prisma.user.update({
       where: { id: userId },
       data: { points: { increment: 10 } },
     });
 
-    // ✅ Find the next lesson based on `LessonOrder`
-    const nextLessonOrder = await prisma.lessonOrder.findFirst({
+    // ✅ Find the next lesson based on order in the same module
+    const nextLesson = await prisma.lesson.findFirst({
       where: {
-        userId,
         moduleId,
-        order: { gt: currentLessonOrder.order }, // Get the next lesson in sequence
+        order: { gt: currentLesson.order },
       },
       orderBy: { order: "asc" },
-      select: { lessonId: true },
     });
 
-    if (nextLessonOrder) {
-      // ✅ Unlock the next lesson in `LessonProgress`
+    if (nextLesson) {
       await prisma.lessonProgress.upsert({
-        where: { userId_lessonId: { userId, lessonId: nextLessonOrder.lessonId } },
+        where: { userId_lessonId: { userId, lessonId: nextLesson.id } },
         update: { isLocked: false },
-        create: { userId, lessonId: nextLessonOrder.lessonId, isLocked: false, isCompleted: false },
+        create: { userId, lessonId: nextLesson.id, isLocked: false, isCompleted: false },
       });
 
       return NextResponse.json({ message: "Next lesson unlocked, 10 points awarded!" }, { status: 200 });
     } else {
-      return NextResponse.json({ message: "No more lessons in this module, 10 points awarded!" }, { status: 200 });
+      return NextResponse.json({ message: "All lessons completed in this module, 10 points awarded!" }, { status: 200 });
     }
   } catch (err) {
-    console.error("[lessonId_progress_unlock_POST]", err);
+    console.error("[lesson_progress_POST]", err);
     return new NextResponse("Internal Server Error", { status: 500 });
   }
 };

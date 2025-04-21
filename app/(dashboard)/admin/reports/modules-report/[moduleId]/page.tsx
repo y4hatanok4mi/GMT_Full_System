@@ -7,6 +7,9 @@ import toast from "react-hot-toast";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import { Separator } from "@/components/ui/separator";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage } from "@/components/ui/breadcrumb";
+import {
+  BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
+} from 'recharts';
 
 export type Student = {
   id: string;
@@ -15,7 +18,6 @@ export type Student = {
   email: string;
   completed: boolean;
 };
-
 
 export type Module = {
   id: string;
@@ -28,43 +30,44 @@ export type Module = {
 
 export default function ModuleReportPage() {
   const [moduleData, setModuleData] = useState<Module | null>(null);
-  const [students, setStudents] = useState<Student[]>([]);  // Ensure this is always an empty array initially
-  const [loading, setLoading] = useState(true); // Add a loading state
+  const [students, setStudents] = useState<Student[]>([]);
+  const [loading, setLoading] = useState(true);
   const { moduleId } = useParams();
 
   useEffect(() => {
-    if (!moduleId) {
-      console.log("No moduleId found in params");
-      return;
-    }
+    if (!moduleId) return;
 
-    const fetchModuleData = async () => {
+    const fetchData = async () => {
       try {
-        // Fetch the module data
-        const moduleResponse = await axios.get(`/api/modules/${moduleId}`);
-        setModuleData(moduleResponse.data.moduleData);
+        const moduleRes = await axios.get(`/api/modules/${moduleId}`);
+        setModuleData(moduleRes.data.moduleData);
 
-        // Fetch the students who joined the module
-        const studentsResponse = await axios.get(`/api/modules/${moduleId}/get-students`);
-        // Ensure that the response is an array with the 'completed' field
-        setStudents(studentsResponse.data.students || []);
-
-        setLoading(false); // Set loading to false once both data sets are fetched
+        const studentsRes = await axios.get(`/api/modules/${moduleId}/get-students`);
+        setStudents(studentsRes.data.students || []);
       } catch (error) {
-        console.error("Error fetching module data:", error);
+        console.error("Error fetching data:", error);
         toast.error("Failed to load module report");
-        setLoading(false); // Set loading to false in case of error
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchModuleData();
+    fetchData();
   }, [moduleId]);
 
+  // Grouping students by school
+  const studentsBySchool = students.reduce((acc: Record<string, number>, student) => {
+    acc[student.school] = (acc[student.school] || 0) + 1;
+    return acc;
+  }, {});
 
-  if (loading) {
-    console.log("Module data is still loading...");
-    return <div>Loading...</div>;
-  }
+  // Transform for chart
+  const chartData = Object.entries(studentsBySchool).map(([school, count]) => ({
+    school,
+    count,
+  }));
+
+  if (loading) return <div>Loading...</div>;
 
   return (
     <div>
@@ -82,11 +85,29 @@ export default function ModuleReportPage() {
             </Breadcrumb>
           </div>
         </header>
-        {/* Render the module's data here */}
+
         <div className="p-4">
           <h1 className="text-2xl font-bold">Module: {moduleData?.name}</h1>
 
-          {/* Display Student Progress */}
+          {/* Bar Chart Section */}
+          <h2 className="text-xl font-semibold mt-6 mb-2">Students per School</h2>
+          {chartData.length > 0 ? (
+            <div className="w-full h-96">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 20, right: 30, left: 0, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="school" />
+                  <YAxis allowDecimals={false} />
+                  <Tooltip />
+                  <Bar dataKey="count" fill="#34d399" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          ) : (
+            <p className="text-gray-500">No data available for chart.</p>
+          )}
+
+          {/* Student Table */}
           <h2 className="text-xl font-semibold mt-6">Students Joined</h2>
           {students.length > 0 ? (
             <table className="w-full border-collapse border border-gray-300 mt-4">
@@ -95,12 +116,12 @@ export default function ModuleReportPage() {
                   <th className="border border-gray-300 px-4 py-2">Student Name</th>
                   <th className="border border-gray-300 px-4 py-2">School</th>
                   <th className="border border-gray-300 px-4 py-2">Email</th>
-                  <th className="border border-gray-300 px-4 py-2">Status</th> {/* New column */}
+                  <th className="border border-gray-300 px-4 py-2">Status</th>
                 </tr>
               </thead>
               <tbody>
                 {students.map(({ id, name, school, email, completed }) => (
-                  <tr key={id} className="border border-gray-300">
+                  <tr key={id}>
                     <td className="border border-gray-300 px-4 py-2">{name}</td>
                     <td className="border border-gray-300 px-4 py-2">{school}</td>
                     <td className="border border-gray-300 px-4 py-2">{email}</td>
@@ -108,7 +129,7 @@ export default function ModuleReportPage() {
                       {completed ? (
                         <span className="text-green-500 font-semibold">Completed</span>
                       ) : (
-                        <span className="text-red-500 font-semibold text-center">Not Completed</span>
+                        <span className="text-red-500 font-semibold">Not Completed</span>
                       )}
                     </td>
                   </tr>
@@ -118,11 +139,8 @@ export default function ModuleReportPage() {
           ) : (
             <p className="mt-2 text-gray-500">No students have joined this module yet.</p>
           )}
-
         </div>
       </SidebarInset>
-
-
     </div>
   );
 }

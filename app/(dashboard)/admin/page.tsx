@@ -31,19 +31,19 @@ export default async function AdminPage() {
                 <BreadcrumbItem className="hidden md:block">
                   <BreadcrumbPage>Analytics</BreadcrumbPage>
                 </BreadcrumbItem>
-                <BreadcrumbItem className="hidden md:block">
-                </BreadcrumbItem>
+                <BreadcrumbItem className="hidden md:block"></BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
           </div>
         </header>
         <div className="grid p-4 auto-rows-min gap-4 md:grid-cols-3">
-          <div className="md:col-span-2"> {/* Makes ModuleChart take up 2 columns */}
+          <div className="md:col-span-2">
             <ModuleChart />
           </div>
-          <VisitorChart />
+          <div>
+            <VisitorChart />
+          </div>
         </div>
-
       </SidebarInset>
     </div>
   );

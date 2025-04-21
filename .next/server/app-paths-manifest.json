@@ -1,0 +1,15 @@
+{
+  "/page": "app/page.js",
+  "/auth/signin/page": "app/auth/signin/page.js",
+  "/auth/signup/page": "app/auth/signup/page.js",
+  "/api/verify-email/route": "app/api/verify-email/route.js",
+  "/auth/verification/page": "app/auth/verification/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/(user)/get-current-user/route": "app/api/(user)/get-current-user/route.js",
+  "/api/(user)/user/preferences/route": "app/api/(user)/user/preferences/route.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/(dashboard)/student/page": "app/(dashboard)/student/page.js",
+  "/(dashboard)/student/modules/page": "app/(dashboard)/student/modules/page.js",
+  "/(dashboard)/student/tools/page": "app/(dashboard)/student/tools/page.js",
+  "/(dashboard)/student/leaderboard/page": "app/(dashboard)/student/leaderboard/page.js"
+}

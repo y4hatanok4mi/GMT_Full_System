@@ -7,26 +7,24 @@ import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
 
 const questions = [
-
-    { id: 1, text: "When learning about polygons, I understand better when...", options: ["I see different shapes and diagrams.", "I read a detailed explanation with examples."] },
-    { id: 2, text: "To understand angles, I prefer...", options: ["Looking at labeled diagrams of angles.", "Writing down the definitions and properties of angles."] },
-    { id: 3, text: "When solving for the area of a shape, I learn best by...", options: ["Watching an animation that shows how the formula works.", "Reading step-by-step instructions with examples."] },
-    { id: 4, text: "To remember the difference between interior and exterior angles, I prefer...", options: ["Seeing a side-by-side diagram comparing them.", "Taking notes on their definitions and uses."] },
-    { id: 5, text: "When calculating volume, I understand better when...", options: ["Seeing a 3D model or diagram of the shape.", "Reading a structured explanation with example problems."] },
-
-    { id: 6, text: "If I need to understand how different polygons are classified, I would rather...", options: ["Read a chart comparing different polygons.", "Listen to a teacher explaining them."] },
-    { id: 7, text: "When working with area and perimeter, I remember formulas best when...", options: ["Writing them repeatedly in my notes.", "Saying them out loud to memorize."] },
-    { id: 8, text: "If I were asked to explain how to find the sum of interior angles, I would prefer to...", options: ["Write a step-by-step explanation.", "Draw a diagram and label the angles."] },
-    { id: 9, text: "When solving problems about surface area, I understand best when...", options: ["Reading example problems and solutions.", "Hearing a breakdown of the calculations."] },
-    { id: 10, text: "If I need to learn how to measure angles with a protractor, I would rather...", options: ["Read written instructions and practice with a worksheet.", "Watch a demonstration video."] },
-
-    { id: 11, text: "To learn the properties of triangles, I would rather...", options: ["Listen to a teacher explain the differences.", "Read about each type of triangle in a textbook."] },
-    { id: 12, text: "To compare the areas of different shapes, I prefer...", options: ["Listening to an explanation on when to use each formula.", "Looking at a table comparing their formulas."] },
-    { id: 13, text: "When reviewing for a test on angles, I learn better by...", options: ["Hearing someone explain different types of angles.", "Writing and reviewing notes on angles."] },
-    { id: 14, text: "When studying surface area, I understand more when...", options: ["Listening to a real-world example of how surface area is used.", "Reading a detailed guide with labeled images."] },
-    { id: 15, text: "If I need to understand the Pythagorean Theorem, I learn better by...", options: ["Hearing a step-by-step explanation from a teacher.", "Reading different proof methods and examples."] },
-];
-
+    { id: 1, text: "I understand polygons better when...", options: ["I see pictures of the shapes.", "I read examples with explanations."] },
+    { id: 2, text: "I learn about angles better when...", options: ["I look at drawings with labels.", "I write notes about angles."] },
+    { id: 3, text: "To learn how to find area, I like...", options: ["Watching a video that shows the steps.", "Reading the steps with examples."] },
+    { id: 4, text: "I remember inside and outside angles better when...", options: ["I see pictures that compare them.", "I write down what they mean."] },
+    { id: 5, text: "I understand volume better when...", options: ["I see a 3D shape or picture.", "I read how to solve it with examples."] },
+  
+    { id: 6, text: "To learn the types of polygons, I prefer...", options: ["Reading a chart with pictures.", "Listening to my teacher explain them."] },
+    { id: 7, text: "I remember area and perimeter formulas better when...", options: ["I write them again and again.", "I say them out loud."] },
+    { id: 8, text: "If I explain how to find angle sums, I like to...", options: ["Write the steps.", "Draw and label the angles."] },
+    { id: 9, text: "I understand surface area better when...", options: ["I read sample problems.", "I hear someone explain it."] },
+    { id: 10, text: "To learn how to use a protractor, I would rather...", options: ["Read how to use it and try it myself.", "Watch someone show how it works."] },
+  
+    { id: 11, text: "To learn about triangles, I prefer...", options: ["Listening to someone explain them.", "Reading about each kind of triangle."] },
+    { id: 12, text: "To compare shapes by area, I like...", options: ["Listening to when to use each formula.", "Looking at a chart of formulas."] },
+    { id: 13, text: "To review angles for a test, I like...", options: ["Hearing someone talk about angles.", "Writing notes and reading them."] },
+    { id: 14, text: "To understand surface area better, I like...", options: ["Listening to real-life examples.", "Reading with pictures and labels."] },
+    { id: 15, text: "To learn the Pythagorean Theorem, I like...", options: ["Listening to a teacher explain it.", "Reading the proofs and examples."] },
+  ];
 
 export default function SurveyModal({ isOpen, onClose, userId }: { isOpen: boolean; onClose: () => void; userId: string }) {
     const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -56,19 +54,20 @@ export default function SurveyModal({ isOpen, onClose, userId }: { isOpen: boole
         answers.forEach((answer) => {
             if (answer.includes("diagram") || answer.includes("chart") || answer.includes("slides")) counts["Visual"]++;
             if (answer.includes("write") || answer.includes("notes") || answer.includes("read")) counts["Read & Write"]++;
-            if (answer.includes("listen") || answer.includes("talk") || answer.includes("hear")) counts["Audio"]++;
+            if (answer.includes("listen") || answer.includes("talk") || answer.includes("hear")) counts["Auditory"]++;
         });
 
         // Sort styles by highest score
         const sortedStyles = Object.entries(counts).sort((a, b) => b[1] - a[1]);
         const primaryStyle = sortedStyles[0]?.[0] || "Visual";
         const secondaryStyle = sortedStyles[1]?.[0] || "Read & Write";
+        const tertiaryStyle = sortedStyles[2]?.[0] || "Auditory";
 
         try {
             await fetch("/api/user/preferences", {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userId, primaryStyle, secondaryStyle }),
+                body: JSON.stringify({ userId, primaryStyle, secondaryStyle, tertiaryStyle }),
             });
 
             setIsCompleted(true);

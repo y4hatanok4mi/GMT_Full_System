@@ -21,7 +21,7 @@ export async function GET(request: Request, { params }: { params: { moduleId: st
 
     const completedChapters = await prisma.chapterProgress.count({
       where: {
-        userId: userId,
+        userId: Number(userId),
         isCompleted: true,
         chapter: {
           lessonId: lessonId,

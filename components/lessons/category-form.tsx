@@ -18,12 +18,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { Lesson } from "@prisma/client";
+import { Chapter } from "@prisma/client";
 import { Combobox } from "../combo-box";
 
 
-interface LessonCategoryFormProps {
-    initialData: Lesson;
+interface ChapterCategoryFormProps {
+    initialData: Chapter;
+    chapterId: string;
     lessonId: string;
     moduleId: string;
     options: { label: string; value: string; }[];
@@ -33,12 +34,13 @@ const formSchema = z.object({
     categoryId: z.string().min(1),
 });
 
-export const LessonCategoryForm = ({
+export const ChapterCategoryForm = ({
     initialData,
+    chapterId,
     moduleId,
     lessonId,
     options
-}: LessonCategoryFormProps) => {
+}: ChapterCategoryFormProps) => {
     const router = useRouter();
     const [isEditing, setIsEditing] = useState(false);
 
@@ -55,7 +57,7 @@ export const LessonCategoryForm = ({
 
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
-            await axios.patch(`/api/modules/${moduleId}/lessons/${lessonId}`, values);
+            await axios.patch(`/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`, values);
             toast.success("Lesson updated!")
             toggleEdit();
             router.refresh();
@@ -69,7 +71,7 @@ export const LessonCategoryForm = ({
     return (
         <div className="my-6 border bg-slate-100 rounded-md p-4">
             <div className="font-medium flex items-center justify-between">
-                Lesson Category
+                Chapter Category
                 <Button onClick={toggleEdit} variant={"ghost"}>
                     {isEditing ? (
                         <>Cancel</>

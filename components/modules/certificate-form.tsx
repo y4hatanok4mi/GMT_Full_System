@@ -10,7 +10,11 @@ interface CertificateProps {
   moduleId: string;
 }
 
-const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, moduleId }) => {
+const CertificateForm: React.FC<CertificateProps> = ({
+  userName,
+  moduleName,
+  moduleId,
+}) => {
   const certificateRef = useRef<HTMLDivElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [certificateNumber, setCertificateNumber] = useState<string>("");
@@ -42,7 +46,9 @@ const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, mod
           body: JSON.stringify({ moduleId }),
         });
         const data = await res.json();
-        setCertificateNumber(`CERT-${data.certificateNumber.toString().padStart(5, "0")}`);
+        setCertificateNumber(
+          `CERT-${data.certificateNumber.toString().padStart(5, "0")}`
+        );
       } catch (error) {
         console.error("Error fetching certificate number:", error);
       }
@@ -70,7 +76,9 @@ const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, mod
     <div className="flex flex-col justify-center">
       {/* Container */}
       <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">Certificate of Completion</h1>
+        <h1 className="text-2xl font-bold text-center mb-6">
+          Certificate of Completion
+        </h1>
 
         {/* View Certificate Button (Disabled if module not completed) */}
         <button
@@ -88,7 +96,7 @@ const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, mod
         {/* Modal */}
         {isModalOpen && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-8 rounded-lg shadow-lg w-[1024px] h-[768px] relative flex flex-col items-center">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[850px] h-[700px] relative flex flex-col items-center">
               {/* Close Button */}
               <button
                 onClick={() => setIsModalOpen(false)}
@@ -100,7 +108,7 @@ const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, mod
               {/* Certificate */}
               <div
                 ref={certificateRef}
-                className="relative w-full h-full flex flex-col items-center justify-center p-10 border-4 border-gray-700"
+                className="relative w-full h-full flex flex-col items-center justify-center p-6 border-4 border-gray-700"
                 style={{
                   backgroundImage: "url('/Polygons.png')",
                   backgroundSize: "cover",
@@ -112,15 +120,17 @@ const CertificateForm: React.FC<CertificateProps> = ({ userName, moduleName, mod
                   {certificateNumber}
                 </div>
 
-                <div className="flex flex-col gap-20 mt-16">
-                  <h2 className="text-2xl font-semibold text-gray-900 mt-2">{userName}</h2>
+                <div className="flex flex-col gap-20 absolute top-1/2 transform -translate-y-1/2 w-full justify-center items-center">
+                  <h2 className="text-xl font-semibold text-gray-900 mt-8">
+                    {userName}
+                  </h2>
 
-                  <h2 className="text-2xl font-semibold text-gray-900 mt-8 text-center">
+                  <h2 className="text-xl font-semibold text-gray-900 mt-6 text-center">
                     {moduleName}
                   </h2>
                 </div>
 
-                <p className="mt-4 text-lg text-gray-900 text-center">
+                <p className="absolute bottom-14 text-lg text-gray-900 text-center w-full">
                   Awarded on {new Date().toLocaleDateString()}
                 </p>
               </div>

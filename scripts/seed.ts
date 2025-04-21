@@ -4,7 +4,7 @@ const database = new PrismaClient();
 async function main() {
   try {
     // Seed Categories
-    const categories = ["Visual", "Audio", "Read & Write"];
+    const categories = ["Visual", "Auditory", "Read & Write"];
 
     // Use `createMany` to insert multiple categories at once
     await database.category.createMany({

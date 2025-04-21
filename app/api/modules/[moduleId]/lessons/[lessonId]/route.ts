@@ -63,7 +63,7 @@ export const PUT = async (req: NextRequest, { params }: { params: { moduleId: st
     const { moduleId, lessonId } = params;
     const { isCompleted } = await req.json();
 
-    const updatedLesson = await prisma.lesson.update({
+    const updatedLesson = await prisma.lessonProgress.update({
       where: { 
         id: lessonId 
       },
