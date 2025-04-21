@@ -9,7 +9,7 @@ import { LessonTopBar } from "@/components/layout/lesson-topbar";
 import { Progress } from "@/components/ui/progress";
 import ReadText from "@/components/read-text-tts";
 
-interface LessonDiscussionProps {
+type LessonDiscussionProps = {
   params: {
     moduleId: string;
     lessonId: string;
