@@ -1,14 +1,9 @@
 {
   "pages": {
-    "/(dashboard)/student/page": [
+    "/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/student/page.js"
-    ],
-    "/(dashboard)/student/layout": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/student/layout.js"
+      "static/chunks/app/page.js"
     ],
     "/layout": [
       "static/chunks/webpack.js",
@@ -16,40 +11,62 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/page.js"
-    ],
     "/auth/signin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/auth/signin/page.js"
     ],
-    "/auth/signup/page": [
+    "/(dashboard)/admin/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/auth/signup/page.js"
+      "static/chunks/app/(dashboard)/admin/page.js"
     ],
-    "/auth/verification/page": [
+    "/(dashboard)/admin/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/auth/verification/page.js"
+      "static/chunks/app/(dashboard)/admin/layout.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/page.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/create-module/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/create-module/page.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/page.css",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/page.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/page.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page.css",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/chapters/[chapterId]/page.js"
+    ],
+    "/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(dashboard)/admin/(management)/data-management/modules/[moduleId]/lessons/[lessonId]/questions/[questionId]/page.js"
     ],
     "/(dashboard)/student/modules/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
       "static/chunks/app/(dashboard)/student/modules/page.js"
     ],
-    "/(dashboard)/student/tools/page": [
+    "/(dashboard)/student/layout": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/student/tools/page.js"
-    ],
-    "/(dashboard)/student/leaderboard/page": [
-      "static/chunks/webpack.js",
-      "static/chunks/main-app.js",
-      "static/chunks/app/(dashboard)/student/leaderboard/page.js"
+      "static/chunks/app/(dashboard)/student/layout.js"
     ]
   }
 }

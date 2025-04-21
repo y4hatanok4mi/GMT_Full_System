@@ -1,1 +1,14 @@
-{}
+{
+  "components\\read-text.tsx -> react-quill": {
+    "id": "components\\read-text.tsx -> react-quill",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_react-quill_lib_index_js.js"
+    ]
+  },
+  "components\\rich-editor.tsx -> react-quill": {
+    "id": "components\\rich-editor.tsx -> react-quill",
+    "files": [
+      "static/chunks/_app-pages-browser_node_modules_react-quill_lib_index_js.js"
+    ]
+  }
+}
