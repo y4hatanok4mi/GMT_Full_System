@@ -59,19 +59,19 @@ export default function UpdateProfile() {
         fetchUserData();
     }, []);    
 
+    const form = useForm<UpdateProfileFormData>({
+        resolver: zodResolver(updateProfileSchema),
+        defaultValues: {
+            bday: userData?.user?.birthday ? new Date(userData?.user?.birthday) : undefined,
+            school: userData?.user?.school || "",
+            id_no: userData?.user?.id_no || "",
+        },
+    });
+
     // Ensure userData is fetched before rendering the form
     if (loading || !userData) {
         return <div>Loading...</div>;
     }
-
-    const form = useForm<UpdateProfileFormData>({
-        resolver: zodResolver(updateProfileSchema),
-        defaultValues: {
-            bday: userData?.user.birthday ? new Date(userData?.user.birthday) : undefined,
-            school: userData?.user.school || "",
-            id_no: userData?.user.id_no || "",
-        },
-    });
 
     const { trigger, control, handleSubmit } = form;
 
