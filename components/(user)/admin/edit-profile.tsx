@@ -26,25 +26,8 @@ export function EditProfileDialog({ user }: EditProfileDialogProps) {
     const [open, setOpen] = useState(false);
     const { register, handleSubmit, setValue, watch, reset } = useForm();
     const router = useRouter();
-    const [schools, setSchools] = useState<string[]>([]); // Store the list of schools
     const [imagePreview, setImagePreview] = useState<string | null>(null); // Store the image preview URL
     const [imageUrl, setImageUrl] = useState<string | null>(null); // Store the uploaded image URL
-
-    // Fetch list of schools from the database
-    useEffect(() => {
-        const fetchSchools = async () => {
-            try {
-                const response = await fetch("/api/schools");
-                const data = await response.json();
-                setSchools(data);
-            } catch (error) {
-                toast.error("Failed to fetch schools!");
-                console.error("Error fetching schools:", error);
-            }
-        };
-
-        fetchSchools();
-    }, []);
 
     // onSubmit function to handle profile update
     const onSubmit = async (values: any) => {

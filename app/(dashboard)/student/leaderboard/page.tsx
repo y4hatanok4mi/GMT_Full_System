@@ -7,15 +7,10 @@ const Leaderboard = async () => {
   const userId = user?.user.id;
   const role = user?.user.role;
 
-  if (role !== "student") {
+  if (role !== "student" || !userId) {
     return redirect("/auth/signin");
   }
 
-  if (!userId) {
-    return redirect("/auth/signin");
-  }
-
-  // Fetch users with points
   const users = await prisma.user.findMany({
     where: {
       role: "student",
@@ -28,7 +23,6 @@ const Leaderboard = async () => {
     },
   });
 
-  // Sort by points in descending order
   const leaderboardData = users.sort((a, b) => (b.points || 0) - (a.points || 0));
 
   return (
@@ -41,25 +35,31 @@ const Leaderboard = async () => {
         backgroundPosition: "center",
       }}
     >
-      <div className="flex flex-col py-4 items-center justify-center px-12">
-        <h2 className="text-2xl text-white font-bold p-8">Leaderboard</h2>
+      <div className="flex flex-col py-4 items-center justify-center px-4 sm:px-6 lg:px-12">
+        <h2 className="text-2xl text-white font-bold p-6 sm:p-8">Leaderboard</h2>
         <div className="w-full max-w-6xl">
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div className="bg-white p-4 sm:p-6 rounded-lg shadow-md overflow-x-auto">
             <h2 className="text-lg font-semibold mb-4">Student Leaderboard</h2>
-            <ul className="space-y-4">
+            <ul className="space-y-2">
               {leaderboardData.map((user, index) => (
                 <li
                   key={user.id}
-                  className={`flex justify-between items-center border-b p-2 ${
+                  className={`flex flex-col sm:flex-row justify-between items-center gap-2 sm:gap-0 border-b py-3 px-2 rounded-md ${
                     user.id.toString() === userId
-                      ? "flex items-center justify-center p-2 bg-blue-100 text-blue-900 font-bold"
+                      ? "bg-blue-100 text-blue-900 font-bold"
                       : ""
                   }`}
                 >
-                  <span className="flex-shrink-0 w-10 text-center">{index + 1}</span>
-                  <span className="flex-1">{user.name}</span>
-                  <span className="flex-1">{user.school}</span>
-                  <span className="flex-shrink-0 w-20 text-center">
+                  <span className="w-full sm:w-10 text-center text-xs sm:text-sm">
+                    {index + 1}
+                  </span>
+                  <span className="w-full sm:flex-1 text-center sm:text-left text-sm md:text-base">
+                    {user.name}
+                  </span>
+                  <span className="w-full sm:flex-1 text-center sm:text-left text-sm md:text-base">
+                    {user.school}
+                  </span>
+                  <span className="w-full sm:w-20 text-center text-sm md:text-base">
                     {user.points || 0} pts
                   </span>
                 </li>

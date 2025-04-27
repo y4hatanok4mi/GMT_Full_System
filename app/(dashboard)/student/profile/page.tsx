@@ -16,27 +16,40 @@ const StudentProfilePage = async () => {
   });
 
   return (
-      <div className="min-h-screen flex flex-col items-center gap-2 pt-6 border bg-slate-200">
-        <div className="flex flex-col gap-2 p-8 border bg-slate-100 w-1/2 rounded-md">
-          <h1 className="text-2xl">Profile</h1>
-          <div className="flex flex-col gap-2 text-slate-800 text-sm">
-            <p>Profile Picture</p>
-            <Image
-              width={50}
-              height={50}
-              src={currentUser?.image || "/user.png"}
-              alt="Profile Picture"
-              className="ml-2 rounded-full"
-            />
-            <p>Name: {currentUser?.name}</p>
-            <p>Email: {currentUser?.email}</p>
-            <p>School: {currentUser?.school}</p>
-            <p>ID Number: {currentUser?.id_no}</p>
-            <p>Birthday: {currentUser?.birthday ? format(currentUser.birthday, "MMMM dd, yyyy") : "N/A"}</p>
-            <Separator />
-            <p>Account Settings</p>
-            <p className="text-slate-600">
-              To edit your profile, go to
+    <div className="min-h-screen flex justify-center items-start bg-slate-200 py-8 px-4">
+      <div className="w-full sm:w-4/5 md:w-2/3 lg:w-1/2 bg-white border rounded-md p-6 shadow-md">
+        <h1 className="text-2xl font-semibold mb-4">Profile</h1>
+        <div className="flex flex-col gap-4 text-slate-800 text-sm">
+          <div>
+            <p className="font-medium">Profile Picture</p>
+            <div className="mt-2">
+              <Image
+                width={50}
+                height={50}
+                src={currentUser?.image || "/user.png"}
+                alt="Profile Picture"
+                className="rounded-full"
+              />
+            </div>
+          </div>
+
+          <p><span className="font-medium">Name:</span> {currentUser?.name}</p>
+          <p><span className="font-medium">Email:</span> {currentUser?.email}</p>
+          <p><span className="font-medium">School:</span> {currentUser?.school}</p>
+          <p><span className="font-medium">ID Number:</span> {currentUser?.id_no}</p>
+          <p>
+            <span className="font-medium">Birthday:</span>{" "}
+            {currentUser?.birthday
+              ? format(currentUser.birthday, "MMMM dd, yyyy")
+              : "N/A"}
+          </p>
+
+          <Separator />
+
+          <div>
+            <p className="font-medium">Account Settings</p>
+            <p className="text-slate-600 mt-1">
+              To edit your profile,
               <EditProfileDialog
                 user={{
                   image: currentUser?.image || "",
@@ -49,13 +62,14 @@ const StudentProfilePage = async () => {
                 }}
               />
             </p>
-            <p>To change your password, go to
-              <EditPasswordDialog/>
+            <p className="text-slate-600 mt-2">
+              To change your password, 
+              <EditPasswordDialog />
             </p>
-            
           </div>
         </div>
       </div>
+    </div>
   );
 };
 

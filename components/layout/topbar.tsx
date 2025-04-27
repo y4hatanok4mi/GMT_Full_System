@@ -4,13 +4,15 @@ import { FC, useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { CircleUserRound, Settings, LogOut } from 'lucide-react';
+import { CircleUserRound, Settings, LogOut, Menu, X } from 'lucide-react';
 import { handleSignOut } from '@/app/actions/authActions';
 import axios from 'axios';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { AnimatePresence, motion } from 'framer-motion';
 
 const TopBar: FC = () => {
   const [userData, setUserData] = useState<{ name: string; email: string; avatar: string } | null>(null);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
@@ -34,9 +36,15 @@ const TopBar: FC = () => {
 
   const isActive = (link: string) => pathname === link;
 
+  const mobileNavVariants = {
+    hidden: { x: '100%' },
+    visible: { x: 0 },
+    exit: { x: '100%' },
+  };
+
   return (
-    <header className="p-5 flex justify-between items-center bg-white">
-      {/* Logo Section */}
+    <header className="w-full bg-white p-4 flex justify-between items-center shadow-md z-50 relative">
+      {/* Logo */}
       <div className="text-2xl font-bold">
         <Link href="/student">
           <span className="block sm:hidden">
@@ -49,63 +57,30 @@ const TopBar: FC = () => {
         </Link>
       </div>
 
-      {/* Navigation Links */}
-      <nav className="hidden md:flex gap-4">
-        <div className={`relative ${isActive('/student') ? 'bg-green-500' : ''} py-2 px-3 rounded-md`}>
-          <Link href="/student" className={`${isActive('/student') ? 'text-white' : 'hover:text-green-500'}`}>Home</Link>
-        </div>
-        <div className={`relative ${isActive('/student/modules') ? 'bg-green-500' : ''} py-2 px-3 rounded-md`}>
-          <Link href="/student/modules" className={`${isActive('/student/modules') ? 'text-white' : 'hover:text-green-500'}`}>Modules</Link>
-        </div>
-        <div className={`relative ${isActive('/student/tools') ? 'bg-green-500' : ''} py-2 px-3 rounded-md`}>
-          <Link href="/student/tools" className={`${isActive('/student/tools') ? 'text-white' : 'hover:text-green-500'}`}>Tools</Link>
-        </div>
-        <div className={`relative ${isActive('/student/leaderboard') ? 'bg-green-500' : ''} py-2 px-3 rounded-md`}>
-          <Link href="/student/leaderboard" className={`${isActive('/student/leaderboard') ? 'text-white' : 'hover:text-green-500'}`}>Leaderboard</Link>
-        </div>
-      </nav>
+      {/* Desktop Nav */}
+      <nav className="hidden md:flex gap-4 items-center">
+        {['/student', '/student/modules', '/student/tools', '/student/leaderboard'].map((path) => (
+          <Link
+            key={path}
+            href={path}
+            className={`py-2 px-3 rounded-md ${
+              isActive(path)
+                ? 'bg-green-500 text-white'
+                : 'hover:text-green-500 text-gray-700'
+            }`}
+          >
+            {path.split('/').pop()?.charAt(0).toUpperCase() + path.split('/').pop()!.slice(1)}
+          </Link>
+        ))}
 
-      {/* Mobile Navigation Dropdown */}
-      <div className="flex md:hidden">
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300">
-              <Image src={userData.avatar || '/user.png'} alt="Profile" width={50} height={50} className="object-cover" />
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="absolute top-full right-0 mt-2 w-48 p-4 bg-white shadow-lg rounded-md">
-            <div className="text-gray-800 font-bold">Profile</div>
-            <div className="my-1 border-t border-gray-200" />
-            <ul className="mt-2">
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                <CircleUserRound className="text-gray-700" />
-                <Link href="/student/profile" className="text-gray-700 text-sm hover:text-gray-500">View Profile</Link>
-              </li>
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer mt-3">
-                <Settings className="text-gray-700" />
-                <Link href="/student/settings" className="text-gray-700 text-sm hover:text-gray-500">Settings</Link>
-              </li>
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer mt-3">
-                <form action={handleSignOut}>
-                  <button type="submit" className="flex flex-row gap-2 text-sm text-gray-700">
-                    <LogOut /> Sign Out
-                  </button>
-                </form>
-              </li>
-            </ul>
-          </PopoverContent>
-        </Popover>
-      </div>
-
-      {/* Profile Image Section for Larger Screens */}
-      <div className="hidden md:block">
+        {/* Profile Dropdown */}
         <Popover>
           <PopoverTrigger asChild>
             <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300">
               <Image src={userData.avatar || '/user.png'} alt="Profile" width={40} height={40} className="object-cover" />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="absolute top-full right-0 mt-2 w-48 p-4 bg-white shadow-lg rounded-md">
+          <PopoverContent className="absolute top-full right-0 mt-2 w-48 p-4 bg-white shadow-lg rounded-md z-50">
             <div className="text-gray-800 font-bold">Profile</div>
             <div className="my-1 border-t border-gray-200" />
             <ul className="mt-2">
@@ -127,7 +102,72 @@ const TopBar: FC = () => {
             </ul>
           </PopoverContent>
         </Popover>
+      </nav>
+
+      {/* Mobile Menu Button */}
+      <div className="md:hidden">
+        <button onClick={() => setIsMobileNavOpen(true)} className="text-gray-700">
+          <Menu size={24} />
+        </button>
       </div>
+
+      {/* Mobile Navigation Overlay */}
+      <AnimatePresence>
+        {isMobileNavOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="fixed inset-0 bg-black bg-opacity-40 z-40"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileNavOpen(false)}
+            />
+
+            {/* Sliding Panel */}
+            <motion.div
+              variants={mobileNavVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: 'tween', duration: 0.3 }}
+              className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 flex flex-col p-5"
+            >
+              <div className="flex justify-end mb-6">
+                <button onClick={() => setIsMobileNavOpen(false)} className="text-gray-700">
+                  <X size={24} />
+                </button>
+              </div>
+              <nav className="flex flex-col gap-4">
+                {[
+                  { path: '/student', label: 'Home' },
+                  { path: '/student/modules', label: 'Modules' },
+                  { path: '/student/tools', label: 'Tools' },
+                  { path: '/student/leaderboard', label: 'Leaderboard' },
+                  { path: '/student/profile', label: 'Profile' },
+                  { path: '/student/settings', label: 'Settings' }
+                ].map(({ path, label }) => (
+                  <Link
+                    key={path}
+                    href={path}
+                    onClick={() => setIsMobileNavOpen(false)}
+                    className={`py-2 px-3 rounded-md text-gray-700 hover:text-green-500 ${
+                      isActive(path) ? 'bg-green-500 text-white' : ''
+                    }`}
+                  >
+                    {label}
+                  </Link>
+                ))}
+                <form action={handleSignOut} className="mt-4">
+                  <button type="submit" className="flex items-center gap-2 text-sm text-gray-700 hover:text-red-500">
+                    <LogOut /> Sign Out
+                  </button>
+                </form>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
