@@ -36,7 +36,7 @@ const VolumeCalculator = () => {
 
       {/* Shape Selector */}
       <div className="w-full sm:w-2/3 lg:w-1/2 mx-auto">
-        <label className="text-xl font-medium block mb-2 text-center text-gray-900 dark:text-white">
+        <label className="text-sm sm:text-xl font-medium block mb-2 text-center text-gray-900 dark:text-white">
           Select Shape:
         </label>
         <select
@@ -53,7 +53,7 @@ const VolumeCalculator = () => {
       {/* Cube Volume */}
       {shape === "cube" && (
         <div className="space-y-4 sm:w-2/3 lg:w-1/2 mx-auto">
-          <h2 className="text-xl font-medium text-center text-gray-900 dark:text-white">Cube Volume</h2>
+          <h2 className="text-sm sm:text-xl font-medium text-center text-gray-900 dark:text-white">Cube Volume</h2>
           <input
             type="range"
             min="1"

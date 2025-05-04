@@ -46,13 +46,15 @@ const LearningPage = async () => {
 
       {/* User Info */}
       <div className="flex flex-col sm:flex-row gap-6 justify-start items-center p-8 w-full sm:w-3/4">
-        <Image
-          src={currentUser.image || "/user.png"}
-          alt="Profile"
-          width={120}
-          height={120}
-          className="rounded-full object-cover"
-        />
+        <div className="relative w-32 h-32">
+          <Image
+            src={currentUser.image || "/user.png"}
+            alt="Profile"
+            layout="fill"
+            objectFit="cover"
+            className="rounded-full"
+          />
+        </div>
         <div className="text-white dark:text-gray-200">
           <div className="flex items-center gap-2">
             <p className="text-2xl font-semibold">{user.user.name}</p>
