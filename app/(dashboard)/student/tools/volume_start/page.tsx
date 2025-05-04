@@ -3,30 +3,35 @@
 import Link from "next/link";
 
 const StartVolumeTool = () => {
-
   return (
-    <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center justify-center">
-      <div className="min-h-screen bg-gray-100 p-6 flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold mb-6 text-center">Understanding Volume</h1>
+    <div className="min-h-screen flex justify-center p-4 bg-slate-100 dark:bg-slate-800">
+      <div className="w-full max-w-4xl p-4 sm:p-6 rounded">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center text-gray-900 dark:text-white">
+          Understanding Volume
+        </h1>
 
-        <p className="text-lg text-gray-700 text-center max-w-3xl mb-6">
-          <strong>Volume</strong> is the amount of <strong>space</strong> a three-dimensional (3D) object occupies. It is measured in <strong>cubic units</strong> such as cubic centimeters (cm³), cubic meters (m³), or cubic inches (in³).
+        <p className="text-sm sm:text-base md:text-lg text-gray-700 dark:text-gray-300 mb-6">
+          <strong>Volume</strong> is the amount of space that a three-dimensional object occupies. It is measured in <strong>cubic units</strong> such as cubic centimeters (cm³), cubic meters (m³), or cubic inches (in³).
         </p>
 
-        <div className="w-full max-w-2xl bg-white p-6 rounded shadow-lg mb-6">
-          <h2 className="text-xl font-semibold mb-3">Why is Volume Important?</h2>
-          <ul className="list-disc list-inside text-gray-700">
-            <li><strong>Construction:</strong> Used in buildings, containers, and storage planning.</li>
-            <li><strong>Cooking:</strong> Helps measure liquids like water or oil.</li>
-            <li><strong>Shipping:</strong> Determines package size and shipping costs.</li>
+        <div className="w-full bg-white dark:bg-slate-700 p-4 sm:p-6 rounded-lg shadow-lg mb-6">
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-3 text-gray-900 dark:text-white">
+            Why is Volume Important?
+          </h2>
+          <ul className="list-disc list-inside text-sm sm:text-base text-gray-700 dark:text-gray-300">
+            <li><strong>Storage:</strong> Helps determine how much space a container can hold.</li>
+            <li><strong>Construction:</strong> Engineers calculate volume for materials like concrete.</li>
+            <li><strong>Science:</strong> Scientists use volume in experiments with liquids and gases.</li>
           </ul>
         </div>
 
-        <div className="w-full max-w-2xl bg-white p-6 rounded shadow-lg mb-6">
-          <h2 className="text-xl font-semibold mb-3">Volume of Common 3D Shapes</h2>
-          <table className="w-full border-collapse border border-gray-300">
+        <div className="w-full overflow-x-auto bg-white dark:bg-slate-700 p-4 sm:p-6 rounded-lg shadow-lg mb-6">
+          <h2 className="text-base sm:text-lg md:text-xl font-semibold mb-3 text-gray-900 dark:text-white">
+            Volume of Common 3D Shapes
+          </h2>
+          <table className="w-full min-w-[700px] border-collapse border border-gray-300 dark:border-gray-500 text-sm sm:text-base text-gray-700 dark:text-gray-300">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-gray-200 dark:bg-slate-600 text-gray-900 dark:text-white">
                 <th className="border p-2">Shape</th>
                 <th className="border p-2">Formula</th>
                 <th className="border p-2">Example Calculation</th>
@@ -62,21 +67,15 @@ const StartVolumeTool = () => {
           </table>
         </div>
 
-        <div className="w-full max-w-2xl bg-white p-6 rounded shadow-lg mb-6">
-          <h2 className="text-xl font-semibold mb-3">Fun Fact! 🎉</h2>
-          <p className="text-gray-700">Did you know a <strong>sphere</strong> has the <strong>smallest surface area</strong> for a given volume? That’s why <strong>soap bubbles</strong> are always round!</p>
-        </div>
+        <Link
+          href="/student/tools/volume_start/volume"
+          className="flex justify-center"
+        >
+          <button className="mt-6 sm:mt-8 bg-green-500 text-white px-5 sm:px-6 py-2 sm:py-3 rounded-lg text-sm sm:text-base md:text-lg font-semibold hover:bg-green-600 transition">
+            Continue
+          </button>
+        </Link>
       </div>
-
-      <Link
-        href="/student/tools/volume_start/volume"
-        className="text-green-600 font-extrabold py-1 px-4 hover:text-green-800  rounded-md transition-colors duration-160"
-      >
-        <button className="mt-8 bg-green-500 text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-green-600 transition">
-          Continue
-        </button>
-      </Link>
-
     </div>
   );
 };

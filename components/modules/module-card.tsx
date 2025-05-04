@@ -50,19 +50,19 @@ const ModuleCard = async ({ module, userId }: ModuleCardProps) => {
   return (
     <Link
       href={`/student/modules/${moduleId}/overview`}
-      className="border rounded-lg cursor-pointer"
+      className="border rounded-lg cursor-pointer bg-white dark:bg-slate-700 dark:text-white"
     >
       <Image
         src={module.imageUrl ? module.imageUrl : "/image_placeholder.webp"}
         alt={module.name}
         width={500}
         height={300}
-        className="rounded-t-xl w-[320px] h-[180px] object-cover"
+        className="rounded-t-lg w-[310px] h-[150px] object-cover"
       />
 
       {/* Course Info */}
-      <div className="px-4 py-3 flex flex-col gap-2 bg-white rounded-b-lg">
-        <h2 className="text-lg font-bold hover:[#FDAB04]">{module.name}</h2>
+      <div className="px-4 py-3 flex flex-col gap-2 rounded-b-lg">
+        <h2 className="text-lg font-bold text-black dark:text-white hover:[#FDAB04]">{module.name}</h2>
 
         {/* Instructor and Quarter */}
         <div className="flex flex-col gap-1 justify-between text-sm font-medium">
@@ -83,7 +83,10 @@ const ModuleCard = async ({ module, userId }: ModuleCardProps) => {
         {/* Progress Bar or Completed Text */}
         <div>
           {progressPercentage === 100 ? (
-            <p className="text-sm mt-1 text-green-500 flex flex-row items-center"> <Check/> Completed</p>
+            <p className="text-sm mt-1 text-green-500 flex flex-row items-center">
+              <Check />
+              Completed
+            </p>
           ) : (
             <>
               <Progress value={progressPercentage} className="h-2" />

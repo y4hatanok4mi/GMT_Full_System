@@ -17,12 +17,12 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
-    // ✅ Count total number of lessons in this module
+    // Count total number of lessons in this module
     const totalLessons = await prisma.lesson.count({
       where: { moduleId },
     });
 
-    // ✅ Count completed lessons for the user in this module
+    // Count completed lessons for the user in this module
     const completedLessons = await prisma.lessonProgress.count({
       where: {
         userId,
@@ -33,9 +33,9 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       },
     });
 
-    // ✅ Check if all lessons in the module are completed
+    // Check if all lessons in the module are completed
     if (completedLessons === totalLessons && totalLessons > 0) {
-      // ✅ Check if the module is already marked completed
+      // Check if the module is already marked completed
       const existingCompletedModule = await prisma.completedModule.findUnique({
         where: {
           userId_moduleId: {
@@ -46,7 +46,7 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       });
 
       if (!existingCompletedModule) {
-        // ✅ Insert a record into CompletedModule
+        // Insert a record into CompletedModule
         await prisma.completedModule.create({
           data: { userId, moduleId },
         });

@@ -33,7 +33,7 @@ const LearningPage = async () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col gap-4 px-4 pb-16 w-full pt-8 items-center bg-slate-300"
+      className="min-h-screen flex flex-col gap-4 px-4 pb-16 w-full pt-8 items-center bg-slate-100 dark:bg-gray-800 dark:bg-[url('/background-dark.svg')]"
       style={{
         backgroundImage: `url("/background.svg")`,
         backgroundRepeat: "no-repeat",
@@ -41,7 +41,7 @@ const LearningPage = async () => {
         backgroundPosition: "center",
       }}
     >
-      {/* Survey Modal Wrapper (Now a Client Component) */}
+      {/* Survey Modal Wrapper */}
       <SurveyModalWrapper userId={userId} />
 
       {/* User Info */}
@@ -53,7 +53,7 @@ const LearningPage = async () => {
           height={120}
           className="rounded-full object-cover"
         />
-        <div className="text-white">
+        <div className="text-white dark:text-gray-200">
           <div className="flex items-center gap-2">
             <p className="text-2xl font-semibold">{user.user.name}</p>
           </div>

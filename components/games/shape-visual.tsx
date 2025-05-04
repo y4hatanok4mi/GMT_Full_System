@@ -2,10 +2,10 @@ import { useEffect, useRef } from "react";
 import p5 from "p5";
 
 const ShapeVisualization = ({
-    shape,
-    side = 100,
-    height = 100,
-    radius = 50,
+  shape,
+  side = 100,
+  height = 100,
+  radius = 50,
 }: {
   shape: string;
   side?: number;
@@ -29,12 +29,15 @@ const ShapeVisualization = ({
         p.rotateX(p.frameCount * 0.01);
         p.rotateY(p.frameCount * 0.01);
 
-
+        // Set the color based on the shape
         if (shape === "cube") {
-          p.box(side * 10  || 300); // Scale up the cube by multiplying side by 30
+          p.fill(100, 150, 255); // Light Blue for Cube
+          p.box(side * 10 || 300); // Scale up the cube by multiplying side by 30
         } else if (shape === "cylinder") {
+          p.fill(255, 165, 0); // Orange for Cylinder
           p.cylinder(radius * 2 || 150, height * 2 || 300); // Scale up the cylinder's radius and height
         } else if (shape === "cone") {
+          p.fill(255, 0, 0); // Red for Cone
           p.cone(radius * 2 || 150, height * 2 || 300); // Scale up the cone's radius and height
         }
       };
@@ -52,6 +55,4 @@ const ShapeVisualization = ({
   return <div ref={canvasRef}></div>; // The canvas will be rendered inside this div
 };
 
-
 export default ShapeVisualization;
-

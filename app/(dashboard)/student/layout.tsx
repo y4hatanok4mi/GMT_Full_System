@@ -18,7 +18,7 @@ export default function StudentLayout({
       {/* TopBar only on non-lesson pages */}
       {!isLessonPage && <TopBar />}
 
-      <main className="flex-grow w-full bg-gray-100">
+      <main className="w-full">
         {children}
       </main>
 

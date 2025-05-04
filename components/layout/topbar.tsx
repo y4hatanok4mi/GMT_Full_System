@@ -43,16 +43,16 @@ const TopBar: FC = () => {
   };
 
   return (
-    <header className="w-full bg-white p-4 flex justify-between items-center shadow-md z-50 relative">
+    <header className="w-full bg-white dark:bg-gray-900 p-4 flex justify-between items-center shadow-md z-50 relative text-gray-800 dark:text-white">
       {/* Logo */}
       <div className="text-2xl font-bold">
         <Link href="/student">
           <span className="block sm:hidden">
             <span className="text-green-500">G</span>
-            <span className="text-black">T</span>
+            <span className="text-black dark:text-white">T</span>
           </span>
           <span className="hidden sm:block hover:text-green-500">
-            Geome<span className="text-green-500 hover:text-black">Triks</span>
+            Geome<span className="text-green-500 hover:text-white">Triks</span>
           </span>
         </Link>
       </div>
@@ -66,7 +66,7 @@ const TopBar: FC = () => {
             className={`py-2 px-3 rounded-md ${
               isActive(path)
                 ? 'bg-green-500 text-white'
-                : 'hover:text-green-500 text-gray-700'
+                : 'hover:text-green-500 text-gray-700 dark:text-gray-300'
             }`}
           >
             {path.split('/').pop()?.charAt(0).toUpperCase() + path.split('/').pop()!.slice(1)}
@@ -76,25 +76,25 @@ const TopBar: FC = () => {
         {/* Profile Dropdown */}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300">
+            <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
               <Image src={userData.avatar || '/user.png'} alt="Profile" width={40} height={40} className="object-cover" />
             </button>
           </PopoverTrigger>
-          <PopoverContent className="absolute top-full right-0 mt-2 w-48 p-4 bg-white shadow-lg rounded-md z-50">
-            <div className="text-gray-800 font-bold">Profile</div>
-            <div className="my-1 border-t border-gray-200" />
+          <PopoverContent className="absolute top-full right-0 mt-2 w-48 p-4 bg-white dark:bg-gray-800 shadow-lg dark:shadow-black/40 rounded-md z-50">
+            <div className="text-gray-800 dark:text-white font-bold">Profile</div>
+            <div className="my-1 border-t border-gray-200 dark:border-gray-700" />
             <ul className="mt-2">
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer">
-                <CircleUserRound className="text-gray-700" />
-                <Link href="/student/profile" className="text-gray-700 text-sm hover:text-gray-500">View Profile</Link>
+              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer">
+                <CircleUserRound className="text-gray-700 dark:text-gray-300" />
+                <Link href="/student/profile" className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-400">View Profile</Link>
               </li>
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer mt-3">
-                <Settings className="text-gray-700" />
-                <Link href="/student/settings" className="text-gray-700 text-sm hover:text-gray-500">Settings</Link>
+              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer mt-3">
+                <Settings className="text-gray-700 dark:text-gray-300" />
+                <Link href="/student/settings" className="text-sm text-gray-700 dark:text-gray-300 hover:text-gray-500 dark:hover:text-gray-400">Settings</Link>
               </li>
-              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 cursor-pointer mt-3">
+              <li className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer mt-3">
                 <form action={handleSignOut}>
-                  <button type="submit" className="flex flex-row gap-2 text-sm text-gray-700">
+                  <button type="submit" className="flex flex-row gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-red-500">
                     <LogOut /> Sign Out
                   </button>
                 </form>
@@ -106,7 +106,7 @@ const TopBar: FC = () => {
 
       {/* Mobile Menu Button */}
       <div className="md:hidden">
-        <button onClick={() => setIsMobileNavOpen(true)} className="text-gray-700">
+        <button onClick={() => setIsMobileNavOpen(true)} className="text-gray-700 dark:text-gray-300">
           <Menu size={24} />
         </button>
       </div>
@@ -131,10 +131,10 @@ const TopBar: FC = () => {
               animate="visible"
               exit="exit"
               transition={{ type: 'tween', duration: 0.3 }}
-              className="fixed top-0 right-0 w-64 h-full bg-white shadow-lg z-50 flex flex-col p-5"
+              className="fixed top-0 right-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 flex flex-col p-5 text-gray-800 dark:text-white"
             >
               <div className="flex justify-end mb-6">
-                <button onClick={() => setIsMobileNavOpen(false)} className="text-gray-700">
+                <button onClick={() => setIsMobileNavOpen(false)} className="text-gray-700 dark:text-gray-300">
                   <X size={24} />
                 </button>
               </div>
@@ -151,15 +151,17 @@ const TopBar: FC = () => {
                     key={path}
                     href={path}
                     onClick={() => setIsMobileNavOpen(false)}
-                    className={`py-2 px-3 rounded-md text-gray-700 hover:text-green-500 ${
-                      isActive(path) ? 'bg-green-500 text-white' : ''
+                    className={`py-2 px-3 rounded-md ${
+                      isActive(path)
+                        ? 'bg-green-500 text-white'
+                        : 'text-gray-700 dark:text-gray-300 hover:text-green-500'
                     }`}
                   >
                     {label}
                   </Link>
                 ))}
                 <form action={handleSignOut} className="mt-4">
-                  <button type="submit" className="flex items-center gap-2 text-sm text-gray-700 hover:text-red-500">
+                  <button type="submit" className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-red-500">
                     <LogOut /> Sign Out
                   </button>
                 </form>

@@ -1,19 +1,25 @@
-"use client";
+'use client';
 
-import Quiz from '@/components/games/area-quiz';
 import Shape from '@/components/games/area-shape';
 import { useState } from 'react';
 
 const AreaTool = () => {
-  const [shape, setShape] = useState<'rectangle' | 'circle' | 'triangle'>('rectangle'); // Added triangle
-  const [dimensions, setDimensions] = useState({ width: 100, height: 100, radius: 50, base: 100, triangleHeight: 100 });
+  const [shape, setShape] = useState<'rectangle' | 'circle' | 'triangle'>('rectangle');
+  const [dimensions, setDimensions] = useState({
+    width: 100,
+    height: 100,
+    radius: 50,
+    base: 100,
+    triangleHeight: 100
+  });
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4 flex flex-col items-center w-full lg:w-3/4 mx-auto">
-      <h1 className="text-3xl font-bold mb-4">Interactive Tool for Area</h1>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 flex flex-col items-center w-full lg:w-3/4 mx-auto">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold p-4 text-center">Interactive Tool for Area</h1>
 
-      <div className="flex flex-col lg:flex-row w-full">
-        <div className="w-full lg:w-1/2 text-lg md:text-2xl px-4">
+      <div className="flex flex-col lg:flex-row w-full gap-6">
+        {/* Text Content */}
+        <div className="w-full lg:w-1/2 text-sm sm:text-base md:text-lg px-4">
           <p className="mb-4">
             Using this tool, you can identify the area of the polygon by dragging the slider.
           </p>
@@ -21,32 +27,27 @@ const AreaTool = () => {
             Drag the slider and observe the polygon and its area change in real time and on the canvas.
           </p>
         </div>
-        <div className='w-full lg:w-1/2 flex flex-col items-center'>
-          <div className="flex gap-4 mb-8">
-            <button
-              onClick={() => setShape('rectangle')}
-              className={`px-4 py-2 rounded ${shape === 'rectangle' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-            >
-              Rectangle
-            </button>
-            <button
-              onClick={() => setShape('circle')}
-              className={`px-4 py-2 rounded ${shape === 'circle' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-            >
-              Circle
-            </button>
-            <button
-              onClick={() => setShape('triangle')}
-              className={`px-4 py-2 rounded ${shape === 'triangle' ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-            >
-              Triangle
-            </button>
+
+        {/* Shape and Controls */}
+        <div className="w-full lg:w-1/2 flex flex-col items-center text-sm sm:text-base md:text-lg">
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            {['rectangle', 'circle', 'triangle'].map((s) => (
+              <button
+                key={s}
+                onClick={() => setShape(s as typeof shape)}
+                className={`px-4 py-2 rounded font-medium transition 
+                  ${shape === s ? 'bg-blue-600 text-white' : 'bg-gray-300 dark:bg-gray-700 dark:text-white'}
+                  hover:brightness-110`}
+              >
+                {s.charAt(0).toUpperCase() + s.slice(1)}
+              </button>
+            ))}
           </div>
 
           <Shape shape={shape} dimensions={dimensions} setDimensions={setDimensions} />
 
-          <div className="mt-8">
-            <h2 className="text-xl font-semibold mb-2">Formula:</h2>
+          <div className="mt-8 w-full text-center">
+            <h2 className="text-base sm:text-lg font-semibold mb-2">Formula:</h2>
             {shape === 'rectangle' && (
               <p>
                 Area = Width × Height = {dimensions.width} × {dimensions.height} ={' '}

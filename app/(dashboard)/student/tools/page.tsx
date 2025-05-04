@@ -5,7 +5,6 @@ import AnglePClassCard from "@/components/i-lessons/anglep-class-card";
 import AreaClassCard from "@/components/i-lessons/area-class-card";
 import VolumeClassCard from "@/components/i-lessons/volume-class-card";
 import prisma from "@/lib/prisma";
-import ModuleCard from "@/components/modules/module-card";
 
 const LearningPage = async () => {
   const user = await auth();
@@ -30,7 +29,7 @@ const LearningPage = async () => {
   });
 
   return (
-    <div className="flex flex-col gap-6 p-6 min-h-screen bg-slate-200">
+    <div className="flex flex-col gap-6 p-6 min-h-screen bg-slate-200 dark:bg-slate-800 text-black dark:text-white">
       <div className="p-4 md:px-10 xl:px-12">
         <div className="flex flex-col items-center py-2 w-full text-center">
           <h1 className="text-2xl font-semibold">Interactive Tools</h1>

@@ -1,10 +1,9 @@
-"use client"
+"use client";
 
 import { useState } from "react";
 import dynamic from "next/dynamic";
 
 const ShapeVisualization = dynamic(() => import("./shape-visual"), { ssr: false });
-
 
 const VolumeCalculator = () => {
   const [shape, setShape] = useState<string>("cube");
@@ -31,18 +30,19 @@ const VolumeCalculator = () => {
   return (
     <div className="space-y-6">
       {/* Shape Visualization */}
-      <div>
+      <div className="w-full mb-6 flex justify-center">
         <ShapeVisualization shape={shape} side={side} height={height} radius={radius} />
       </div>
 
       {/* Shape Selector */}
-      <div>
-        <label htmlFor="shape" className="text-xl font-medium">Select Shape:</label>
+      <div className="w-full sm:w-2/3 lg:w-1/2 mx-auto">
+        <label className="text-xl font-medium block mb-2 text-center text-gray-900 dark:text-white">
+          Select Shape:
+        </label>
         <select
-          id="shape"
           value={shape}
           onChange={(e) => setShape(e.target.value)}
-          className="w-full p-2 mt-2"
+          className="w-full px-4 py-2 border rounded-lg"
         >
           <option value="cube">Cube</option>
           <option value="cylinder">Cylinder</option>
@@ -52,8 +52,8 @@ const VolumeCalculator = () => {
 
       {/* Cube Volume */}
       {shape === "cube" && (
-        <div>
-          <h2 className="text-xl font-medium">Cube Volume</h2>
+        <div className="space-y-4 sm:w-2/3 lg:w-1/2 mx-auto">
+          <h2 className="text-xl font-medium text-center text-gray-900 dark:text-white">Cube Volume</h2>
           <input
             type="range"
             min="1"
@@ -63,15 +63,17 @@ const VolumeCalculator = () => {
             onChange={handleSideChange}
             className="w-full"
           />
-          <p>Side: {side} units</p>
-          <p>Formula: Volume = Side³ = {side}³ = <b>{volumeCube.toFixed(2)} cubic units</b></p>
+          <p className="text-center">Side: {side} units</p>
+          <p className="text-center">
+            Formula: Volume = Side³ = {side}³ = <b>{volumeCube.toFixed(2)} cubic units</b>
+          </p>
         </div>
       )}
 
       {/* Cylinder Volume */}
       {shape === "cylinder" && (
-        <div>
-          <h2 className="text-xl font-medium">Cylinder Volume</h2>
+        <div className="space-y-4 sm:w-2/3 lg:w-1/2 mx-auto">
+          <h2 className="text-xl font-medium text-center text-gray-900 dark:text-white">Cylinder Volume</h2>
           <input
             type="range"
             min="1"
@@ -81,7 +83,7 @@ const VolumeCalculator = () => {
             onChange={handleRadiusChange}
             className="w-full"
           />
-          <p>Radius: {radius} units</p>
+          <p className="text-center">Radius: {radius} units</p>
           <input
             type="range"
             min="1"
@@ -91,15 +93,17 @@ const VolumeCalculator = () => {
             onChange={handleHeightChange}
             className="w-full"
           />
-          <p>Height: {height} units</p>
-          <p>Formula: Volume = π × Radius² × Height = 3.14 × {radius}² × {height} = <b>{volumeCylinder.toFixed(2)} cubic units</b></p>
+          <p className="text-center">Height: {height} units</p>
+          <p className="text-center">
+            Formula: Volume = π × Radius² × Height = 3.14 × {radius}² × {height} = <b>{volumeCylinder.toFixed(2)} cubic units</b>
+          </p>
         </div>
       )}
 
       {/* Cone Volume */}
       {shape === "cone" && (
-        <div>
-          <h2 className="text-xl font-medium">Cone Volume</h2>
+        <div className="space-y-4 sm:w-2/3 lg:w-1/2 mx-auto">
+          <h2 className="text-xl font-medium text-center text-gray-900 dark:text-white">Cone Volume</h2>
           <input
             type="range"
             min="1"
@@ -109,7 +113,7 @@ const VolumeCalculator = () => {
             onChange={handleRadiusChange}
             className="w-full"
           />
-          <p>Radius: {radius} units</p>
+          <p className="text-center">Radius: {radius} units</p>
           <input
             type="range"
             min="1"
@@ -119,12 +123,14 @@ const VolumeCalculator = () => {
             onChange={handleHeightChange}
             className="w-full"
           />
-          <p>Height: {height} units</p>
-          <p>Formula: Volume = (π × Radius² × Height) / 3 = (3.14 × {radius}² × {height}) / 3 = <b>{volumeCone.toFixed(2)} cubic units</b></p>
+          <p className="text-center">Height: {height} units</p>
+          <p className="text-center">
+            Formula: Volume = (π × Radius² × Height) / 3 = (3.14 × {radius}² × {height}) / 3 = <b>{volumeCone.toFixed(2)} cubic units</b>
+          </p>
         </div>
       )}
     </div>
   );
 };
 
-export { VolumeCalculator };
+export default VolumeCalculator;
