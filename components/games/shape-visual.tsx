@@ -15,44 +15,54 @@ const ShapeVisualization = ({
   const canvasRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Initialize p5.js sketch
     const sketch = (p: p5) => {
+      let canvasWidth = 500;
+      let canvasHeight = 300;
+
       p.setup = () => {
+        if (typeof window !== "undefined") {
+          if (window.innerWidth < 640) {
+            // Small screen (e.g., mobile)
+            canvasWidth = 300;
+            canvasHeight = 200;
+          } else if (window.innerWidth < 1024) {
+            // Medium screen (e.g., tablet)
+            canvasWidth = 400;
+            canvasHeight = 250;
+          }
+        }
+
         if (canvasRef.current) {
-          p.createCanvas(500, 300, p.WEBGL).parent(canvasRef.current);
+          p.createCanvas(canvasWidth, canvasHeight, p.WEBGL).parent(canvasRef.current);
         }
       };
 
       p.draw = () => {
         p.background(200);
-
         p.rotateX(p.frameCount * 0.01);
         p.rotateY(p.frameCount * 0.01);
 
-        // Set the color based on the shape
         if (shape === "cube") {
-          p.fill(100, 150, 255); // Light Blue for Cube
-          p.box(side * 10 || 300); // Scale up the cube by multiplying side by 30
+          p.fill(100, 150, 255);
+          p.box(side * 10 || 300);
         } else if (shape === "cylinder") {
-          p.fill(255, 165, 0); // Orange for Cylinder
-          p.cylinder(radius * 2 || 150, height * 2 || 300); // Scale up the cylinder's radius and height
+          p.fill(255, 165, 0);
+          p.cylinder(radius * 2 || 150, height * 2 || 300);
         } else if (shape === "cone") {
-          p.fill(255, 0, 0); // Red for Cone
-          p.cone(radius * 2 || 150, height * 2 || 300); // Scale up the cone's radius and height
+          p.fill(255, 0, 0);
+          p.cone(radius * 2 || 150, height * 2 || 300);
         }
       };
     };
 
-    // Create a new p5 instance and bind it to the ref
     const newP5Instance = new p5(sketch);
 
-    // Cleanup the P5 instance when the component unmounts
     return () => {
       newP5Instance.remove();
     };
-  }, [shape, side, height, radius]); // Update the sketch when these props change
+  }, [shape, side, height, radius]);
 
-  return <div ref={canvasRef}></div>; // The canvas will be rendered inside this div
+  return <div ref={canvasRef}></div>;
 };
 
 export default ShapeVisualization;
