@@ -47,7 +47,7 @@ export default function SignUp() {
     },
   });
 
-  const { trigger, control, handleSubmit } = form;
+  const { trigger, control } = form;
 
   const onSubmit = async (values: z.infer<typeof signUpSchema>) => {
     try {
@@ -70,8 +70,8 @@ export default function SignUp() {
   };
 
   return (
-    <div className="relative grow flex items-center justify-center p-4">
-      {/* Background Shapes */}
+    <div className="min-h-screen flex items-center justify-center relative p-4 bg-white dark:bg-black overflow-x-hidden">
+      {/* Floating Background Shapes */}
       <FloatingShape
         color="bg-yellow-500"
         size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
@@ -129,10 +129,8 @@ export default function SignUp() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-3"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
+              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -140,17 +138,14 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="geometriks@example.com"
-                        type="email"
-                        {...field}
-                      />
+                      <Input placeholder="geometriks@example.com" type="email" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
 
+              {/* Password */}
               <FormField
                 control={form.control}
                 name="password"
@@ -158,19 +153,15 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <PasswordInput
-                        placeholder="********"
-                        {...field}
-                      />
+                      <PasswordInput placeholder="********" {...field} />
                     </FormControl>
                     <FormMessage />
-                    <PasswordStrengthMeter
-                      password={field.value || ""}
-                    />
+                    <PasswordStrengthMeter password={field.value || ""} />
                   </FormItem>
                 )}
               />
 
+              {/* Confirm Password */}
               <FormField
                 control={form.control}
                 name="confirmPassword"
@@ -192,6 +183,7 @@ export default function SignUp() {
                 )}
               />
 
+              {/* Name */}
               <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6">
                   <FormField
@@ -235,7 +227,7 @@ export default function SignUp() {
                     <FormControl>
                       <select
                         {...field}
-                        className="w-full border rounded-md px-3 py-2 dark:bg-slate-900 dark:text-white"
+                        className="w-full border rounded-md px-3 py-2 dark:bg-black dark:text-white"
                       >
                         <option value="">Select gender</option>
                         <option value="Male">Male</option>
@@ -247,7 +239,7 @@ export default function SignUp() {
                 )}
               />
 
-              {/* Date of Birth */}
+              {/* Birthday */}
               <FormField
                 control={form.control}
                 name="bday"
@@ -257,13 +249,7 @@ export default function SignUp() {
                     <FormControl>
                       <Input
                         type="date"
-                        value={
-                          field.value
-                            ? new Date(field.value)
-                                .toISOString()
-                                .split("T")[0]
-                            : ""
-                        }
+                        value={field.value ? new Date(field.value).toISOString().split("T")[0] : ""}
                         onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
@@ -282,7 +268,7 @@ export default function SignUp() {
                     <FormControl>
                       <select
                         {...field}
-                        className="w-full border rounded-md px-3 py-2 dark:bg-slate-900 dark:text-white"
+                        className="w-full border rounded-md px-3 py-2 dark:bg-black dark:text-white"
                       >
                         <option value="">Select school</option>
                         <option value="SNHS">Sayao National High School</option>
@@ -312,15 +298,15 @@ export default function SignUp() {
                 )}
               />
 
+              {/* Submit & Error */}
               <div className="flex flex-col">
                 {globalError && <ErrorMessage error={globalError} />}
-                <LoadingButton pending={form.formState.isSubmitting}>
-                  Sign Up
-                </LoadingButton>
+                <LoadingButton pending={form.formState.isSubmitting}>Sign Up</LoadingButton>
               </div>
             </form>
           </Form>
 
+          {/* Bottom Link */}
           <div className="flex flex-col justify-center items-center mt-2">
             <p className="text-sm">
               Already have an account?{" "}

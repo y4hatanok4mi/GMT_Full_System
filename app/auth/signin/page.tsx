@@ -75,7 +75,7 @@ export default function SignIn() {
   });
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8 overflow-hidden">
+    <div className="flex min-h-screen w-full items-center justify-center px-4 py-8 overflow-x-hidden">
       {/* Floating Shapes - hidden on mobile */}
       <FloatingShape
         color="bg-yellow-500"
@@ -128,7 +128,7 @@ export default function SignIn() {
       />
 
       {/* Sign In Card */}
-      <Card className="w-full max-w-sm sm:max-w-md md:max-w-lg relative z-10 shadow-lg">
+      <Card className="w-full max-w-lg sm:max-w-xl md:max-w-2xl relative z-10 shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-slate-100">
             Geome<span className="text-green-600">Triks</span>
