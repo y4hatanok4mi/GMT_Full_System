@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Poppins, Roboto } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "@/app/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "next-themes";

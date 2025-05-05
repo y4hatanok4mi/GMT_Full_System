@@ -13,21 +13,12 @@ import {
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/loading-button";
 import ErrorMessage from "@/components/error-message";
-
-import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signUpSchema } from "@/lib/schema";
 import { handleSignUp } from "@/app/actions/authActions";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import {
-  Calendar as CalendarIcon
-} from "lucide-react";
-import Calendar from "react-calendar"; // Import react-calendar
 import { PasswordInput } from "@/components/ui/password-input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -79,24 +70,60 @@ export default function SignUp() {
   return (
     <div className="relative grow flex items-center justify-center p-4">
       {/* Background Shapes */}
+            <FloatingShape
+        color="bg-yellow-500"
+        size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+        top="30%"
+        left="80%"
+        delay={1}
+        shape="triangle"
+        direction="reverse"
+      />
+
       <FloatingShape
-                color="bg-yellow-500"
-                size=""
-                top="30%"
-                left="80%"
-                delay={1}
-                shape="triangle"
-                direction="reverse"
-            />
-            <FloatingShape color='bg-green-500' size='w-64 h-64' top='50%' left='10%' delay={0} shape='circle' direction="normal" />
-            <FloatingShape color='bg-emerald-500' size='w-64 h-48' top='5%' left='10%' delay={0} shape='rectangle' direction="reverse" />
-            <FloatingShape color='bg-lime-500' size='w-48 h-48' top='5%' left='50%'  delay={0} shape='square' direction="normal" />
-            <FloatingShape color='bg-pink-500' size='w-48 h-48' top='50%' left='50%' delay={0} shape='circle' direction="reverse" />
+        color="bg-green-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
+        top="-40%"
+        left="10%"
+        delay={0}
+        shape="circle"
+        direction="normal"
+      />
+
+      <FloatingShape
+        color="bg-emerald-500"
+        size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
+        top="-50%"
+        left="60%"
+        delay={0}
+        shape="rectangle"
+        direction="reverse"
+      />
+
+      <FloatingShape
+        color="bg-lime-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+        top="60%"
+        left="10%"
+        delay={0}
+        shape="square"
+        direction="normal"
+      />
+
+      <FloatingShape
+        color="bg-pink-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+        top="50%"
+        left="50%"
+        delay={0}
+        shape="circle"
+        direction="reverse"
+      />
       <Card className="w-full max-w-md relative z-10">
         <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center text-gray-800">
+          <CardTitle className="text-3xl font-bold text-center text-slate-900 dark:text-slate-100">
             Geome<span className="text-green-600">Triks</span>
-            <p className="text-2xl text-gray-700">Create Account</p>
+            <p className="text-2xl text-slate-900 dark:text-slate-100">Create Account</p>
           </CardTitle>
         </CardHeader>
         <CardContent>
