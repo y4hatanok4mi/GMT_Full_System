@@ -27,7 +27,7 @@ export default function RootLayout({
                         enableSystem
                         disableTransitionOnChange
                     >
-                            <div className="min-h-screen flex flex-col justify-center">
+                            <div className="min-h-screen flex flex-col items-center justify-center">
                                 <Toaster/>
                                 <main>{children}</main>
                             </div>

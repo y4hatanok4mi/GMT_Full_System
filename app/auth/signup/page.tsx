@@ -1,7 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -18,7 +23,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { signUpSchema } from "@/lib/schema";
 import { handleSignUp } from "@/app/actions/authActions";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PasswordInput } from "@/components/ui/password-input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -49,9 +53,7 @@ export default function SignUp() {
     try {
       const result: ServerActionResponse = await handleSignUp(values);
       if (result.success) {
-        console.log("Account created successfully!");
         setIsModalOpen(true);
-
         setTimeout(() => {
           router.push("/auth/verification");
         }, 2000);
@@ -70,7 +72,7 @@ export default function SignUp() {
   return (
     <div className="relative grow flex items-center justify-center p-4">
       {/* Background Shapes */}
-            <FloatingShape
+      <FloatingShape
         color="bg-yellow-500"
         size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
         top="30%"
@@ -79,7 +81,6 @@ export default function SignUp() {
         shape="triangle"
         direction="reverse"
       />
-
       <FloatingShape
         color="bg-green-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
@@ -89,7 +90,6 @@ export default function SignUp() {
         shape="circle"
         direction="normal"
       />
-
       <FloatingShape
         color="bg-emerald-500"
         size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
@@ -99,7 +99,6 @@ export default function SignUp() {
         shape="rectangle"
         direction="reverse"
       />
-
       <FloatingShape
         color="bg-lime-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
@@ -109,7 +108,6 @@ export default function SignUp() {
         shape="square"
         direction="normal"
       />
-
       <FloatingShape
         color="bg-pink-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
@@ -119,11 +117,14 @@ export default function SignUp() {
         shape="circle"
         direction="reverse"
       />
+
       <Card className="w-full max-w-md relative z-10">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-center text-slate-900 dark:text-slate-100">
             Geome<span className="text-green-600">Triks</span>
-            <p className="text-2xl text-slate-900 dark:text-slate-100">Create Account</p>
+            <p className="text-lg sm:text-xl font-normal text-slate-900 dark:text-slate-100 mt-1">
+              Create Account
+            </p>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -149,6 +150,7 @@ export default function SignUp() {
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="password"
@@ -156,13 +158,19 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <PasswordInput placeholder="********" {...field} />
+                      <PasswordInput
+                        placeholder="********"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
-                    <PasswordStrengthMeter password={field.value || ""} />
+                    <PasswordStrengthMeter
+                      password={field.value || ""}
+                    />
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={form.control}
                 name="confirmPassword"
@@ -183,6 +191,7 @@ export default function SignUp() {
                   </FormItem>
                 )}
               />
+
               <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-6">
                   <FormField
@@ -192,11 +201,7 @@ export default function SignUp() {
                       <FormItem>
                         <FormLabel>First Name</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="John"
-                            type="text"
-                            {...field}
-                          />
+                          <Input placeholder="John" type="text" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -211,11 +216,7 @@ export default function SignUp() {
                       <FormItem>
                         <FormLabel>Last Name</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Doe"
-                            type="text"
-                            {...field}
-                          />
+                          <Input placeholder="Doe" type="text" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -223,28 +224,30 @@ export default function SignUp() {
                   />
                 </div>
               </div>
+
+              {/* Gender */}
               <FormField
                 control={form.control}
                 name="gender"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Gender</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select gender" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="Male">Male</SelectItem>
-                        <SelectItem value="Female">Female</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full border rounded-md px-3 py-2 dark:bg-slate-900 dark:text-white"
+                      >
+                        <option value="">Select gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                      </select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              
+
+              {/* Date of Birth */}
               <FormField
                 control={form.control}
                 name="bday"
@@ -254,7 +257,13 @@ export default function SignUp() {
                     <FormControl>
                       <Input
                         type="date"
-                        value={field.value ? new Date(field.value).toISOString().split("T")[0] : ""}
+                        value={
+                          field.value
+                            ? new Date(field.value)
+                                .toISOString()
+                                .split("T")[0]
+                            : ""
+                        }
                         onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
@@ -263,31 +272,32 @@ export default function SignUp() {
                 )}
               />
 
-
+              {/* School */}
               <FormField
                 control={form.control}
                 name="school"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>School</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select school" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="SNHS">Sayao National High School</SelectItem>
-                        <SelectItem value="BNHS">Balanacan National High School</SelectItem>
-                        <SelectItem value="MNCHS">Mogpog National Comprehensive High School</SelectItem>
-                        <SelectItem value="BSNHS">Butansapa National High School</SelectItem>
-                        <SelectItem value="PBNHS">Puting Buhangin National High School</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    <FormControl>
+                      <select
+                        {...field}
+                        className="w-full border rounded-md px-3 py-2 dark:bg-slate-900 dark:text-white"
+                      >
+                        <option value="">Select school</option>
+                        <option value="SNHS">Sayao National High School</option>
+                        <option value="BNHS">Balanacan National High School</option>
+                        <option value="MNCHS">Mogpog National Comprehensive High School</option>
+                        <option value="BSNHS">Butansapa National High School</option>
+                        <option value="PBNHS">Puting Buhangin National High School</option>
+                      </select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
+              {/* ID Number */}
               <FormField
                 control={form.control}
                 name="id_no"
@@ -295,36 +305,34 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>ID Number</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="21B1569"
-                        type="text"
-                        {...field}
-                      />
+                      <Input placeholder="21B1569" type="text" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
+
               <div className="flex flex-col">
                 {globalError && <ErrorMessage error={globalError} />}
-                <LoadingButton
-                  pending={form.formState.isSubmitting}
-                >
+                <LoadingButton pending={form.formState.isSubmitting}>
                   Sign Up
                 </LoadingButton>
               </div>
             </form>
           </Form>
-          <div className="flex justify-center items-center mt-2">
-            <p className='text-sm flex justify-center'>
-              Already have an account? {" "}
-              <Link href={"/auth/signin"} className='text-green-400 hover:underline'>
+
+          <div className="flex flex-col justify-center items-center mt-2">
+            <p className="text-sm">
+              Already have an account?{" "}
+              <Link href="/auth/signin" className="text-green-400 hover:underline">
                 Sign in
               </Link>
             </p>
+            <p className="text-xs mt-1 text-gray-500">@GeomeTriks</p>
           </div>
         </CardContent>
       </Card>
+
       <SignUpSuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
