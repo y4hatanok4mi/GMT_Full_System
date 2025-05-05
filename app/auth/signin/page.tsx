@@ -75,60 +75,58 @@ export default function SignIn() {
   });
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center px-4 py-8 overflow-x-hidden">
-      {/* Floating Shapes - hidden on mobile */}
-      <FloatingShape
-        color="bg-yellow-500"
-        size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-        top="30%"
-        left="80%"
-        delay={1}
-        shape="triangle"
-        direction="reverse"
-      />
-
-      <FloatingShape
-        color="bg-green-500"
-        size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
-        top="-40%"
-        left="10%"
-        delay={0}
-        shape="circle"
-        direction="normal"
-      />
-
-      <FloatingShape
-        color="bg-emerald-500"
-        size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
-        top="-50%"
-        left="60%"
-        delay={0}
-        shape="rectangle"
-        direction="reverse"
-      />
-
-      <FloatingShape
-        color="bg-lime-500"
-        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-        top="60%"
-        left="10%"
-        delay={0}
-        shape="square"
-        direction="normal"
-      />
-
-      <FloatingShape
-        color="bg-pink-500"
-        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-        top="50%"
-        left="50%"
-        delay={0}
-        shape="circle"
-        direction="reverse"
-      />
+    <div className="relative flex min-h-screen w-full items-center justify-center px-4 overflow-hidden bg-white dark:bg-black">
+      {/* Floating Shapes Container */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <FloatingShape
+          color="bg-yellow-500"
+          size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+          top="30%"
+          left="80%"
+          delay={1}
+          shape="triangle"
+          direction="reverse"
+        />
+        <FloatingShape
+          color="bg-green-500"
+          size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
+          top="-40%"
+          left="10%"
+          delay={0}
+          shape="circle"
+          direction="normal"
+        />
+        <FloatingShape
+          color="bg-emerald-500"
+          size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
+          top="-50%"
+          left="60%"
+          delay={0}
+          shape="rectangle"
+          direction="reverse"
+        />
+        <FloatingShape
+          color="bg-lime-500"
+          size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+          top="60%"
+          left="10%"
+          delay={0}
+          shape="square"
+          direction="normal"
+        />
+        <FloatingShape
+          color="bg-pink-500"
+          size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+          top="50%"
+          left="50%"
+          delay={0}
+          shape="circle"
+          direction="reverse"
+        />
+      </div>
 
       {/* Sign In Card */}
-      <Card className="w-full max-w-lg sm:max-w-xl md:max-w-2xl relative z-10 shadow-lg">
+      <Card className="w-full max-w-lg relative z-10 shadow-lg">
         <CardHeader>
           <CardTitle className="text-2xl sm:text-3xl font-bold text-center text-slate-900 dark:text-slate-100">
             Geome<span className="text-green-600">Triks</span>
