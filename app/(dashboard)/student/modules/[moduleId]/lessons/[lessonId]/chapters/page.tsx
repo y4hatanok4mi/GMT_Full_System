@@ -27,7 +27,9 @@ const LessonDiscussion = () => {
   useEffect(() => {
     const fetchChapters = async () => {
       try {
-        const { data } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getchapters`);
+        const { data } = await axios.get(
+          `/api/modules/${moduleId}/lessons/${lessonId}/getchapters`
+        );
         setChapters(data.chapters || []);
       } catch (error) {
         console.error("Error fetching chapters:", error);
@@ -38,7 +40,9 @@ const LessonDiscussion = () => {
 
     const fetchLessonName = async () => {
       try {
-        const { data } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getlesson`);
+        const { data } = await axios.get(
+          `/api/modules/${moduleId}/lessons/${lessonId}/getlesson`
+        );
         setLessonName(data?.lesson?.title || "Lesson Name Not Found");
       } catch (error) {
         console.error("Error fetching lesson name:", error);
@@ -100,14 +104,19 @@ const LessonDiscussion = () => {
 
         const currentAttempt = existingResult ? existingResult.attempt + 1 : 1;
 
-        await axios.post(`/api/modules/${moduleId}/lessons/${lessonId}/create-attempt`, {
-          studentId: userId,
-          lessonId,
-          score: 0,
-          attempt: currentAttempt,
-        });
+        await axios.post(
+          `/api/modules/${moduleId}/lessons/${lessonId}/create-attempt`,
+          {
+            studentId: userId,
+            lessonId,
+            score: 0,
+            attempt: currentAttempt,
+          }
+        );
 
-        router.push(`/student/modules/${moduleId}/lessons/${lessonId}/exercise`);
+        router.push(
+          `/student/modules/${moduleId}/lessons/${lessonId}/exercise`
+        );
       }
     } catch (error) {
       console.error("Error completing lesson:", error);
@@ -134,27 +143,37 @@ const LessonDiscussion = () => {
   }
 
   return (
-    <div className="h-screen flex flex-col">
+    <div className="min-h-screen w-full bg-slate-100 dark:bg-slate-900 text-black dark:text-white">
       <LessonTopBar params={{ moduleId, lessonId }} lessonName={lessonName} />
 
-      <div className="flex-grow overflow-y-auto pt-16 pb-20 w-full flex flex-col items-center">
-        <div className="mt-2 w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
-          <Progress value={progressPercentage} className="h-2 w-full" />
-        </div>
+      <div className="flex-grow pt-20 pb-28 px-4 sm:px-8">
+        <div className="mx-auto max-w-4xl">
+          {/* Progress Bar */}
+          <Progress value={progressPercentage} className="h-2 w-full mb-6" />
 
-        <div className="flex flex-col justify-center items-center p-2 sm:p-4 w-full sm:w-2/3">
-          <div className="text-lg sm:text-2xl text-gray-600 w-full sm:w-2/3">
-            <ReadText value={chapters[currentChapterIndex]?.description || "No description provided."} />
+          {/* ReadText Section */}
+          <div className="text-base sm:text-lg text-gray-700 dark:text-gray-200 mb-6">
+            <ReadText
+              value={
+                chapters[currentChapterIndex]?.description ||
+                "No description provided."
+              }
+            />
           </div>
 
+          {/* Video Section */}
           {chapters[currentChapterIndex]?.videoUrl && (
-            <div className="relative aspect-video mt-2 w-full max-w-2xl">
-              {chapters[currentChapterIndex]?.videoUrl.includes("youtube.com") ||
+            <div className="relative aspect-video mt-4 mb-6">
+              {chapters[currentChapterIndex]?.videoUrl.includes(
+                "youtube.com"
+              ) ||
               chapters[currentChapterIndex]?.videoUrl.includes("youtu.be") ? (
                 <iframe
                   className="w-full h-full rounded-md"
                   src={`https://www.youtube.com/embed/${
-                    new URL(chapters[currentChapterIndex]?.videoUrl).searchParams.get("v") ||
+                    new URL(
+                      chapters[currentChapterIndex]?.videoUrl
+                    ).searchParams.get("v") ||
                     chapters[currentChapterIndex]?.videoUrl.split("/").pop()
                   }`}
                   allowFullScreen
@@ -162,7 +181,7 @@ const LessonDiscussion = () => {
               ) : (
                 <video
                   controls
-                  className="object-cover rounded-md w-full h-96"
+                  className="object-cover rounded-md w-full h-auto max-h-[500px]"
                   src={chapters[currentChapterIndex]?.videoUrl + "?raw=true"}
                 >
                   Your browser does not support the video tag.
@@ -171,27 +190,35 @@ const LessonDiscussion = () => {
             </div>
           )}
 
+          {/* Image Section */}
           {chapters[currentChapterIndex]?.imageUrl && (
             <Image
-              width={400}
-              height={300}
+              width={800}
+              height={600}
               src={chapters[currentChapterIndex]?.imageUrl}
               alt={chapters[currentChapterIndex]?.title || "Chapter Image"}
-              className="w-full mt-4 rounded-lg"
+              className="w-full h-auto mt-4 rounded-md"
             />
           )}
         </div>
       </div>
 
-      <div className="p-4 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10">
+      {/* Bottom Controls */}
+      <div className="p-4 bg-slate-100 dark:bg-slate-800 shadow-lg fixed bottom-0 left-0 right-0 z-10">
         <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
-          <Button onClick={goToPreviousChapter} disabled={currentChapterIndex === 0}>
+          <Button
+            onClick={goToPreviousChapter}
+            disabled={currentChapterIndex === 0}
+          >
             Previous
           </Button>
           {currentChapterIndex === chapters.length - 1 ? (
             <Button onClick={completeChapters}>Take Exercise</Button>
           ) : (
-            <Button onClick={goToNextChapter} disabled={currentChapterIndex === chapters.length - 1}>
+            <Button
+              onClick={goToNextChapter}
+              disabled={currentChapterIndex === chapters.length - 1}
+            >
               Next
             </Button>
           )}

@@ -73,69 +73,69 @@ const CertificateForm: React.FC<CertificateProps> = ({
   };
 
   return (
-    <div className="flex flex-col justify-center">
-      {/* Container */}
-      <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
+    <div className="flex flex-col justify-center border dark:bg-slate-800 rounded-lg dark:border-slate-700 dark:text-white">
+      <div className="container mx-auto p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg">
         <h1 className="text-2xl font-bold text-center mb-6">
           Certificate of Completion
         </h1>
 
-        {/* View Certificate Button (Disabled if module not completed) */}
         <button
           onClick={() => setIsModalOpen(true)}
           disabled={!isModuleCompleted || loading}
           className={`w-full py-3 rounded-lg font-bold transition ${
             isModuleCompleted
               ? "bg-green-600 text-white hover:bg-green-700"
-              : "bg-gray-400 text-gray-200 cursor-not-allowed"
+              : "bg-gray-400 text-gray-200 cursor-not-allowed dark:bg-gray-700 dark:text-gray-400"
           }`}
         >
-          {loading ? "Checking Completion..." : "View Certificate"}
+          {loading ? (
+            <div className="flex items-center justify-center gap-2">
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <span>Checking Completion</span>
+            </div>
+          ) : (
+            "View Certificate"
+          )}
         </button>
 
-        {/* Modal */}
         {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[850px] h-[700px] relative flex flex-col items-center">
-              {/* Close Button */}
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-[850px] h-[700px] relative flex flex-col items-center">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="absolute top-2 right-4 text-gray-700 text-xl font-bold"
+                className="absolute top-2 right-4 text-gray-700 dark:text-gray-300 text-xl font-bold"
               >
                 ✕
               </button>
 
-              {/* Certificate */}
               <div
                 ref={certificateRef}
-                className="relative w-full h-full flex flex-col items-center justify-center p-6 border-4 border-gray-700"
+                className="relative w-full h-full flex flex-col items-center justify-center p-6 border-4 border-gray-700 dark:border-gray-200"
                 style={{
                   backgroundImage: "url('/Polygons.png')",
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                 }}
               >
-                {/* Certificate Number */}
-                <div className="absolute top-3 right-3 text-gray-900 text-lg font-bold">
+                <div className="absolute top-3 right-3 text-gray-900 dark:text-white text-lg font-bold">
                   {certificateNumber}
                 </div>
 
                 <div className="flex flex-col gap-20 absolute top-1/2 transform -translate-y-1/2 w-full justify-center items-center">
-                  <h2 className="text-xl font-semibold text-gray-900 mt-8">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8">
                     {userName}
                   </h2>
 
-                  <h2 className="text-xl font-semibold text-gray-900 mt-6 text-center">
+                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-6 text-center">
                     {moduleName}
                   </h2>
                 </div>
 
-                <p className="absolute bottom-14 text-lg text-gray-900 text-center w-full">
+                <p className="absolute bottom-14 text-lg text-gray-900 dark:text-white text-center w-full">
                   Awarded on {new Date().toLocaleDateString()}
                 </p>
               </div>
 
-              {/* Download Button */}
               <button
                 onClick={downloadPDF}
                 className="mt-4 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition w-full"

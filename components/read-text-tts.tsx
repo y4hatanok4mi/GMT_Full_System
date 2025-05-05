@@ -29,7 +29,11 @@ const ReadText = ({ value }: ReadTextProps) => {
 
     setLoading(true);
     try {
-      const response = await axios.post("/api/tts", { text: plainText }, { responseType: "blob" });
+      const response = await axios.post(
+        "/api/tts",
+        { text: plainText },
+        { responseType: "blob" }
+      );
       const audioURL = URL.createObjectURL(response.data);
       setAudioSrc(audioURL);
     } catch (error) {
@@ -39,11 +43,22 @@ const ReadText = ({ value }: ReadTextProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      <ReactQuill value={value} readOnly theme="bubble" />
+    <div className="flex flex-col items-center gap-4 dark:bg-slate-900 dark:text-white p-4 rounded-md">
+      <div className="w-full text-left whitespace-pre-wrap">
+        {extractPlainText(value)}
+      </div>
+
       <div className="flex flex-row gap-2 items-center">
-        <Button onClick={generateSpeech} disabled={loading} className="rounded-full">
-          {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Volume2 className="h-5 w-5" />}
+        <Button
+          onClick={generateSpeech}
+          disabled={loading}
+          className="rounded-full dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-white"
+        >
+          {loading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <Volume2 className="h-5 w-5" />
+          )}
         </Button>
         {audioSrc && <audio controls src={audioSrc} />}
       </div>

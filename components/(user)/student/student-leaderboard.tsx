@@ -7,12 +7,25 @@ export const StudentLeaderboard = async () => {
   const topStudents = await prisma.user.findMany({
     where: {
       role: "student",
+      points: {
+        gt: 0,
+      },
     },
     select: {
       name: true,
       points: true,
     },
+    orderBy: {
+      points: "desc",
+    },
+    take: 3,
   });
+
+  const trophyColors = [
+    "text-yellow-500", // Gold for 1st
+    "text-gray-400",   // Silver for 2nd
+    "text-orange-600", // Bronze for 3rd
+  ];
 
   return (
     <div className="border dark:border-gray-700 rounded-lg p-4 bg-white dark:bg-gray-800">
@@ -30,9 +43,9 @@ export const StudentLeaderboard = async () => {
           {topStudents.map((student, index) => (
             <div key={index}>
               <li className="flex items-center gap-4 text-sm text-gray-800 dark:text-gray-200">
-                <Trophy className="text-gray-700 dark:text-yellow-400" />
-                <span className="flex-1">{student.name}</span>
-                <span>{student.points} points</span>
+                <Trophy className={trophyColors[index]} />
+                <span className="flex-1 font-medium">{student.name}</span>
+                <span>{student.points} pts</span>
               </li>
               {index < topStudents.length - 1 && (
                 <Separator className="my-2 dark:bg-gray-600" />
