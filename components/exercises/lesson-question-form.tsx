@@ -23,6 +23,7 @@ import { Option } from "@prisma/client";
 import { QuestionType } from "@/types/question"; // Import from types folder
 import Image from "next/image";
 import FileUpload from "../file-upload";
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 
 interface QuestionFormProps {
   initialData: {
@@ -60,6 +61,7 @@ export const QuestionForm = ({
     image: string | null;
     createdAt: Date;
     updatedAt: Date;
+    isPublished: boolean;
     correctAnswer: string;
     type: QuestionType;
     options: Option[];
@@ -70,6 +72,7 @@ export const QuestionForm = ({
     image: initialData.image || null,
     createdAt: new Date(),
     updatedAt: new Date(),
+    isPublished: false,
     correctAnswer: "",
     type: "MULTIPLE_CHOICE" as QuestionType,
     options: [] as Option[],
@@ -102,6 +105,7 @@ export const QuestionForm = ({
           image: data.image || "",
           createdAt: data.createdAt ? new Date(data.createdAt) : new Date(),
           updatedAt: data.updatedAt ? new Date(data.updatedAt) : new Date(),
+          isPublished: data.isPublished || false,
           correctAnswer: data.correctAnswer || "",
           type: (data.type as QuestionType) || "MULTIPLE_CHOICE",
           options: data.options || [],
