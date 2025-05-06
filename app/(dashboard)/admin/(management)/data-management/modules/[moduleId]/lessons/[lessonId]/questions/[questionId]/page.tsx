@@ -16,6 +16,7 @@ import IconCircle from "@/components/icon-bg";
 import { QuestionForm } from "@/components/exercises/lesson-question-form";
 import QuestionPublishButton from "@/components/question-publish-button";
 import QuestionDelete from "@/components/question-delete";
+import { QuestionType } from "@prisma/client";
 
 const QuestionPage = async ({
   params,
@@ -41,14 +42,31 @@ const QuestionPage = async ({
     notFound();
   }
 
-  const question = await prisma.question.findUnique({
+  const question = (await prisma.question.findUnique({
     where: {
       id: questionId,
     },
     include: {
       options: true,
     },
-  });
+  })) as {
+    question: string;
+    id: string;
+    image: string | null;
+    createdAt: Date;
+    updatedAt: Date;
+    type: QuestionType;
+    lessonId: string;
+    correctAnswer: string | null;
+    isPublished: boolean;
+    options: {
+      id: string;
+      createdAt: Date;
+      updatedAt: Date;
+      questionId: string;
+      text: string;
+    }[];
+  };
 
   if (!question) {
     notFound();
