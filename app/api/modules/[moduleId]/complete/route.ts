@@ -2,7 +2,10 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextRequest, { params }: { params: { moduleId: string } }) => {
+export const POST = async (
+  req: NextRequest,
+  { params }: { params: { moduleId: string } }
+) => {
   try {
     const { moduleId } = params;
     const user = await auth();
@@ -12,32 +15,35 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
     }
 
-    // Count total number of lessons in this module
-    const totalLessons = await prisma.lesson.count({
-      where: { 
-        moduleId,
-        isPublished: true
-      },
+    // ✅ Fetch all published lesson IDs in the module
+    const publishedLessons = await prisma.lesson.findMany({
+      where: { moduleId, isPublished: true },
+      select: { id: true },
     });
+    const publishedLessonIds = publishedLessons.map((l) => l.id);
 
-    console.log("Total lessons in module:", totalLessons);
-
-    // Count completed lessons for the user in this module
-    const completedLessons = await prisma.lessonProgress.count({
+    // ✅ Fetch all completed lesson IDs for this user
+    const completedLessonProgress = await prisma.lessonProgress.findMany({
       where: {
         userId: Number(userId),
         isCompleted: true,
-        lesson: {
-          moduleId,
-        },
+        lessonId: { in: publishedLessonIds },
       },
+      select: { lessonId: true },
     });
+    const completedLessonIds = completedLessonProgress.map((lp) => lp.lessonId);
 
-    console.log("Completed lessons for user:", completedLessons);
+    // ✅ Compare lesson IDs
+    const allCompleted = publishedLessonIds.every((id) =>
+      completedLessonIds.includes(id)
+    );
 
-    // Check if all lessons in the module are completed
-    if (completedLessons === totalLessons && totalLessons > 0) {
-      // Check if the module is already marked completed
+    console.log("Total lessons:", publishedLessonIds.length);
+    console.log("Completed lessons:", completedLessonIds.length);
+    console.log("All completed:", allCompleted);
+
+    if (publishedLessonIds.length > 0 && allCompleted) {
+      // ✅ Check if already marked completed
       const existingCompletedModule = await prisma.completedModule.findUnique({
         where: {
           userId_moduleId: {
@@ -48,28 +54,39 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       });
 
       if (!existingCompletedModule) {
-        // Insert a record into CompletedModule
+        // ✅ Mark module as completed
         await prisma.completedModule.create({
-          data: { 
-            userId: Number(userId), 
-            moduleId 
+          data: {
+            userId: Number(userId),
+            moduleId,
           },
         });
 
-        return NextResponse.json({ message: "Module marked as completed for this user." }, { status: 200 });
-      } 
+        return NextResponse.json(
+          { message: "Module marked as completed for this user." },
+          { status: 200 }
+        );
+      } else {
+        return NextResponse.json(
+          { message: "Module already marked as completed." },
+          { status: 200 }
+        );
+      }
     }
 
     return NextResponse.json(
       {
-        error: "Not all lessons in the module are completed.",
-        completedLessons,
-        totalLessons,
+        message: "Not all lessons in the module are completed.",
+        completedLessonCount: completedLessonIds.length,
+        totalLessons: publishedLessonIds.length,
       },
       { status: 400 }
     );
   } catch (error) {
     console.error("Error marking module as complete:", error);
-    return NextResponse.json({ error: "Failed to mark module as complete" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Failed to mark module as complete" },
+      { status: 500 }
+    );
   }
 };

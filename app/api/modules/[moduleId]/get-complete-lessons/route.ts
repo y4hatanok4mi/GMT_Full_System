@@ -5,15 +5,10 @@ import { auth } from "@/auth"; // Ensure authentication
 export async function GET(req: Request, { params }: { params: { moduleId: string } }) {
   try {
     const user = await auth();
-    const userIdString = user?.user.id;
+    const userId = user?.user.id;
 
-    if (!userIdString) {
+    if (!userId) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
-    const userId = parseInt(userIdString);
-    if (isNaN(userId)) {
-      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
     const { moduleId } = params;
@@ -28,8 +23,12 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
         id: true,
         isPublished: true,
         progress: {
-          where: { userId },
-          select: { isCompleted: true },
+          where: { 
+            userId: Number(userId), 
+          },
+          select: { 
+            isCompleted: true 
+          },
         },
       },
     });

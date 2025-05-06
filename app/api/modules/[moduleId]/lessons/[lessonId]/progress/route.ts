@@ -9,7 +9,6 @@ export const POST = async (
   try {
     const user = await auth();
     const userId = Number(user?.user.id);
-    const { isCompleted } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
