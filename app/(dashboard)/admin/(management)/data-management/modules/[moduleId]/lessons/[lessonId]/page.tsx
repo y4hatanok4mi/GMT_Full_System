@@ -24,7 +24,7 @@ import RequiredFieldStatus from "@/components/required-field";
 const LessonsPage = async ({
   params,
 }: {
-  params: { moduleId: string; lessonId: string; exerciseId: string };
+  params: { moduleId: string; lessonId: string; };
 }) => {
   const { moduleId, lessonId } = params;
 

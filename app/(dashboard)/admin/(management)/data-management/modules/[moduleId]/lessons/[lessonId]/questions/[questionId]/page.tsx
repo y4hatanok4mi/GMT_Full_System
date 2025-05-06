@@ -44,15 +44,7 @@ const QuestionPage = async ({
   const question = await prisma.question.findUnique({
     where: {
       id: questionId,
-    },
-    include: {
-      options: true,
-      lesson: {
-        include: {
-          module: true,
-        },
-      },
-    },
+    }
   });
 
   if (!question) {
@@ -116,7 +108,7 @@ const QuestionPage = async ({
                 moduleId={moduleId}
                 questionId={questionId}
                 page="Question"
-                isPublished={question.isPublished}
+                isPublished={question?.isPublished}
               />
               <QuestionDelete
                 lessonId={lessonId}
