@@ -13,13 +13,11 @@ import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 import { NotebookPen } from "lucide-react";
 import IconCircle from "@/components/icon-bg";
-import { QuestionsForm } from "@/components/lessons/questions-form";
 import { QuestionForm } from "@/components/exercises/lesson-question-form";
 import QuestionPublishButton from "@/components/question-publish-button";
-import LessonDelete from "@/components/question-delete";
 import QuestionDelete from "@/components/question-delete";
 
-const ExercisePage = async ({
+const QuestionPage = async ({
   params,
 }: {
   params: { moduleId: string; lessonId: string; questionId: string };
@@ -49,6 +47,11 @@ const ExercisePage = async ({
     },
     include: {
       options: true,
+      lesson: {
+        include: {
+          module: true,
+        },
+      },
     },
   });
 
@@ -148,4 +151,4 @@ const ExercisePage = async ({
   );
 };
 
-export default ExercisePage;
+export default QuestionPage;
