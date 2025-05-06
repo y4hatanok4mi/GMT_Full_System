@@ -21,3 +21,25 @@ export async function PATCH(req: NextRequest, { params }: { params: { moduleId: 
     return NextResponse.json({ error: "Failed to update option." }, { status: 500 });
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { moduleId: string; lessonId: string; questionId: string; optionId: string } }
+) {
+  try {
+    const { optionId } = params;
+
+    if (!optionId) {
+      return NextResponse.json({ error: "Option ID is required." }, { status: 400 });
+    }
+
+    await prisma.option.delete({
+      where: { id: optionId },
+    });
+
+    return NextResponse.json({ message: "Option deleted successfully." }, { status: 200 });
+  } catch (error) {
+    console.error("Error deleting option:", error);
+    return NextResponse.json({ error: "Failed to delete option." }, { status: 500 });
+  }
+}

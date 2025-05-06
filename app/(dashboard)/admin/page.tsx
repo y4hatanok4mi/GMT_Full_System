@@ -29,7 +29,7 @@ export default async function AdminPage() {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbPage>Analytics</BreadcrumbPage>
+                  <BreadcrumbPage>Dashboard</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbItem className="hidden md:block"></BreadcrumbItem>
               </BreadcrumbList>

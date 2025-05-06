@@ -99,7 +99,7 @@ const LessonDiscussion = () => {
 
       if (currentChapterIndex === chapters.length - 1) {
         const { data: existingResult } = await axios.get(
-          `/api/modules/${moduleId}/lessons/${lessonId}/get-exercise-result`
+          `/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`
         );
 
         const currentAttempt = existingResult ? existingResult.attempt + 1 : 1;

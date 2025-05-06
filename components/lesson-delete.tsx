@@ -18,13 +18,12 @@ import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 
 interface LessonDeleteProps {
-  item: string;
   lessonId: string;
   moduleId: string;
   chapterId: string;
 }
 
-const LessonDelete = ({ item, lessonId, moduleId, chapterId }: LessonDeleteProps) => {
+const LessonDelete = ({ lessonId, moduleId, chapterId }: LessonDeleteProps) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -32,10 +31,7 @@ const LessonDelete = ({ item, lessonId, moduleId, chapterId }: LessonDeleteProps
     try {
       setIsDeleting(true);
 
-      const url =
-        item === "lesson"
-          ? `/api/modules/${moduleId}/lessons/${lessonId}`
-          : `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`;
+      const url =`/api/modules/${moduleId}/lessons/${lessonId}`;
 
       const response = await fetch(url, {
         method: 'DELETE',
@@ -45,17 +41,14 @@ const LessonDelete = ({ item, lessonId, moduleId, chapterId }: LessonDeleteProps
         throw new Error('Failed to delete');
       }
 
-      const pushedUrl =
-        item === "lesson"
-          ? `/admin/data-management/modules/${moduleId}/lessons/${lessonId}`
-          : `/admin/data-management/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`;
+      const pushedUrl =`/admin/data-management/modules/${moduleId}/lessons/${lessonId}`;
 
       router.push(pushedUrl);
       router.refresh();
-      toast.success(`${item} deleted successfully`);
+      toast.success(`Lesson deleted successfully`);
     } catch (err) {
       toast.error(`Something went wrong!`);
-      console.log(`Failed to delete the ${item}`, err);
+      console.log(`Failed to delete the lesson`, err);
     } finally {
       setIsDeleting(false);
     }
@@ -78,13 +71,13 @@ const LessonDelete = ({ item, lessonId, moduleId, chapterId }: LessonDeleteProps
             Are you absolutely sure?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your {item}
+            This action cannot be undone. This will permanently delete the lesson and remove it from the list of lessons.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-[#FDAB04]"
+            className="bg-red-500 hover:bg-red-600 text-white"
             onClick={onDelete}
             disabled={isDeleting}
           >

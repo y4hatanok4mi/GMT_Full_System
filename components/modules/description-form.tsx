@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import * as z from "zod";
 import axios from "axios";
@@ -57,7 +57,7 @@ export const DescriptionForm = ({
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             await axios.patch(`/api/modules/${moduleId}`, values);
-            toast.success("Module updated!")
+            toast.success("Module updated!");
             toggleEdit();
             router.refresh();
         } catch {
@@ -66,8 +66,8 @@ export const DescriptionForm = ({
     }
 
     return (
-        <div className="mt-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
+        <div className="border bg-slate-100 dark:bg-slate-800 rounded-md p-4">
+            <div className="font-medium flex items-center justify-between text-slate-700 dark:text-white">
                 Module Description
                 <Button onClick={toggleEdit} variant={"ghost"}>
                     {isEditing ? (
@@ -81,7 +81,7 @@ export const DescriptionForm = ({
                 </Button>
             </div>
             {!isEditing && (
-                <div className={cn("text-sm mt-2", !initialData.description && "text-slate-500 italic")}>
+                <div className={cn("text-sm mt-2 text-slate-600 dark:text-slate-300", !initialData.description && "text-slate-500 italic")}>
                     {initialData.description ? (
                         <ReadText value={initialData.description} />
                     ) : (

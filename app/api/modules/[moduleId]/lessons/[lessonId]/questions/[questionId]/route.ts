@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
 
+// Fetch the correct answer for a question (GET method)
 export async function GET(
   request: Request,
   { params }: { params: { questionId: string } }
@@ -24,31 +25,60 @@ export async function GET(
   }
 }
 
+// Update the question (PATCH method)
 export async function PATCH(
   req: Request,
-  { params } : { params: { questionId: string }}
+  { params }: { params: { questionId: string } }
 ) {
   try {
-      const user = await auth();
-      const { questionId } = params;
-      const values = await req.json();
+    const user = await auth();
+    const { questionId } = params;
+    const values = await req.json();
 
-      if(!user?.user.id) {
-          return new NextResponse("Unautorized", { status: 401 });
-      }
+    if (!user?.user.id) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
 
-      const question = await prisma.question.update({
-          where: {
-              id: questionId,
-          },
-          data: {
-              ...values,
-          }
-      });
+    const question = await prisma.question.update({
+      where: {
+        id: questionId,
+      },
+      data: {
+        ...values,
+      },
+    });
 
-      return NextResponse.json(question); 
+    return NextResponse.json(question);
   } catch (error) {
-      console.log("QUESTION_ID", error);
-      return new NextResponse("Internal Error", { status: 500 })
+    console.log("QUESTION_ID", error);
+    return new NextResponse("Internal Error", { status: 500 });
+  }
+}
+
+// Delete the question (DELETE method)
+export async function DELETE(
+  req: Request,
+  { params }: { params: { questionId: string } }
+) {
+  try {
+    const user = await auth();
+    const { questionId } = params;
+
+    // Ensure the user is authorized to delete the question
+    if (!user?.user.id) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    // Delete the question from the database
+    const question = await prisma.question.delete({
+      where: {
+        id: questionId,
+      },
+    });
+
+    return NextResponse.json({ message: "Question deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting question:", error);
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

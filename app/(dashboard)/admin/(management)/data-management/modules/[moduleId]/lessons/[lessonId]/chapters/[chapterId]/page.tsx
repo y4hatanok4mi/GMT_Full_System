@@ -19,6 +19,7 @@ import { ChapterDiscussionForm } from "@/components/chapters/discussion-form";
 import LessonDelete from "@/components/lesson-delete";
 import PublishButton from "@/components/chapter-publish-button";
 import { ChapterCategoryForm } from "@/components/lessons/category-form";
+import ChapterDelete from "@/components/chapter-delete";
 
 const ChaptersPage = async ({
   params,
@@ -117,8 +118,7 @@ const ChaptersPage = async ({
                   isPublished={chapter.isPublished}
                   page="Chapter"
                 />
-                <LessonDelete
-                  item="lesson"
+                <ChapterDelete
                   chapterId={chapter.id}
                   lessonId={lessonId}
                   moduleId={moduleId}

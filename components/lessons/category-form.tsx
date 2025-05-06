@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import * as z from "zod";
 import axios from "axios";
@@ -6,11 +6,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 import {
-    Form,
-    FormControl,
-    FormField,
-    FormItem,
-    FormMessage
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
@@ -21,109 +21,113 @@ import { cn } from "@/lib/utils";
 import { Chapter } from "@prisma/client";
 import { Combobox } from "../combo-box";
 
-
 interface ChapterCategoryFormProps {
-    initialData: Chapter;
-    chapterId: string;
-    lessonId: string;
-    moduleId: string;
-    options: { label: string; value: string; }[];
-};
+  initialData: Chapter;
+  chapterId: string;
+  lessonId: string;
+  moduleId: string;
+  options: { label: string; value: string }[];
+}
 
 const formSchema = z.object({
-    categoryId: z.string().min(1),
+  categoryId: z.string().min(1),
 });
 
 export const ChapterCategoryForm = ({
-    initialData,
-    chapterId,
-    moduleId,
-    lessonId,
-    options
+  initialData,
+  chapterId,
+  moduleId,
+  lessonId,
+  options,
 }: ChapterCategoryFormProps) => {
-    const router = useRouter();
-    const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
-    const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = () => setIsEditing((current) => !current);
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            categoryId: initialData?.categoryId || "",
-        }
-    });
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      categoryId: initialData?.categoryId || "",
+    },
+  });
 
-    const { isSubmitting, isValid } = form.formState;
+  const { isSubmitting, isValid } = form.formState;
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            await axios.patch(`/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`, values);
-            toast.success("Lesson updated!")
-            toggleEdit();
-            router.refresh();
-        } catch {
-            toast.error("Something went wrong!");
-        }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await axios.patch(
+        `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`,
+        values
+      );
+      toast.success("Lesson updated!");
+      toggleEdit();
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong!");
     }
+  };
 
-    const selectedOption = options.find((option) => option.value === initialData.categoryId)
+  const selectedOption = options.find(
+    (option) => option.value === initialData.categoryId
+  );
 
-    return (
-        <div className="my-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
-                Chapter Category
-                <Button onClick={toggleEdit} variant={"ghost"}>
-                    {isEditing ? (
-                        <>Cancel</>
-                    ) : (
-                        <>
-                            <Pencil className="h-4 w-4 mr-2" />
-                            Edit
-                        </>
-                    )}
-                </Button>
+  return (
+    <div className="my-6 border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
+      <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
+        Chapter Category
+        <Button onClick={toggleEdit} variant={"ghost"} className="text-slate-700 dark:text-white">
+          {isEditing ? (
+            <>Cancel</>
+          ) : (
+            <>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit
+            </>
+          )}
+        </Button>
+      </div>
+      {!isEditing && (
+        <p
+          className={cn(
+            "text-sm mt-2 text-slate-700 dark:text-slate-300",
+            !initialData.categoryId && "text-slate-500 italic dark:text-slate-400"
+          )}
+        >
+          {selectedOption?.label || "No category"}
+        </p>
+      )}
+      {isEditing && (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4">
+            <FormField
+              control={form.control}
+              name="categoryId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Combobox
+                      options={options}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex items-center gap-x-2">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+                className="dark:bg-slate-700 dark:text-white"
+              >
+                Save
+              </Button>
             </div>
-            {!isEditing && (
-                <p className={cn("text-sm mt-2", !initialData.categoryId && "text-slate-500 italic")}>
-                    {selectedOption?.label ||
-                        "No category"
-                    }
-                </p>
-            )}
-            {isEditing && (
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-4 mt-4"
-                    >
-                        <FormField
-                            control={form.control}
-                            name="categoryId"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <Combobox
-                                            options={options}
-                                            value={field.value}
-                                            onChange={field.onChange}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-
-                        <div className="flex items-center gap-x-2">
-                            <Button
-                                disabled={!isValid || isSubmitting}
-                                type="submit"
-                            >
-                                Save
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-            )}
-        </div>
-    )
-}
+          </form>
+        </Form>
+      )}
+    </div>
+  );
+};

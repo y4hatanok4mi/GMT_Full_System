@@ -62,8 +62,18 @@ export const POST = async (
           },
         });
 
+        // ✅ Add 50 points to the user for completing the module
+        await prisma.user.update({
+          where: { id: Number(userId) },
+          data: {
+            points: {
+              increment: 50, // Add 50 points
+            },
+          },
+        });
+
         return NextResponse.json(
-          { message: "Module marked as completed for this user." },
+          { message: "Module marked as completed and 50 points awarded." },
           { status: 200 }
         );
       } else {

@@ -12,7 +12,6 @@ import { Module } from "@prisma/client";
 import Image from "next/image";
 import FileUpload from "../file-upload";
 
-
 interface ImageFormProps {
     initialData: Module;
     moduleId: string;
@@ -45,8 +44,8 @@ export const ImageForm = ({
     }
 
     return (
-        <div className="mt-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
+        <div className="border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
+            <div className="font-medium flex items-center justify-between text-slate-700 dark:text-slate-200">
                 Module Image
                 <Button onClick={toggleEdit} variant={"ghost"}>
                     {isEditing && (
@@ -54,13 +53,13 @@ export const ImageForm = ({
                     )}
                     {!isEditing && !initialData.imageUrl && (
                         <>
-                        <PlusCircle className="h-4 w-4 mr-2"/>
-                        Add an image
+                            <PlusCircle className="h-4 w-4 mr-2" />
+                            Add an image
                         </>
                     )}
                     {!isEditing && initialData.imageUrl && (
                         <>
-                        <Pencil className="h-4 w-4 mr-2" />
+                            <Pencil className="h-4 w-4 mr-2" />
                             Edit
                         </>
                     )}
@@ -68,16 +67,16 @@ export const ImageForm = ({
             </div>
             {!isEditing && (
                 !initialData.imageUrl ? (
-                    <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-                        <ImageIcon className="h-10 w-10 text-slate-500"/>
+                    <div className="flex items-center justify-center h-60 bg-slate-200 dark:bg-slate-700 rounded-md">
+                        <ImageIcon className="h-10 w-10 text-slate-500 dark:text-slate-400" />
                     </div>
                 ) : (
                     <div className="relative aspect-video mt-2">
                         <Image
-                        alt="Upload"
-                        fill
-                        className="object-cover rounded-md"
-                        src={initialData.imageUrl}
+                            alt="Upload"
+                            fill
+                            className="object-cover rounded-md"
+                            src={initialData.imageUrl}
                         />
                     </div>
                 )

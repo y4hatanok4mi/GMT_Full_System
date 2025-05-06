@@ -35,14 +35,11 @@ const QuestionPublishButton = ({
 
     try {
       setIsLoading(true);
-      const response = await fetch(isPublished ? `${url}/unpublish` : `${url}/publish`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        isPublished ? `${url}/unpublish` : `${url}/publish`
+      );
 
-      if (!response.ok) {
+      if (response.status !== 200) {
         throw new Error(`Failed to ${isPublished ? "unpublish" : "publish"} ${page}`);
       }
 

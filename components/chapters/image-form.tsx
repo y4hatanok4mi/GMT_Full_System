@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import * as z from "zod";
 import axios from "axios";
@@ -12,113 +12,117 @@ import { Chapter } from "@prisma/client";
 import Image from "next/image";
 import FileUpload from "../file-upload";
 
-
 interface ChapterImageFormProps {
-    initialData: Chapter;
-    chapterId: string;
-    lessonId: string;
-    moduleId: string;
-};
+  initialData: Chapter;
+  chapterId: string;
+  lessonId: string;
+  moduleId: string;
+}
 
 const formSchema = z.object({
-    imageUrl: z.string().min(1)
+  imageUrl: z.string().min(1),
 });
 
 export const ChapterImageForm = ({
-    initialData,
-    chapterId,
-    lessonId,
-    moduleId
+  initialData,
+  chapterId,
+  lessonId,
+  moduleId,
 }: ChapterImageFormProps) => {
-    const router = useRouter();
-    const [isEditing, setIsEditing] = useState(false);
+  const router = useRouter();
+  const [isEditing, setIsEditing] = useState(false);
 
-    const toggleEdit = () => setIsEditing((current) => !current);
+  const toggleEdit = () => setIsEditing((current) => !current);
 
-    const onSubmit = async (values: z.infer<typeof formSchema>) => {
-        try {
-            await axios.patch(`/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`, values);
-            toast.success("Chapter updated!")
-            toggleEdit();
-            router.refresh();
-        } catch {
-            toast.error("Something went wrong!");
-        }
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      await axios.patch(
+        `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`,
+        values
+      );
+      toast.success("Chapter updated!");
+      toggleEdit();
+      router.refresh();
+    } catch {
+      toast.error("Something went wrong!");
     }
+  };
 
-    return (
-        <div className="mt-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
-                Chapter Image (optional)
-                <div className="flex gap-2">
-                    <Button onClick={toggleEdit} variant={"ghost"}>
-                        {isEditing && <>Cancel</>}
-                        {!isEditing && !initialData.imageUrl && (
-                            <>
-                                <PlusCircle className="h-4 w-4 mr-2" />
-                                Add an image
-                            </>
-                        )}
-                        {!isEditing && initialData.imageUrl && (
-                            <>
-                                <Pencil className="h-4 w-4 mr-2" />
-                                Edit
-                            </>
-                        )}
-                    </Button>
-                    {initialData.imageUrl && !isEditing && (
-                        <Button
-                            onClick={async () => {
-                                try {
-                                    await axios.patch(
-                                        `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`,
-                                        { imageUrl: null }
-                                    );
-                                    toast.success("Image deleted!");
-                                    router.refresh();
-                                } catch {
-                                    toast.error("Failed to delete the image!");
-                                }
-                            }}
-                            variant="ghost"
-                        >
-                            <Trash className="h-4 w-4 mr-2 text-red-500" />
-                            Delete
-                        </Button>
-                    )}
-                </div>
-            </div>
-            {!isEditing && (
-                !initialData.imageUrl ? (
-                    <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-                        <ImageIcon className="h-10 w-10 text-slate-500" />
-                    </div>
-                ) : (
-                    <div className="relative aspect-video mt-2">
-                        <Image
-                            alt="Upload"
-                            fill
-                            className="object-cover rounded-md"
-                            src={initialData.imageUrl}
-                        />
-                    </div>
-                )
+  return (
+    <div className="mt-6 border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
+      <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
+        Chapter Image (optional)
+        <div className="flex gap-2">
+          <Button onClick={toggleEdit} variant={"ghost"} className="text-slate-700 dark:text-white">
+            {isEditing && <>Cancel</>}
+            {!isEditing && !initialData.imageUrl && (
+              <>
+                <PlusCircle className="h-4 w-4 mr-2" />
+                Add an image
+              </>
             )}
-            {isEditing && (
-                <div>
-                    <FileUpload
-                        endpoint="chapterImage"
-                        onChange={(url) => {
-                            if (url) {
-                                onSubmit({ imageUrl: url })
-                            }
-                        }}
-                    />
-                    <div className="text-xs text-muted-foreground mt-4">
-                        16:9 aspect ratio recommended
-                    </div>
-                </div>
+            {!isEditing && initialData.imageUrl && (
+              <>
+                <Pencil className="h-4 w-4 mr-2" />
+                Edit
+              </>
             )}
+          </Button>
+          {initialData.imageUrl && !isEditing && (
+            <Button
+              onClick={async () => {
+                try {
+                  await axios.patch(
+                    `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`,
+                    { imageUrl: null }
+                  );
+                  toast.success("Image deleted!");
+                  router.refresh();
+                } catch {
+                  toast.error("Failed to delete the image!");
+                }
+              }}
+              variant="ghost"
+              className="text-red-600"
+            >
+              <Trash className="h-4 w-4 mr-2" />
+              Delete
+            </Button>
+          )}
         </div>
-    )
-}
+      </div>
+
+      {!isEditing &&
+        (!initialData.imageUrl ? (
+          <div className="flex items-center justify-center h-60 bg-slate-200 dark:bg-slate-700 rounded-md">
+            <ImageIcon className="h-10 w-10 text-slate-500 dark:text-slate-400" />
+          </div>
+        ) : (
+          <div className="relative aspect-video mt-2">
+            <Image
+              alt="Upload"
+              fill
+              className="object-cover rounded-md"
+              src={initialData.imageUrl}
+            />
+          </div>
+        ))}
+
+      {isEditing && (
+        <div>
+          <FileUpload
+            endpoint="chapterImage"
+            onChange={(url) => {
+              if (url) {
+                onSubmit({ imageUrl: url });
+              }
+            }}
+          />
+          <div className="text-xs text-muted-foreground mt-4 dark:text-slate-400">
+            16:9 aspect ratio recommended
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};

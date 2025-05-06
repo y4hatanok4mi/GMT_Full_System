@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -17,14 +17,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 
-interface LessonDeleteProps {
-  item: string;
+interface ChapterDeleteProps {
   lessonId: string;
   moduleId: string;
-  exerciseId: string;
+  chapterId: string;
 }
 
-const LessonDelete = ({ item, lessonId, moduleId, exerciseId }: LessonDeleteProps) => {
+const ChapterDelete = ({ lessonId, moduleId, chapterId }: ChapterDeleteProps) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -32,30 +31,24 @@ const LessonDelete = ({ item, lessonId, moduleId, exerciseId }: LessonDeleteProp
     try {
       setIsDeleting(true);
 
-      const url =
-        item === "lesson"
-          ? `/api/modules/${moduleId}/lessons/${lessonId}`
-          : `/api/modules/${moduleId}/lessons/${lessonId}/exercises/${exerciseId}`;
+      const url = `/api/modules/${moduleId}/lessons/${lessonId}/chapters/${chapterId}`;
 
       const response = await fetch(url, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete');
+        throw new Error("Failed to delete");
       }
 
-      const pushedUrl =
-        item === "lesson"
-          ? `/admin/data-management/modules/${moduleId}/lessons/${lessonId}`
-          : `/admin/data-management/modules/${moduleId}/lessons/${lessonId}/exercises/${exerciseId}`;
+      const pushedUrl = `/admin/data-management/modules/${moduleId}/lessons/${lessonId}`;
 
       router.push(pushedUrl);
       router.refresh();
-      toast.success(`${item} deleted successfully`);
+      toast.success(`Chapter deleted successfully`);
     } catch (err) {
       toast.error(`Something went wrong!`);
-      console.log(`Failed to delete the ${item}`, err);
+      console.log(`Failed to delete the chapter`, err);
     } finally {
       setIsDeleting(false);
     }
@@ -74,17 +67,15 @@ const LessonDelete = ({ item, lessonId, moduleId, exerciseId }: LessonDeleteProp
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle className="text-red-500">
-            Are you absolutely sure?
-          </AlertDialogTitle>
+          <AlertDialogTitle className="text-red-500">Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your {item}
+            This action cannot be undone. This will permanently delete the chapter and remove it from the list of chapters.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-[#FDAB04]"
+            className="bg-red-500 text-white hover:bg-red-600 focus:ring-red-500"
             onClick={onDelete}
             disabled={isDeleting}
           >
@@ -96,4 +87,4 @@ const LessonDelete = ({ item, lessonId, moduleId, exerciseId }: LessonDeleteProp
   );
 };
 
-export default LessonDelete;
+export default ChapterDelete;

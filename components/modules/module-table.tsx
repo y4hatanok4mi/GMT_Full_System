@@ -85,29 +85,21 @@ export function ModuleDataTable() {
       accessorKey: "isPublished",
       header: "Published",
       cell: ({ row }) => <div>{row.getValue("isPublished") ? "Yes" : "No"}</div>,
-    },
-    {
-        accessorKey: "actions",
+    },  {
+        id: "actions",
         header: "Actions",
-        enableHiding: false,
-        cell: ({ row }) => {
-          return (
-            <>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="h-8 w-8 p-0">
-                    <span className="sr-only">Open menu</span>
-                    <DotsHorizontalIcon className="h-4 w-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem onClick={() => handleViewReport(row.original.id)}>View Report</DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </>
-          );
-        },
-      }      
+        cell: ({ row }) => (
+          <Button
+            variant="outline"
+            className="text-xs bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700"
+            onClick={() =>
+              (window.location.href = `/admin/reports/modules-report/${row.original.id}`)
+            }
+          >
+            View Reports
+          </Button>
+        ),
+      },  
   ];
 
   const table = useReactTable({
@@ -133,7 +125,7 @@ export function ModuleDataTable() {
           className="max-w-sm"
         />
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-slate-100 dark:bg-slate-800 border-slate-200 dark:border-slate-700 shadow-sm">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

@@ -29,7 +29,7 @@ const formSchema = z.object({
   }),
 });
 
-const CreateCourseForm = () => {
+const CreateModuleForm = () => {
   const router = useRouter();
 
   // 1. Define your form.
@@ -46,11 +46,14 @@ const CreateCourseForm = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios.post("/api/modules", values);
-      router.refresh();
-      router.push(`/admin/data-management/modules`);
-      toast.success("New Module Created");
+      const moduleId = response.data.data.id; // assuming the response contains the created module's id
+
+      // Redirect to the module detail page
+      router.push(`/admin/data-management/modules/${moduleId}`);
+
+      toast.success("New Module Created!");
     } catch (err) {
-      console.log("Failed to create new course", err);
+      console.log("Failed to create new module", err);
       toast.error("Something went wrong!");
     }
   };
@@ -75,7 +78,7 @@ const CreateCourseForm = () => {
           Let give some basics for your module
         </h1>
         <p className="text-sm mt-3">
-          It is ok if you cannot think of a good title now.
+          It is ok if you can&apos;t think of a good title now.
           You can change them later.
         </p>
 
@@ -115,4 +118,4 @@ const CreateCourseForm = () => {
   );
 };
 
-export default CreateCourseForm;
+export default CreateModuleForm;

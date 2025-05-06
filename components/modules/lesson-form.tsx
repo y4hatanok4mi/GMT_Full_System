@@ -38,9 +38,8 @@ export const LessonsForm = ({
 }: LessonFormProps) => {
     const router = useRouter();
     const [isCreating, setIsCreating] = useState(false);
-    const [isUpdating, setIsUpdating] = useState(false);
 
-    const toggleCreating = ( ) => setIsCreating((current) => !current);
+    const toggleCreating = () => setIsCreating((current) => !current);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -54,7 +53,7 @@ export const LessonsForm = ({
     const onSubmit = async (values: z.infer<typeof formSchema>) => {
         try {
             await axios.post(`/api/modules/${moduleId}/lessons`, values);
-            toast.success("Lesson updated!")
+            toast.success("Lesson added!");
             toggleCreating();
             router.refresh();
         } catch {
@@ -67,15 +66,15 @@ export const LessonsForm = ({
     }
 
     return (
-        <div className="mt-6 border bg-slate-100 rounded-md p-4">
-            <div className="font-medium flex items-center justify-between">
+        <div className="border bg-slate-100 dark:bg-slate-800 rounded-md p-4">
+            <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
                 Module Lessons
-                <Button onClick={toggleCreating} variant={"ghost"}>
+                <Button onClick={toggleCreating} variant={"ghost"} className="text-slate-700 dark:text-white">
                     {isCreating ? (
                         <>Cancel</>
                     ) : (
                         <>
-                        <PlusCircle className="h-4 w-4 mr-2" />
+                            <PlusCircle className="h-4 w-4 mr-2" />
                             Add a lesson
                         </>
                     )}
@@ -84,8 +83,8 @@ export const LessonsForm = ({
             {isCreating && (
                 <Form {...form}>
                     <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="space-y-4 mt-4"
+                        onSubmit={form.handleSubmit(onSubmit)}
+                        className="space-y-4 mt-4"
                     >
                         <FormField
                             control={form.control}
@@ -94,34 +93,36 @@ export const LessonsForm = ({
                                 <FormItem>
                                     <FormControl>
                                         <Input
-                                        disabled={isSubmitting}
-                                        placeholder="e.g.: Introduction to the module..."
-                                        {...field}
+                                            disabled={isSubmitting}
+                                            placeholder="e.g.: Introduction to the module..."
+                                            {...field}
+                                            className="dark:bg-slate-700 dark:text-white"
                                         />
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
-                            )} 
+                            )}
                         />
-                            <Button
+                        <Button
                             disabled={!isValid || isSubmitting}
                             type="submit"
-                            >
-                                Create
-                            </Button>
+                            className="dark:bg-slate-700 dark:text-white"
+                        >
+                            Create
+                        </Button>
                     </form>
                 </Form>
             )}
-            {!isCreating &&(
+            {!isCreating && (
                 <div className={cn(
                     "text-sm mt-2",
-                    !initialData?.lesson.length && "text-slate-500 italic"
+                    !initialData?.lesson.length && "text-slate-500 italic dark:text-slate-400"
                 )}>
-                   {!initialData?.lesson.length && "No lessons"}
-                   <LessonsList
-                   onEdit={onEdit}
-                   items={initialData.lesson || []}
-                   />
+                    {!initialData?.lesson.length && "No lessons"}
+                    <LessonsList
+                        onEdit={onEdit}
+                        items={initialData.lesson || []}
+                    />
                 </div>
             )}
         </div>

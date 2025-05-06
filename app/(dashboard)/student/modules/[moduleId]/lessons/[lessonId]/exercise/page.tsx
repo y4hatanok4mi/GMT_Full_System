@@ -19,7 +19,6 @@ interface ExercisePageProps {
   params: {
     moduleId: string;
     lessonId: string;
-    questionId: string;
   };
 }
 
@@ -34,14 +33,17 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | null>(null);
   const [isChecked, setIsChecked] = useState<boolean>(false);
+  const [isRetakeAllowed, setIsRetakeAllowed] = useState<boolean>(false);  // Track if retake is allowed
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch questions for the lesson
         const { data: questionData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getquestions`);
         const randomizedQuestions = shuffleArray(questionData?.questions || []);
-
+        
+        // Shuffle options for each question
         const shuffledQuestionsWithOptions = randomizedQuestions.map((question: any) => ({
           ...question,
           options: shuffleArray(question.options),
@@ -49,11 +51,23 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
 
         setQuestions(shuffledQuestionsWithOptions);
 
+        // Fetch lesson name
         const { data: lessonData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getlesson`);
         setLessonName(lessonData?.lesson?.title || "Lesson Name Not Found");
 
+        // Fetch user points (if needed)
         const { data: pointsData } = await axios.get(`/api/user/points`);
         setUserPoints(pointsData.points || 0);
+
+        // Check if a retake is allowed (based on previous exercise result)
+        const { data: existingResult } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`);
+        if (existingResult) {
+          const passingScoreThreshold = (existingResult.totalQuestions * 60) / 100;  // 60% passing score
+          if (existingResult.score < passingScoreThreshold) {
+            setIsRetakeAllowed(true);  // Allow retake only if score is below passing threshold
+          }
+        }
+
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -84,6 +98,7 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
         return;
       }
 
+      // Submit the selected answer and get the result
       const response = await axios.post(`/api/modules/${moduleId}/lessons/${lessonId}/questions/${currentQuestion.id}/submit-answer`, {
         studentId: userId,
         questionId: currentQuestion.id,
@@ -91,7 +106,6 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
       });
 
       const { isCorrect } = response.data;
-
       setAnswerStatus(isCorrect ? "correct" : "incorrect");
       setNotificationType(isCorrect ? "success" : "error");
       setNotification(isCorrect ? "Well done!" : "Nice try!");
@@ -115,9 +129,8 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
 
   const completeQuestions = async () => {
     try {
-      const passingScore = 60;
-
-      const { data: existingResult } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/get-exercise-result`);
+      // Fetch the exercise result (user's score)
+      const { data: existingResult } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`);
       if (!existingResult) {
         alert("Exercise result not found.");
         return;
@@ -125,6 +138,7 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
 
       const { score } = existingResult;
 
+      // Fetch the total number of questions for the exercise
       const { data: questionData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/get-questions-count`);
       if (!questionData || !questionData.count) {
         alert("Questions not found.");
@@ -132,9 +146,15 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
       }
 
       const totalQuestions = questionData.count;
-      const passingScoreThreshold = (totalQuestions * passingScore) / 100;
 
+      // Calculate the passing threshold as 60% of the total number of questions
+      const passingScoreThreshold = (totalQuestions * 60) / 100;
+
+      // Check if the student's score meets or exceeds the passing threshold
       if (score >= passingScoreThreshold) {
+        await axios.post(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`, {
+          score: score,
+        });
         router.push(`/student/modules/${moduleId}/lessons/${lessonId}/complete`);
       } else {
         router.replace(`/student/modules/${moduleId}/lessons/${lessonId}/retake`);
@@ -146,7 +166,7 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center pt-8 dark:bg-slate-900 dark:text-white">
+    <div className="h-screen flex flex-col items-center pt-24 dark:bg-slate-900 dark:text-white">
       <LessonTopBar params={params} lessonName={lessonName} />
 
       <div className="flex flex-col justify-center items-center p-4 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 pt-20 sm:pt-6 py-4">
@@ -195,7 +215,7 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-4 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-800">
+      <div className="flex items-center justify-center p-4 bg-slate-200 shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-800">
         <div className="flex flex-col md:flex-col space-x-4 items-center">
           {notification && (
             <div className={`w-full text-lg text-center py-2 rounded-md 

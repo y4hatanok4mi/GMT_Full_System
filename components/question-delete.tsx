@@ -17,13 +17,13 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { Button } from "@/components/ui/button";
 
-interface ModuleDeleteProps {
-  item: string;
+interface QuestionDeleteProps {
   lessonId: string;
   moduleId: string;
+  questionId: string;
 }
 
-const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
+const QuestionDelete = ({lessonId, moduleId, questionId }: QuestionDeleteProps) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -31,10 +31,7 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
     try {
       setIsDeleting(true);
 
-      const url =
-        item === "module"
-          ? `/api/modules/${moduleId}`
-          : `/api/modules/${moduleId}/lessons/${lessonId}`;
+      const url = `/api/modules/${moduleId}/lessons/${lessonId}/questions/${questionId}`;
 
       const response = await fetch(url, {
         method: 'DELETE',
@@ -44,25 +41,21 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
         throw new Error('Failed to delete');
       }
 
-      const pushedUrl =
-        item === "module"
-          ? `/admin/data-management/modules`
-          : `/admin/data-management/modules/${moduleId}`;
+      const pushedUrl = `/admin/data-management/modules/${moduleId}/lessons/${lessonId}`;
 
       router.push(pushedUrl);
       router.refresh();
-      toast.success(`${item} deleted successfully`);
+      toast.success(`Question deleted successfully`);
     } catch (err) {
       toast.error(`Something went wrong!`);
-      console.log(`Failed to delete the ${item}`, err);
+      console.log(`Failed to delete the question`, err);
     } finally {
       setIsDeleting(false);
     }
   };
 
   return (
-    <div>
-          <AlertDialog>
+    <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button variant="outline" disabled={isDeleting}>
           {isDeleting ? (
@@ -78,13 +71,13 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
             Are you absolutely sure?
           </AlertDialogTitle>
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your {item}
+            This action cannot be undone. This will permanently delete your question  and remove it from the list of questions.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-red"
+            className="bg-red-500 hover:bg-red-600 text-white"
             onClick={onDelete}
             disabled={isDeleting}
           >
@@ -93,8 +86,7 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-    </div>
   );
 };
 
-export default ModuleDelete;
+export default QuestionDelete;

@@ -1,5 +1,12 @@
 import { auth } from "@/auth";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import prisma from "@/lib/prisma";
@@ -11,8 +18,14 @@ import { ImageForm } from "@/components/modules/image-form";
 import { LessonsForm } from "@/components/modules/lesson-form";
 import PublishButton from "@/components/publish-button";
 import Delete from "@/components/delete";
+import IconCircle from "@/components/icon-bg";
+import RequiredFieldStatus from "@/components/required-field";
 
-export default async function ModulePage({ params }: { params: { moduleId: string; lessonId: string } }) {
+export default async function ModulePage({
+  params,
+}: {
+  params: { moduleId: string; lessonId: string };
+}) {
   const { moduleId, lessonId } = params;
 
   if (!moduleId) {
@@ -21,11 +34,11 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
 
   const moduleData = await prisma.module.findUnique({
     where: {
-      id: moduleId
+      id: moduleId,
     },
     include: {
       lesson: true
-    }
+    },
   });
 
   if (!moduleData) {
@@ -43,6 +56,7 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
     moduleData?.name,
     moduleData?.description,
     moduleData?.imageUrl,
+    moduleData?.lesson.length > 0,
   ];
 
   const requiredFieldsCount = requiredFields.length;
@@ -66,7 +80,9 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
               <Breadcrumb>
                 <BreadcrumbList>
                   <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbLink href={`/admin/data-management/modules`}>Module Management</BreadcrumbLink>
+                    <BreadcrumbLink href={`/admin/data-management/modules`}>
+                      Module Management
+                    </BreadcrumbLink>
                   </BreadcrumbItem>
                   <BreadcrumbSeparator />
                   <BreadcrumbItem className="hidden md:block">
@@ -79,8 +95,7 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
         </header>
         <div className="px-6 pb-6">
           <div className="flex justify-between">
-            
-          <h1 className="text-2xl font-bold">Module Setup</h1>
+            <h1 className="text-2xl font-bold">Module Setup</h1>
             <div className="flex gap-5 items-start justify-end">
               <PublishButton
                 disabled={!isCompleted}
@@ -95,32 +110,34 @@ export default async function ModulePage({ params }: { params: { moduleId: strin
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
             <div>
               <div className="flex items-center gap-x-2">
-                <BookText className="size-8" />
+                <IconCircle
+                  Icon={BookText}
+                  size={24}
+                  bgColor="bg-green-500"
+                  iconColor="text-white"
+                />
                 <h2>Customize your module</h2>
               </div>
-              <TitleForm
-                initialData={moduleData}
-                moduleId={moduleId}
-              />
-              <DescriptionForm
-                initialData={moduleData}
-                moduleId={moduleId}
-              />
-              <ImageForm
-                initialData={moduleData}
-                moduleId={moduleId}
-              />
+              <RequiredFieldStatus isCompleted={Boolean(moduleData?.name)} />
+              <TitleForm initialData={moduleData} moduleId={moduleId} />
+              <RequiredFieldStatus isCompleted={Boolean(moduleData?.description)} />
+              <DescriptionForm initialData={moduleData} moduleId={moduleId} />
+              <RequiredFieldStatus isCompleted={Boolean(moduleData?.imageUrl)} />
+              <ImageForm initialData={moduleData} moduleId={moduleId} />
             </div>
             <div className="space-y-6">
               <div>
                 <div className="flex items-center gap-x-2">
-                  <ListChecks className="size-8" />
+                  <IconCircle
+                    Icon={ListChecks}
+                    size={24}
+                    bgColor="bg-green-500"
+                    iconColor="text-white"
+                  />
                   <h2>Module Lessons</h2>
                 </div>
-                <LessonsForm
-                  initialData={moduleData}
-                  moduleId={moduleId}
-                />
+                <RequiredFieldStatus isCompleted={Boolean(moduleData?.lesson.length)} />
+                <LessonsForm initialData={moduleData} moduleId={moduleId} />
               </div>
             </div>
           </div>

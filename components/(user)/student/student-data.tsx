@@ -1,9 +1,7 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import {
-  CaretSortIcon
-} from "@radix-ui/react-icons"
+import * as React from "react";
+import { CaretSortIcon } from "@radix-ui/react-icons";
 import {
   ColumnDef,
   ColumnFiltersState,
@@ -15,16 +13,16 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Table,
   TableBody,
@@ -32,11 +30,11 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { exportUsersToPDF } from "@/components/utils/exportToPDF"
-import { SlidersHorizontal } from "lucide-react"
+} from "@/components/ui/table";
+import { exportUsersToPDF } from "@/components/utils/exportToPDF";
+import { SlidersHorizontal } from "lucide-react";
 
-type Role = "student" | "admin"
+type Role = "student" | "admin";
 
 export type Details = {
   id: number;
@@ -47,10 +45,10 @@ export type Details = {
   school: "MNCHS" | "BSNHS" | "SNHS" | "PBNHS" | "BNHS";
   id_no: string;
   role: Role;
-}
+};
 
 interface UserDataTableProps {
-  role: Role
+  role: Role;
 }
 
 export const columns: ColumnDef<Details>[] = [
@@ -85,11 +83,14 @@ export const columns: ColumnDef<Details>[] = [
     header: "Birthday",
     cell: ({ row }) => {
       const birthday = row.getValue("birthday");
-      const formattedBirthday = new Date(birthday as string).toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      });
+      const formattedBirthday = new Date(birthday as string).toLocaleDateString(
+        "en-US",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }
+      );
       return <div>{formattedBirthday}</div>;
     },
   },
@@ -101,37 +102,64 @@ export const columns: ColumnDef<Details>[] = [
   {
     accessorKey: "school",
     header: "School",
-    cell: ({ row }) => <div>{row.getValue("school")}</div>,
+    cell: ({ row }) => {
+      const schoolMap: Record<string, string> = {
+        MNCHS: "Marinduque National Comprehensive High School",
+        BSNHS: "Butansapa National High School",
+        SNHS: "Sayao National High School",
+        PBNHS: "Puting Buhangin National High School",
+        BNHS: "Balancan National High School",
+      };
+      const schoolCode = row.getValue("school") as string;
+      const fullName = schoolMap[schoolCode] || schoolCode;
+      return <div>{fullName}</div>;
+    },
   },
+
   {
     accessorKey: "id_no",
-    header: "ID No.",
+    header: "Student ID",
     cell: ({ row }) => <div>{row.getValue("id_no")}</div>,
   },
-]
+  {
+    id: "actions",
+    header: "Actions",
+    cell: ({ row }) => (
+      <Button
+        variant="outline"
+        className="text-xs bg-green-500 dark:bg-green-600 hover:bg-green-600 dark:hover:bg-green-700"
+        onClick={() =>
+          (window.location.href = `/admin/reports/students-report/${row.original.id}`)
+        }
+      >
+        View Reports
+      </Button>
+    ),
+  },
+];
 
 export function UserDataTable({ role }: UserDataTableProps) {
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-  const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-  const [rowSelection, setRowSelection] = React.useState({})
-  const [globalFilter, setGlobalFilter] = React.useState<string>("")
-  const [users, setUsers] = React.useState<Details[]>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
+    []
+  );
+  const [columnVisibility, setColumnVisibility] =
+    React.useState<VisibilityState>({});
+  const [rowSelection, setRowSelection] = React.useState({});
+  const [globalFilter, setGlobalFilter] = React.useState<string>("");
+  const [users, setUsers] = React.useState<Details[]>([]);
 
-  // Checklist state
-  const [selectedFilters, setSelectedFilters] = React.useState<{ gender: string[], school: string[], role: string[] }>({
-    gender: [],
-    school: [],
-    role: [],
-  });
+  const [selectedFilters, setSelectedFilters] = React.useState<{
+    gender: string[];
+    school: string[];
+    role: string[];
+  }>({ gender: [], school: [], role: [] });
 
-  // Fetch Users
   React.useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response = await fetch(`/api/getuserbyrole?role=${role}`);
         const data = await response.json();
-        console.log(data)
         if (response.ok) {
           setUsers(data);
         } else {
@@ -144,18 +172,18 @@ export function UserDataTable({ role }: UserDataTableProps) {
     fetchUsers();
   }, [role]);
 
-  // Handle Checkbox Selection
-  const handleFilterChange = (category: "gender" | "school" | "role", value: string) => {
+  const handleFilterChange = (
+    category: "gender" | "school" | "role",
+    value: string
+  ) => {
     setSelectedFilters((prev) => {
       const updatedCategory = prev[category].includes(value)
-        ? prev[category].filter((item) => item !== value) // Remove if already selected
-        : [...prev[category], value]; // Add if not selected
-
+        ? prev[category].filter((item) => item !== value)
+        : [...prev[category], value];
       return { ...prev, [category]: updatedCategory };
     });
   };
 
-  // Apply Filters
   React.useEffect(() => {
     let filters: ColumnFiltersState = [];
 
@@ -173,11 +201,12 @@ export function UserDataTable({ role }: UserDataTableProps) {
   }, [selectedFilters]);
 
   const handleExport = () => {
-    const filteredData = table.getFilteredRowModel().rows.map((row) => row.original);
+    const filteredData = table
+      .getFilteredRowModel()
+      .rows.map((row) => row.original);
     exportUsersToPDF(filteredData);
   };
 
-  // Table
   const table = useReactTable({
     data: users,
     columns,
@@ -214,8 +243,6 @@ export function UserDataTable({ role }: UserDataTableProps) {
           onChange={(event) => setGlobalFilter(event.target.value)}
           className="max-w-sm"
         />
-
-        {/* Filter Button */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="gap-2">
@@ -229,7 +256,12 @@ export function UserDataTable({ role }: UserDataTableProps) {
                 <h4 className="text-sm font-medium">Gender</h4>
                 {["Male", "Female"].map((gender) => (
                   <div key={gender} className="flex items-center space-x-2">
-                    <Checkbox checked={selectedFilters.gender.includes(gender)} onCheckedChange={() => handleFilterChange("gender", gender)} />
+                    <Checkbox
+                      checked={selectedFilters.gender.includes(gender)}
+                      onCheckedChange={() =>
+                        handleFilterChange("gender", gender)
+                      }
+                    />
                     <label className="text-sm">{gender}</label>
                   </div>
                 ))}
@@ -240,7 +272,12 @@ export function UserDataTable({ role }: UserDataTableProps) {
                 <h4 className="text-sm font-medium">School</h4>
                 {["MNCHS", "BSNHS", "SNHS", "PBNHS", "BNHS"].map((school) => (
                   <div key={school} className="flex items-center space-x-2">
-                    <Checkbox checked={selectedFilters.school.includes(school)} onCheckedChange={() => handleFilterChange("school", school)} />
+                    <Checkbox
+                      checked={selectedFilters.school.includes(school)}
+                      onCheckedChange={() =>
+                        handleFilterChange("school", school)
+                      }
+                    />
                     <label className="text-sm">{school}</label>
                   </div>
                 ))}
@@ -248,29 +285,33 @@ export function UserDataTable({ role }: UserDataTableProps) {
             </div>
 
             {/* Reset Filters */}
-            <Button variant="destructive" onClick={() => setSelectedFilters({ gender: [], school: [], role: [] })} className="w-full mt-2">
+            <Button
+              variant="destructive"
+              onClick={() =>
+                setSelectedFilters({ gender: [], school: [], role: [] })
+              }
+              className="w-full mt-2"
+            >
               Reset Filters
             </Button>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="rounded-md border">
+      <div className="rounded-md border bg-slate-100 dark:bg-slate-900">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
                           header.column.columnDef.header,
                           header.getContext()
                         )}
-                    </TableHead>
-                  )
-                })}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -293,7 +334,10 @@ export function UserDataTable({ role }: UserDataTableProps) {
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={columns.length} className="h-24 text-center">
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
                   No users found.
                 </TableCell>
               </TableRow>
@@ -307,5 +351,5 @@ export function UserDataTable({ role }: UserDataTableProps) {
         </Button>
       </div>
     </div>
-  )
+  );
 }

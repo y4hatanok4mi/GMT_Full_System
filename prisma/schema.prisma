@@ -66,6 +66,7 @@ model Question {
   question      String
   image         String?
   type          QuestionType @default(MULTIPLE_CHOICE)
+  isPublished   Boolean      @default(false)
   options       Option[]
   answer        Answer[]
   correctAnswer String?
