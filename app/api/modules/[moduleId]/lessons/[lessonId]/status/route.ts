@@ -2,20 +2,24 @@ import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 // GET lesson completion status
-export async function GET(request: Request, { params }: { params: { lessonId: string } }) {
-  const { lessonId } = params;
+export async function GET(request: Request, { params }: { params: { moduleId: string; lessonId: string } }) {
+  const { lessonId, moduleId } = params;
+  console.log("Fetching lesson status for lessonId:", lessonId);
 
   try {
-    const lesson = await prisma.lessonProgress.findUnique({
-      where: { id: lessonId },
-      select: { isCompleted: true },
+    const progress = await prisma.lessonProgress.findFirst({
+      where: {
+        lessonId: lessonId,
+        isCompleted: true,
+      },
     });
+    console.log("Lesson status:", progress);
 
-    if (!lesson) {
-      return NextResponse.json({ message: "Lesson not found" }, { status: 404 });
+    if (!progress) {
+      return NextResponse.json({ message: "Lesson not found!" }, { status: 404 });
     }
 
-    return NextResponse.json({ isCompleted: lesson.isCompleted });
+    return NextResponse.json({ isCompleted: progress.isCompleted });
   } catch (error) {
     return NextResponse.json({ message: "Error fetching lesson status" }, { status: 500 });
   }
@@ -39,7 +43,7 @@ export async function POST(request: Request, { params }: { params: { moduleId: s
     }
 
     if (lessonProgress.isCompleted) {
-      return NextResponse.json({ message: "Lesson already completed. No points awarded." }, { status: 400 });
+      return NextResponse.json({ message: "Lesson already completed. No points awarded." }, { status: 200 });
     }
 
     await prisma.lessonProgress.update({

@@ -6,26 +6,26 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
   try {
     const { moduleId } = params;
     const user = await auth();
-    const userIdString = user?.user.id;
+    const userId = user?.user.id;
 
-    if (!userIdString) {
+    if (!userId) {
       return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
-    }
-
-    const userId = parseInt(userIdString);
-    if (isNaN(userId)) {
-      return NextResponse.json({ message: "Invalid user ID" }, { status: 400 });
     }
 
     // Count total number of lessons in this module
     const totalLessons = await prisma.lesson.count({
-      where: { moduleId },
+      where: { 
+        moduleId,
+        isPublished: true
+      },
     });
+
+    console.log("Total lessons in module:", totalLessons);
 
     // Count completed lessons for the user in this module
     const completedLessons = await prisma.lessonProgress.count({
       where: {
-        userId,
+        userId: Number(userId),
         isCompleted: true,
         lesson: {
           moduleId,
@@ -33,13 +33,15 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       },
     });
 
+    console.log("Completed lessons for user:", completedLessons);
+
     // Check if all lessons in the module are completed
     if (completedLessons === totalLessons && totalLessons > 0) {
       // Check if the module is already marked completed
       const existingCompletedModule = await prisma.completedModule.findUnique({
         where: {
           userId_moduleId: {
-            userId,
+            userId: Number(userId),
             moduleId,
           },
         },
@@ -48,16 +50,14 @@ export const POST = async (req: NextRequest, { params }: { params: { moduleId: s
       if (!existingCompletedModule) {
         // Insert a record into CompletedModule
         await prisma.completedModule.create({
-          data: { userId, moduleId },
+          data: { 
+            userId: Number(userId), 
+            moduleId 
+          },
         });
 
         return NextResponse.json({ message: "Module marked as completed for this user." }, { status: 200 });
-      } else {
-        return NextResponse.json(
-          { message: "Module already marked as completed for this user." },
-          { status: 400 }
-        );
-      }
+      } 
     }
 
     return NextResponse.json(

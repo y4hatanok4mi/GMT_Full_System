@@ -76,24 +76,30 @@ const LessonCompletion = ({ params }: LessonCompletionProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-10 p-4">
+    <div className="flex flex-col items-center pt-10 h-screen p-4 dark:bg-slate-800 dark:text-white">
       <div className="flex flex-col items-center justify-center text-center">
         <Image width={300} height={300} src="/three-stars.png" alt="Stars" />
-        <h1 className="text-2xl">Congratulations! Lesson Completed!</h1>
-        <p className="mt-4 text-md text-slate-600">
+        <h1 className="text-2xl md:text-3xl font-bold text-center dark:text-white">
+          Congratulations! Lesson Completed!
+        </h1>
+        <p className="mt-4 text-md text-slate-600 dark:text-slate-300">
           You’re one step closer to reaching your goal!
         </p>
-        <p className="mt-2 text-md text-slate-600">Well done!</p>
+        <p className="mt-2 text-md text-slate-600 dark:text-slate-300">Well done!</p>
 
         {!isLessonCompleted && (
           <div className="flex flex-row items-center gap-2 p-4">
             <Image width={50} height={50} src="/star.png" alt="Stars" />
-            <p className="text-slate-600">+10 points</p>
+            <p className="text-slate-600 dark:text-slate-300">+10 points</p>
           </div>
         )}
       </div>
-      <div className="flex items-center justify-center p-8 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10">
-        <Button onClick={completeLesson} className="w-60">
+
+      <div className="flex items-center justify-center p-8 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-900">
+        <Button
+          onClick={completeLesson}
+          className="w-60 text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+        >
           Continue
         </Button>
       </div>

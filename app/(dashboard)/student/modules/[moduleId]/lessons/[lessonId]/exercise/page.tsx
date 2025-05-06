@@ -15,7 +15,7 @@ const shuffleArray = (array: any[]) => {
   return array;
 };
 
-interface LessonDiscussionProps {
+interface ExercisePageProps {
   params: {
     moduleId: string;
     lessonId: string;
@@ -23,10 +23,10 @@ interface LessonDiscussionProps {
   };
 }
 
-const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
+const ExercisePage = ({ params }: ExercisePageProps) => {
   const { moduleId, lessonId } = params;
   const [questions, setQuestions] = useState<any[]>([]);
-  const [lessonName, setLessonName] = useState<string>('');
+  const [lessonName, setLessonName] = useState<string>("");
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [userPoints, setUserPoints] = useState<number>(0);
   const [notification, setNotification] = useState<string | null>(null);
@@ -146,7 +146,7 @@ const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
   };
 
   return (
-    <div className="h-screen flex flex-col items-center justify-center">
+    <div className="h-screen flex flex-col items-center pt-8 dark:bg-slate-900 dark:text-white">
       <LessonTopBar params={params} lessonName={lessonName} />
 
       <div className="flex flex-col justify-center items-center p-4 w-full md:w-3/4 lg:w-2/3 xl:w-1/2 pt-20 sm:pt-6 py-4">
@@ -175,7 +175,7 @@ const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
               <button
                 key={index}
                 className={`w-full p-2 md:p-4 border rounded-md transition-all
-          ${selectedAnswer === option.id ? 'bg-blue-500 text-white' : 'bg-slate-200'}`}
+                  ${selectedAnswer === option.id ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600'}`}
                 onClick={() => handleAnswerSelection(option.id)}
                 disabled={isChecked}
               >
@@ -188,15 +188,14 @@ const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
               placeholder="Type your answer here..."
               value={selectedAnswer || ""}
               onChange={(e) => setSelectedAnswer(e.target.value)}
-              className="w-full p-2 border rounded-md bg-white text-gray-900"
+              className="w-full p-2 border rounded-md bg-white dark:bg-slate-700 dark:text-white text-gray-900"
               disabled={isChecked}
             />
           )}
         </div>
-
       </div>
 
-      <div className="flex items-center justify-center p-4 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10">
+      <div className="flex items-center justify-center p-4 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-800">
         <div className="flex flex-col md:flex-col space-x-4 items-center">
           {notification && (
             <div className={`w-full text-lg text-center py-2 rounded-md 
@@ -223,4 +222,4 @@ const LessonDiscussion = ({ params }: LessonDiscussionProps) => {
   );
 };
 
-export default LessonDiscussion;
+export default ExercisePage;
