@@ -21,7 +21,7 @@ import { handleCredentialsSignin } from "@/app/actions/authActions";
 import { useState, useEffect } from "react";
 import ErrorMessage from "@/components/error-message";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { getSession, useSession } from "next-auth/react";
 import FloatingShape from "@/components/floating-shapes";
@@ -75,55 +75,48 @@ export default function SignIn() {
   });
 
   return (
-    <div className="relative flex min-h-screen w-full items-center justify-center px-4 overflow-hidden bg-white dark:bg-black">
-      {/* Floating Shapes Container */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <FloatingShape
-          color="bg-yellow-500"
-          size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-          top="30%"
-          left="80%"
-          delay={1}
-          shape="triangle"
-          direction="reverse"
-        />
-        <FloatingShape
-          color="bg-green-500"
-          size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
-          top="-40%"
-          left="10%"
-          delay={0}
-          shape="circle"
-          direction="normal"
-        />
-        <FloatingShape
-          color="bg-emerald-500"
-          size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
-          top="-50%"
-          left="60%"
-          delay={0}
-          shape="rectangle"
-          direction="reverse"
-        />
-        <FloatingShape
-          color="bg-lime-500"
-          size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-          top="60%"
-          left="10%"
-          delay={0}
-          shape="square"
-          direction="normal"
-        />
-        <FloatingShape
-          color="bg-pink-500"
-          size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-          top="50%"
-          left="50%"
-          delay={0}
-          shape="circle"
-          direction="reverse"
-        />
-      </div>
+    <div className="relative flex min-h-screen w-full items-center justify-center px-4 overflow-hidden bg-white dark:bg-black ">
+      {/* Responsive Floating Shapes */}
+      <FloatingShape
+        color="bg-yellow-500"
+        size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
+        position="top-[65%] left-[60%] sm:top-[50%] sm:left-[70%] md:top-[30%] md:left-[80%]"
+        delay={1}
+        shape="triangle"
+        direction="reverse"
+      />
+      <FloatingShape
+        color="bg-green-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
+        position="top-[-30%] left-[5%] sm:top-[-25%] sm:left-[10%] md:top-[-40%] md:left-[10%]"
+        delay={0}
+        shape="circle"
+        direction="normal"
+      />
+      <FloatingShape
+        color="bg-emerald-500"
+        size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
+        position="top-[-40%] left-[50%] sm:top-[-35%] sm:left-[55%] md:top-[-50%] md:left-[60%]"
+        delay={0}
+        shape="rectangle"
+        direction="reverse"
+      />
+      <FloatingShape
+        color="bg-lime-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+        position="top-[70%] left-[10%] sm:top-[60%] sm:left-[15%] md:top-[60%] md:left-[10%]"
+        delay={0}
+        shape="square"
+        direction="normal"
+      />
+      <FloatingShape
+        color="bg-pink-500"
+        size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+        position="top-[40%] left-[40%] sm:top-[45%] sm:left-[50%] md:top-[50%] md:left-[50%]"
+        delay={0}
+        shape="circle"
+        direction="reverse"
+      />
 
       {/* Sign In Card */}
       <Card className="w-full max-w-lg relative z-10 shadow-lg">
@@ -143,7 +136,7 @@ export default function SignIn() {
                 name="id_no"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>ID No.</FormLabel>
+                    <FormLabel>Student ID</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
@@ -174,6 +167,14 @@ export default function SignIn() {
                   </FormItem>
                 )}
               />
+              <p className="text-sm text-start">
+                <Link
+                  href={"/auth/reset"}
+                  className="text-slate-100 hover:underline"
+                >
+                  Forgot Password?
+                </Link>
+              </p>
 
               {globalError && <ErrorMessage error={globalError} />}
 

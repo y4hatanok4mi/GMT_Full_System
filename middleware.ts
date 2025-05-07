@@ -1,5 +1,6 @@
 import { apiAuthPrefix, authRoutes } from "@/routes";
 import { auth } from "@/auth"
+import prisma from "./lib/prisma";
 
 export default auth(async (req) => {
   const { nextUrl } = req;
@@ -10,6 +11,10 @@ export default auth(async (req) => {
   }
 
   if (nextUrl.pathname.startsWith("/api/uploadthing")) {
+    return;
+  }
+
+  if (nextUrl.pathname.startsWith("/auth/reset-password")) {
     return;
   }
 

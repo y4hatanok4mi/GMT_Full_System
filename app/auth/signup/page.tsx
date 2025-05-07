@@ -1,12 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Form,
   FormControl,
@@ -71,12 +66,11 @@ export default function SignUp() {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative p-4 bg-white dark:bg-black overflow-x-hidden">
-      {/* Floating Background Shapes */}
+      {/* Responsive Floating Shapes */}
       <FloatingShape
         color="bg-yellow-500"
         size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
-        top="30%"
-        left="80%"
+        position="top-[65%] left-[60%] sm:top-[50%] sm:left-[70%] md:top-[30%] md:left-[80%]"
         delay={1}
         shape="triangle"
         direction="reverse"
@@ -84,8 +78,7 @@ export default function SignUp() {
       <FloatingShape
         color="bg-green-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-64 md:h-64"
-        top="-40%"
-        left="10%"
+        position="top-[-30%] left-[5%] sm:top-[-25%] sm:left-[10%] md:top-[-40%] md:left-[10%]"
         delay={0}
         shape="circle"
         direction="normal"
@@ -93,8 +86,7 @@ export default function SignUp() {
       <FloatingShape
         color="bg-emerald-500"
         size="w-40 h-24 sm:w-48 sm:h-32 md:w-64 md:h-48"
-        top="-50%"
-        left="60%"
+        position="top-[-40%] left-[50%] sm:top-[-35%] sm:left-[55%] md:top-[-50%] md:left-[60%]"
         delay={0}
         shape="rectangle"
         direction="reverse"
@@ -102,8 +94,7 @@ export default function SignUp() {
       <FloatingShape
         color="bg-lime-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-        top="60%"
-        left="10%"
+        position="top-[70%] left-[10%] sm:top-[60%] sm:left-[15%] md:top-[60%] md:left-[10%]"
         delay={0}
         shape="square"
         direction="normal"
@@ -111,8 +102,7 @@ export default function SignUp() {
       <FloatingShape
         color="bg-pink-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-        top="50%"
-        left="50%"
+        position="top-[40%] left-[40%] sm:top-[45%] sm:left-[50%] md:top-[50%] md:left-[50%]"
         delay={0}
         shape="circle"
         direction="reverse"
@@ -138,7 +128,11 @@ export default function SignUp() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="geometriks@example.com" type="email" {...field} />
+                      <Input
+                        placeholder="geometriks@example.com"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -249,7 +243,11 @@ export default function SignUp() {
                     <FormControl>
                       <Input
                         type="date"
-                        value={field.value ? new Date(field.value).toISOString().split("T")[0] : ""}
+                        value={
+                          field.value
+                            ? new Date(field.value).toISOString().split("T")[0]
+                            : ""
+                        }
                         onChange={(e) => field.onChange(e.target.value)}
                       />
                     </FormControl>
@@ -272,10 +270,18 @@ export default function SignUp() {
                       >
                         <option value="">Select school</option>
                         <option value="SNHS">Sayao National High School</option>
-                        <option value="BNHS">Balanacan National High School</option>
-                        <option value="MNCHS">Mogpog National Comprehensive High School</option>
-                        <option value="BSNHS">Butansapa National High School</option>
-                        <option value="PBNHS">Puting Buhangin National High School</option>
+                        <option value="BNHS">
+                          Balanacan National High School
+                        </option>
+                        <option value="MNCHS">
+                          Mogpog National Comprehensive High School
+                        </option>
+                        <option value="BSNHS">
+                          Butansapa National High School
+                        </option>
+                        <option value="PBNHS">
+                          Puting Buhangin National High School
+                        </option>
                       </select>
                     </FormControl>
                     <FormMessage />
@@ -301,7 +307,9 @@ export default function SignUp() {
               {/* Submit & Error */}
               <div className="flex flex-col">
                 {globalError && <ErrorMessage error={globalError} />}
-                <LoadingButton pending={form.formState.isSubmitting}>Sign Up</LoadingButton>
+                <LoadingButton pending={form.formState.isSubmitting}>
+                  Sign Up
+                </LoadingButton>
               </div>
             </form>
           </Form>
@@ -310,7 +318,10 @@ export default function SignUp() {
           <div className="flex flex-col justify-center items-center mt-2">
             <p className="text-sm">
               Already have an account?{" "}
-              <Link href="/auth/signin" className="text-green-400 hover:underline">
+              <Link
+                href="/auth/signin"
+                className="text-green-400 hover:underline"
+              >
                 Sign in
               </Link>
             </p>
@@ -319,7 +330,10 @@ export default function SignUp() {
         </CardContent>
       </Card>
 
-      <SignUpSuccessModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <SignUpSuccessModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
     </div>
   );
 }
