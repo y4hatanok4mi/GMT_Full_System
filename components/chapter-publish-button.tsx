@@ -62,7 +62,7 @@ const PublishButton = ({
       variant="outline"
       disabled={disabled || isLoading}
       onClick={onClick}
-      className="bg-green-700 hover:bg-green-800"
+      className="bg-green-500 dark:bgb-green-700 hover:bg-green-600 dark:hover:bg-green-800 text-white"
     >
       {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : published ? "Unpublish" : "Publish"}
     </Button>

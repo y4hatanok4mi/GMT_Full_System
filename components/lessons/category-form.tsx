@@ -73,7 +73,7 @@ export const ChapterCategoryForm = ({
   );
 
   return (
-    <div className="my-6 border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
+    <div className="border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
         Chapter Category
         <Button onClick={toggleEdit} variant={"ghost"} className="text-slate-700 dark:text-white">

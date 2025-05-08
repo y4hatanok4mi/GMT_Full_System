@@ -24,7 +24,7 @@ import RequiredFieldStatus from "@/components/required-field";
 const LessonsPage = async ({
   params,
 }: {
-  params: { moduleId: string; lessonId: string; };
+  params: { moduleId: string; lessonId: string };
 }) => {
   const { moduleId, lessonId } = params;
 
@@ -40,9 +40,7 @@ const LessonsPage = async ({
   }
 
   const moduleData = await prisma.module.findUnique({
-    where: {
-      id: moduleId,
-    },
+    where: { id: moduleId },
   });
 
   if (!moduleData) {
@@ -50,16 +48,12 @@ const LessonsPage = async ({
   }
 
   const lesson = await prisma.lesson.findUnique({
-    where: {
-      id: lessonId,
-    },
+    where: { id: lessonId },
     include: {
       chapter: true,
       question: {
-        include: {
-          options: true,
-        },
-      }
+        include: { options: true },
+      },
     },
   });
 
@@ -67,21 +61,14 @@ const LessonsPage = async ({
     notFound();
   }
 
-  const requiredFields = [
-    lesson?.title,
-    lesson?.chapter.length > 0,
-    lesson?.question.length > 0,
-  ];
+  const hasPublishedChapters = lesson.chapter.some((ch) => ch.isPublished);
+  const hasPublishedQuestions = lesson.question.some((q) => q.isPublished);
 
-  const requiredFieldsCount = requiredFields.length;
-  const missingFields = requiredFields.filter((field) => !Boolean(field));
-  const missingFieldsCount = missingFields.length;
+  const requiredFields = [lesson?.title, hasPublishedChapters, hasPublishedQuestions];
   const isCompleted = requiredFields.every(Boolean);
 
-  console.log("Required Fields:", requiredFields);
-  console.log("Missing Fields:", missingFields);
-  console.log("Missing Fields Count:", missingFieldsCount);
-  console.log("Required Fields Count:", requiredFieldsCount);
+  console.log("Published Chapters:", lesson.chapter.filter((ch) => ch.isPublished));
+  console.log("Published Questions:", lesson.question.filter((q) => q.isPublished));
 
   return (
     <div className="dark:bg-slate-900 dark:text-white">
@@ -93,9 +80,7 @@ const LessonsPage = async ({
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink
-                    href={`/admin/data-management/modules/${moduleId}`}
-                  >
+                  <BreadcrumbLink href={`/admin/data-management/modules/${moduleId}`}>
                     {moduleData.name}
                   </BreadcrumbLink>
                 </BreadcrumbItem>
@@ -118,17 +103,13 @@ const LessonsPage = async ({
                 isPublished={lesson.isPublished}
                 page="Lesson"
               />
-              <Delete item="Lesson" lessonId={lesson.id} moduleId={moduleId}/>
+              <Delete item="Lesson" lessonId={lesson.id} moduleId={moduleId} />
             </div>
           </div>
           <div className="gap-6 mt-4 space-y-6">
             <div>
               <div className="flex items-center gap-x-2">
-                <IconCircle
-                  Icon={BookOpen}
-                  size={24}
-                  iconColor="text-slate-200"
-                />
+                <IconCircle Icon={BookOpen} size={24} iconColor="text-slate-200" />
                 <h2>Customize Lesson</h2>
               </div>
               <RequiredFieldStatus isCompleted={Boolean(lesson?.title)} />
@@ -140,43 +121,27 @@ const LessonsPage = async ({
             </div>
             <div>
               <div className="flex items-center gap-x-2">
-                <IconCircle
-                  Icon={ListChecks}
-                  size={24}
-                  iconColor="text-slate-200"
-                />
+                <IconCircle Icon={ListChecks} size={24} iconColor="text-slate-200" />
                 <h2>Lesson Chapters</h2>
               </div>
-              <div>
-                <RequiredFieldStatus
-                  isCompleted={Boolean(lesson?.chapter.length)}
-                />
-                <ChaptersForm
-                  initialData={lesson}
-                  lessonId={lesson.id}
-                  moduleId={moduleId}
-                />
-              </div>
+              <RequiredFieldStatus isCompleted={hasPublishedChapters} />
+              <ChaptersForm
+                initialData={lesson}
+                lessonId={lesson.id}
+                moduleId={moduleId}
+              />
             </div>
             <div>
               <div className="flex items-center gap-x-2">
-                <IconCircle
-                  Icon={ListChecks}
-                  size={24}
-                  iconColor="text-slate-200"
-                />
+                <IconCircle Icon={ListChecks} size={24} iconColor="text-slate-200" />
                 <h2>Lesson Questions</h2>
               </div>
-              <div>
-                <RequiredFieldStatus
-                  isCompleted={Boolean(lesson?.question.length)}
-                />
-                <QuestionsForm
-                  initialData={lesson}
-                  lessonId={lesson.id}
-                  moduleId={moduleId}
-                />
-              </div>
+              <RequiredFieldStatus isCompleted={hasPublishedQuestions} />
+              <QuestionsForm
+                initialData={lesson}
+                lessonId={lesson.id}
+                moduleId={moduleId}
+              />
             </div>
           </div>
         </div>

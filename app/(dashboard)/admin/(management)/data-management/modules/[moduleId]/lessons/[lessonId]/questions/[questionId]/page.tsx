@@ -121,21 +121,23 @@ const QuestionPage = async ({
             </div>
           </header>
           <div className="px-6 pb-6">
-            <h1 className="text-2xl font-bold">Question Setup</h1>
-            <div className="flex gap-5 items-start justify-end">
-              <QuestionPublishButton
-                disabled={!isCompleted}
-                lessonId={lessonId}
-                moduleId={moduleId}
-                questionId={questionId}
-                page="Question"
-                isPublished={question.isPublished}
-              />
-              <QuestionDelete
-                lessonId={lessonId}
-                moduleId={moduleId}
-                questionId={questionId}
-              />
+            <div className="flex gap-5 items-start justify-between">
+              <h1 className="text-2xl font-bold">Question Setup</h1>
+              <div className="flex gap-5 items-start justify-end">
+                <QuestionPublishButton
+                  disabled={!isCompleted}
+                  lessonId={lessonId}
+                  moduleId={moduleId}
+                  questionId={questionId}
+                  page="Question"
+                  isPublished={question.isPublished}
+                />
+                <QuestionDelete
+                  lessonId={lessonId}
+                  moduleId={moduleId}
+                  questionId={questionId}
+                />
+              </div>
             </div>
             <div className="gap-6 mt-4">
               <div>

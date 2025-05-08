@@ -70,7 +70,7 @@ export const ChapterDiscussionForm = ({
   };
 
   return (
-    <div className="mt-6 border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
+    <div className="border bg-slate-100 dark:bg-slate-800 dark:border-slate-700 rounded-md p-4">
       <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
         Chapter Discussion
         <Button

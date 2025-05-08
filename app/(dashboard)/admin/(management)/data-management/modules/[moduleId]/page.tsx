@@ -37,7 +37,20 @@ export default async function ModulePage({
       id: moduleId,
     },
     include: {
-      lesson: true
+      lesson: {
+        select: {
+          moduleId: true,
+          id: true,
+          instructorId: true,
+          description: true,
+          imageUrl: true,
+          isPublished: true,
+          createdAt: true,
+          updatedAt: true,
+          title: true,
+          order: true,
+        },
+      }
     },
   });
 
@@ -52,12 +65,15 @@ export default async function ModulePage({
     return redirect("/auth/signin");
   }
 
+  const hasPublishedLesson = moduleData.lesson.some((lesson) => lesson.isPublished);
+
   const requiredFields = [
     moduleData?.name,
     moduleData?.description,
     moduleData?.imageUrl,
-    moduleData?.lesson.length > 0,
+    hasPublishedLesson,
   ];
+  
 
   const requiredFieldsCount = requiredFields.length;
   const missingFields = requiredFields.filter((field) => !Boolean(field));
@@ -134,7 +150,7 @@ export default async function ModulePage({
                   />
                   <h2>Module Lessons</h2>
                 </div>
-                <RequiredFieldStatus isCompleted={Boolean(moduleData?.lesson.length)} />
+                <RequiredFieldStatus isCompleted={Boolean(hasPublishedLesson)} />
                 <LessonsForm initialData={moduleData} moduleId={moduleId} />
               </div>
             </div>

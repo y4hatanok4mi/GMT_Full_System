@@ -103,7 +103,7 @@ export function AccountCreationChart({ data }: AccountCreationChartProps) {
               )}
             />
             <Line
-              dataKey="count" // This will now represent the number of accounts created
+              dataKey="count"
               type="monotone"
               stroke={`var(--color-created)`}
               strokeWidth={2}
