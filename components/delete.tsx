@@ -32,7 +32,7 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
       setIsDeleting(true);
 
       const url =
-        item === "module"
+        item === "Module"
           ? `/api/modules/${moduleId}`
           : `/api/modules/${moduleId}/lessons/${lessonId}`;
 
@@ -45,13 +45,13 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
       }
 
       const pushedUrl =
-        item === "module"
+        item === "Module"
           ? `/admin/data-management/modules`
           : `/admin/data-management/modules/${moduleId}`;
 
       router.push(pushedUrl);
       router.refresh();
-      toast.success(`${item} deleted successfully`);
+      toast.success(`${item} deleted successfully!`);
     } catch (err) {
       toast.error(`Something went wrong!`);
       console.log(`Failed to delete the ${item}`, err);
@@ -64,7 +64,7 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
     <div>
           <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" disabled={isDeleting}>
+        <Button variant="outline" disabled={isDeleting} className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500">
           {isDeleting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
@@ -84,7 +84,7 @@ const ModuleDelete = ({ item, lessonId, moduleId }: ModuleDeleteProps) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-red"
+            className="bg-red-600 hover:bg-red-700 text-white focus:ring-red-500"
             onClick={onDelete}
             disabled={isDeleting}
           >

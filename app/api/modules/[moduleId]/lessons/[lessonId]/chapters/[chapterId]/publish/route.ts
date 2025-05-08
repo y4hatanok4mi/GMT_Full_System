@@ -20,7 +20,7 @@ export const POST = async (
     });
 
     if (!chapter) {
-      return new Response("Lesson not found!", { status: 404 });
+      return new Response("Chapter not found!", { status: 404 });
     }
 
     if (

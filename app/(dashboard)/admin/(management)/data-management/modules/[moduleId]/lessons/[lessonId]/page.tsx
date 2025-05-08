@@ -118,7 +118,7 @@ const LessonsPage = async ({
                 isPublished={lesson.isPublished}
                 page="Lesson"
               />
-              <Delete item="lesson" lessonId={lesson.id} moduleId={moduleId}/>
+              <Delete item="Lesson" lessonId={lesson.id} moduleId={moduleId}/>
             </div>
           </div>
           <div className="gap-6 mt-4 space-y-6">
@@ -127,7 +127,6 @@ const LessonsPage = async ({
                 <IconCircle
                   Icon={BookOpen}
                   size={24}
-                  bgColor="bg-green-500 dark:bg-green-700"
                   iconColor="text-slate-200"
                 />
                 <h2>Customize Lesson</h2>
@@ -144,7 +143,6 @@ const LessonsPage = async ({
                 <IconCircle
                   Icon={ListChecks}
                   size={24}
-                  bgColor="bg-green-500 dark:bg-green-700"
                   iconColor="text-slate-200"
                 />
                 <h2>Lesson Chapters</h2>
@@ -165,7 +163,6 @@ const LessonsPage = async ({
                 <IconCircle
                   Icon={ListChecks}
                   size={24}
-                  bgColor="bg-green-500 dark:bg-green-700"
                   iconColor="text-slate-200"
                 />
                 <h2>Lesson Questions</h2>

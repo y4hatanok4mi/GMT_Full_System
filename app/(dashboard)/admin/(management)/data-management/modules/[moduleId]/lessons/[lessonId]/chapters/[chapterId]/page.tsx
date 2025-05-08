@@ -16,10 +16,10 @@ import { ChapterTitleForm } from "@/components/chapters/title-form";
 import { ChapterImageForm } from "@/components/chapters/image-form";
 import { ChapterVideoForm } from "@/components/chapters/video-form";
 import { ChapterDiscussionForm } from "@/components/chapters/discussion-form";
-import LessonDelete from "@/components/lesson-delete";
 import PublishButton from "@/components/chapter-publish-button";
 import { ChapterCategoryForm } from "@/components/lessons/category-form";
 import ChapterDelete from "@/components/chapter-delete";
+import IconCircle from "@/components/icon-bg";
 
 const ChaptersPage = async ({
   params,
@@ -128,8 +128,12 @@ const ChaptersPage = async ({
             <div className="gap-6 mt-4">
               <div>
                 <div className="flex items-center gap-x-2">
-                  <BookOpen className="size-8" />
-                  <h2>Customize chapter</h2>
+                <IconCircle
+                  Icon={BookOpen}
+                  size={24}
+                  iconColor="text-slate-200"
+                />
+                  <h2>Customize Chapter</h2>
                 </div>
                 <ChapterTitleForm
                   initialData={chapter}

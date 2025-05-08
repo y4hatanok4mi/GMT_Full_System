@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -26,6 +25,7 @@ const PublishButton = ({
 }: PublishButtonProps) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [published, setPublished] = useState(isPublished); // Local state
 
   const onClick = async () => {
     let url = `/api/modules/${moduleId}/lessons/${lessonId}`;
@@ -35,7 +35,7 @@ const PublishButton = ({
 
     try {
       setIsLoading(true);
-      const response = await fetch(isPublished ? `${url}/unpublish` : `${url}/publish`, {
+      const response = await fetch(published ? `${url}/unpublish` : `${url}/publish`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,17 +43,15 @@ const PublishButton = ({
       });
 
       if (!response.ok) {
-        throw new Error(`Failed to ${isPublished ? "unpublish" : "publish"} ${page}`);
+        throw new Error(`Failed to ${published ? "unpublish" : "publish"} ${page}`);
       }
 
-      toast.success(`${page} ${isPublished ? "unpublished" : "published"}`);
-      router.refresh();
+      toast.success(`${page} ${published ? "unpublished" : "published"}`);
+      setPublished(!published); // Update local state immediately
+      router.refresh(); // Optional if you want to sync globally
     } catch (err) {
       toast.error("Something went wrong!");
-      console.log(
-        `Failed to ${isPublished ? "unpublish" : "publish"} ${page}`,
-        err
-      );
+      console.error(`Failed to ${published ? "unpublish" : "publish"} ${page}`, err);
     } finally {
       setIsLoading(false);
     }
@@ -64,8 +62,9 @@ const PublishButton = ({
       variant="outline"
       disabled={disabled || isLoading}
       onClick={onClick}
+      className="bg-green-700 hover:bg-green-800"
     >
-      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : isPublished ? "Unpublish" : "Publish"}
+      {isLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : published ? "Unpublish" : "Publish"}
     </Button>
   );
 };

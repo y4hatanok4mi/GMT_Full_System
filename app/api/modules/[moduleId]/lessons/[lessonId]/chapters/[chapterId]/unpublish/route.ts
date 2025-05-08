@@ -4,33 +4,33 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const POST = async (
   req: NextRequest,
-  { params }: { params: { lessonId: string } }
+  { params }: { params: { chapterId: string } }
 ) => {
   try {
     const user = await auth();
     const id = user?.user.id;
-    const { lessonId } = params;
+    const { chapterId } = params;
 
     if (!id) {
       return new Response("Unauthorized", { status: 401 });
     }
 
-    const lesson = await prisma.lesson.findUnique({
-      where: { id: lessonId, instructorId: id },
+    const chapter = await prisma.chapter.findUnique({
+      where: { id: chapterId },
     });
 
-    if (!lesson) {
-      return new Response("Course not found", { status: 404 });
+    if (!chapter) {
+      return new Response("Chapter not found", { status: 404 });
     }
 
-    const unpusblishedLesson = await prisma.lesson.update({
-      where: { id: lessonId, instructorId: id },
+    const unpusblishedchapter = await prisma.chapter.update({
+      where: { id: chapterId},
       data: { isPublished: false },
     });
 
-    return NextResponse.json(unpusblishedLesson, { status: 200 });
+    return NextResponse.json(unpusblishedchapter, { status: 200 });
   } catch (err) {
-    console.log("[lessonId_unpublish_POST]", err);
+    console.log("[chapterId_unpublish_POST]", err);
     return new Response("Internal Server Error", { status: 500 });
   }
 };

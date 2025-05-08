@@ -11,7 +11,7 @@ interface IconCircleProps {
 const IconCircle: React.FC<IconCircleProps> = ({
   Icon,
   size = 24,
-  bgColor = "bg-gray-200",
+  bgColor="bg-green-600 dark:bg-green-700",
   iconColor = "text-gray-700",
 }) => {
   return (

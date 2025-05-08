@@ -13,7 +13,11 @@ interface QuestionsListProps {
   onDelete: (id: string) => void; // Callback for delete action
 }
 
-export const QuestionsList = ({ items, onEdit, onDelete }: QuestionsListProps) => {
+export const QuestionsList = ({
+  items,
+  onEdit,
+  onDelete,
+}: QuestionsListProps) => {
   const [isMounted, setIsMounted] = useState(false);
   const [questions, setQuestions] = useState(items);
 
@@ -36,7 +40,12 @@ export const QuestionsList = ({ items, onEdit, onDelete }: QuestionsListProps) =
       {questions.map((question, index) => (
         <div
           key={question.id}
-          className="p-4 bg-slate-100 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-md mb-4 space-y-2 text-slate-800 dark:text-slate-200"
+          className={cn(
+            "p-4 border rounded-md mb-4 space-y-2 text-slate-800 dark:text-slate-200",
+            question.isPublished
+              ? "bg-green-100 dark:bg-green-950 border-green-300 dark:border-green-700"
+              : "bg-slate-100 dark:bg-slate-800 border-slate-300 dark:border-slate-700"
+          )}
         >
           <div className="flex items-start gap-2">
             <FileQuestion className="mt-1 text-slate-500 dark:text-slate-400" />
@@ -58,36 +67,38 @@ export const QuestionsList = ({ items, onEdit, onDelete }: QuestionsListProps) =
                 )}
 
                 {/* Render options only for multiple-choice questions */}
-                {question.type === "MULTIPLE_CHOICE" && question.options?.length > 0 && (
-                  <div className="mt-3 space-y-1 text-sm">
-                    {question.options.map((opt, i) => (
-                      <p
-                        key={opt.id}
-                        className={cn(
-                          "px-2 py-1 rounded",
-                          question.correctAnswer === opt.id &&
-                            "bg-green-100 dark:bg-green-900 font-semibold"
-                        )}
-                      >
-                        {String.fromCharCode(65 + i)}. {opt.text}
+                {question.type === "MULTIPLE_CHOICE" &&
+                  question.options?.length > 0 && (
+                    <div className="mt-3 space-y-1 text-sm">
+                      {question.options.map((opt, i) => (
+                        <p
+                          key={opt.id}
+                          className={cn(
+                            "px-2 py-1 rounded",
+                            question.correctAnswer === opt.id &&
+                              "bg-green-100 dark:bg-green-900 font-semibold"
+                          )}
+                        >
+                          {String.fromCharCode(65 + i)}. {opt.text}
+                        </p>
+                      ))}
+                      <p className="mt-2 text-green-700 dark:text-green-400 font-medium">
+                        Correct Answer:{" "}
+                        {question.options.find(
+                          (opt) => opt.id === question.correctAnswer
+                        )?.text || "N/A"}
                       </p>
-                    ))}
-                    <p className="mt-2 text-green-700 dark:text-green-400 font-medium">
-                      Correct Answer:{" "}
-                      {question.options.find(
-                        (opt) => opt.id === question.correctAnswer
-                      )?.text || "N/A"}
-                    </p>
-                  </div>
-                )}
+                    </div>
+                  )}
 
                 {/* Render blank for fill-in-the-blank questions */}
                 {question.type === "FILL_IN_THE_BLANK" && (
                   <div className="mt-3 text-sm">
-                    <p className="text-gray-700 dark:text-gray-300">Fill in the blank:</p>
+                    <p className="text-gray-700 dark:text-gray-300">
+                      Fill in the blank:
+                    </p>
                     <p className="mt-2 text-green-700 dark:text-green-400 font-medium">
-                      Correct Answer:{" "}
-                      {question.correctAnswer || "N/A"}
+                      Correct Answer: {question.correctAnswer || "N/A"}
                     </p>
                   </div>
                 )}

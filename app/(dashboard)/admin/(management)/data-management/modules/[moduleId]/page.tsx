@@ -104,7 +104,7 @@ export default async function ModulePage({
                 isPublished={moduleData.isPublished}
                 page="Module"
               />
-              <Delete item="module" moduleId={moduleId} lessonId={lessonId} />
+              <Delete item="Module" moduleId={moduleId} lessonId={lessonId} />
             </div>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
@@ -113,7 +113,6 @@ export default async function ModulePage({
                 <IconCircle
                   Icon={BookText}
                   size={24}
-                  bgColor="bg-green-500"
                   iconColor="text-white"
                 />
                 <h2>Customize your module</h2>
@@ -131,7 +130,6 @@ export default async function ModulePage({
                   <IconCircle
                     Icon={ListChecks}
                     size={24}
-                    bgColor="bg-green-500"
                     iconColor="text-white"
                   />
                   <h2>Module Lessons</h2>

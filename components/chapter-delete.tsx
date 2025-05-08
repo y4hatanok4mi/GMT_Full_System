@@ -57,7 +57,7 @@ const ChapterDelete = ({ lessonId, moduleId, chapterId }: ChapterDeleteProps) =>
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button variant="outline" disabled={isDeleting}>
+        <Button variant="outline" disabled={isDeleting} className="bg-red-600 text-white hover:bg-red-700 focus:ring-red-500">
           {isDeleting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (

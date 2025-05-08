@@ -341,5 +341,5 @@ model Certificate {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   module Module @relation(fields: [moduleId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, moduleId]) // Ensures one certificate per user per module
+  @@unique([userId, moduleId])
 }

@@ -143,7 +143,6 @@ const QuestionPage = async ({
                   <IconCircle
                     Icon={NotebookPen}
                     size={24}
-                    bgColor="bg-green-500"
                     iconColor="text-white"
                   />
                   <h2 className="text-lg font-semibold">Customize Question</h2>
