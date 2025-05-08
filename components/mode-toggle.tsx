@@ -1,23 +1,33 @@
-"use client"
+"use client";
 
-import * as React from "react"
-import { Moon, Sun, ChevronDown } from "lucide-react"
-import { useTheme } from "next-themes"
-import { Button } from "@/components/ui/button"
+import * as React from "react";
+import { Moon, Sun, ChevronDown } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu";
 
 export function ModeToggle() {
-  const { setTheme, theme } = useTheme()
+  const { setTheme, theme } = useTheme();
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="w-40 flex justify-between items-center gap-2">
+        <Button
+          variant="outline"
+          className="w-40 flex justify-between items-center gap-2"
+        >
           {theme === "light" ? (
             <Sun className="h-5 w-5 text-yellow-500" />
           ) : (
@@ -38,5 +48,5 @@ export function ModeToggle() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

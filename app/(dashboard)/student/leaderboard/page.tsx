@@ -32,7 +32,7 @@ const Leaderboard = async () => {
 
   return (
     <div
-      className="flex flex-col gap-6 min-h-screen bg-gray-100 dark:bg-slate-900"
+      className="flex flex-col gap-6 min-h-screen bg-gray-100 dark:bg-slate-800"
       style={{
         backgroundImage: `url("/background.svg")`,
         backgroundRepeat: "no-repeat",

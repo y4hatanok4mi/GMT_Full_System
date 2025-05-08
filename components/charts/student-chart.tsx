@@ -76,7 +76,7 @@ export default function VisitorChart() {
 
   return (
     <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
+      <CardHeader className="items-start pb-0">
         <CardTitle>Users</CardTitle>
         <CardDescription>Number of users of the system</CardDescription>
       </CardHeader>

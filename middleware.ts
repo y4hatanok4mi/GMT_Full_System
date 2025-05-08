@@ -5,7 +5,6 @@ import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
-  console.log("isLoggedIn:", isLoggedIn, req.auth);
 
   if (nextUrl.pathname.startsWith("/api/verify-email") || 
       nextUrl.pathname.startsWith("/api/uploadthing") || 

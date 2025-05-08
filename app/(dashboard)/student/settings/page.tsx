@@ -1,7 +1,5 @@
 import prisma from "@/lib/prisma";
 import { auth } from "@/auth";
-import Image from "next/image";
-import Link from "next/link";
 import { ModeToggle } from "@/components/mode-toggle";
 import { EditPasswordDialog } from "@/components/(user)/student/edit-password";
 import { EditProfileDialog } from "@/components/(user)/admin/edit-profile";
@@ -17,7 +15,7 @@ const StudentSettingsPage = async () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center gap-4 pt-6 pb-16 bg-slate-200 dark:bg-gray-800 px-4 sm:px-6">
-      <div className="flex flex-col gap-4 p-6 sm:p-8 bg-slate-100 dark:bg-gray-800 border dark:border-gray-700 w-full sm:w-4/5 md:w-2/3 lg:w-1/2 rounded-md">
+      <div className="flex flex-col gap-4 p-6 sm:p-8 bg-slate-100 border-slate-300 dark:bg-gray-900 border dark:border-gray-700 w-full sm:w-4/5 md:w-2/3 lg:w-1/2 rounded-md">
         <div>
           <p className="text-xl sm:text-2xl font-semibold text-slate-800 dark:text-white">
             Account Settings
