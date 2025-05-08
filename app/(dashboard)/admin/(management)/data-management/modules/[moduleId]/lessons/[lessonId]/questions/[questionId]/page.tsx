@@ -74,7 +74,6 @@ const QuestionPage = async ({
 
   const requiredFields = [
     question?.question,
-    /*     lesson.lesson.some((lesson) => lesson.isPublished), */
   ];
 
   const requiredFieldsCount = requiredFields.length;
