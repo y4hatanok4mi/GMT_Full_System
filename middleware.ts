@@ -1,49 +1,53 @@
 import { apiAuthPrefix, authRoutes } from "@/routes";
 import { auth } from "@/auth";
-import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
+import { NextResponse } from "next/server";
 
 export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
 
-  if (nextUrl.pathname.startsWith("/api/verify-email") || 
-      nextUrl.pathname.startsWith("/api/uploadthing") || 
-      nextUrl.pathname.startsWith("/auth/reset-password")) {
-    return;
+  if (
+    nextUrl.pathname.startsWith("/api/verify-email") || 
+    nextUrl.pathname.startsWith("/api/uploadthing") || 
+    nextUrl.pathname.startsWith("/auth/reset-password")
+  ) {
+    return NextResponse.next();
   }
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiAuthPrefix);
-  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
-
   if (isApiAuthRoute) {
-    return;
+    return NextResponse.next();
   }
 
+  const isAuthRoute = authRoutes.includes(nextUrl.pathname);
   if (isAuthRoute) {
     if (isLoggedIn) {
-      const user = req.auth?.user;
-      const role = user?.role;
-
-      // Redirect based on user role if they are logged in
+      const role = req.auth?.user?.role;
       if (role === "admin") {
-        return Response.redirect(new URL("/admin", nextUrl));
+        return NextResponse.redirect(new URL("/admin", nextUrl));
       } else if (role === "student") {
-        return Response.redirect(new URL("/student", nextUrl));
+        return NextResponse.redirect(new URL("/student", nextUrl));
       }
     }
-    return;
+
+    if (nextUrl.pathname === "/") {
+      return Response.redirect(new URL("/auth/signin", nextUrl));
+    }
+  
+    return NextResponse.next();
   }
 
   if (!isLoggedIn) {
-    return Response.redirect(new URL("/auth/signin", nextUrl));
+    return NextResponse.redirect(new URL("/auth/signin", nextUrl));
   }
 
-  return;
+  return NextResponse.next();
 });
 
 export const config = {
   matcher: [
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)", // Protect API routes and ensure proper authentication
+    "/((?!_next/|.*\\..*).*)",
+    "/(api|trpc)(.*)",
   ],
 };
+
