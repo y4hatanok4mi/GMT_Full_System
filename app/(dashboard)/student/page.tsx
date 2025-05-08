@@ -33,7 +33,7 @@ const LearningPage = async () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col gap-4 px-4 pb-16 w-full pt-8 items-center bg-slate-100 dark:bg-gray-800 dark:bg-[url('/background-dark.svg')]"
+      className="min-h-screen flex flex-col gap-4 px-4 pb-16 w-full mt-16 items-center bg-slate-100 dark:bg-gray-800 dark:bg-[url('/background-dark.svg')]"
       style={{
         backgroundImage: `url("/background.svg")`,
         backgroundRepeat: "no-repeat",
@@ -45,7 +45,7 @@ const LearningPage = async () => {
       <SurveyModalWrapper userId={userId} />
 
       {/* User Info */}
-      <div className="flex flex-col sm:flex-row gap-6 justify-start items-center p-8 w-full sm:w-3/4">
+      <div className="flex flex-col sm:flex-row gap-6 justify-start items-center p-8 mt-8 w-full sm:w-3/4">
         <div className="relative w-32 h-32">
           <Image
             src={currentUser.image || "/user.png"}

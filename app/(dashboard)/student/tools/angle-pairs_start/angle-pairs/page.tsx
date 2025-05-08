@@ -15,10 +15,10 @@ const AnglePairsTool = () => {
   };
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-800 p-2 flex flex-col items-center min-h-screen">
+    <div className="bg-slate-100 dark:bg-slate-800 p-2 mt-16 flex flex-col items-center min-h-screen">
       {/* Top Background Section */}
       <div className="w-full p-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white text-center">
+        <h1 className="text-xl sm:text-3xl font-bold text-center">
           Interactive Tool for Angle Pairs
         </h1>
       </div>

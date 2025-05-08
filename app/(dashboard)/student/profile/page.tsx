@@ -14,8 +14,8 @@ const StudentProfilePage = async () => {
   });
 
   return (
-    <div className="min-h-screen flex justify-center items-start bg-slate-200 dark:bg-gray-800 py-8 px-4">
-      <div className="w-full sm:w-4/5 md:w-2/3 lg:w-1/2 bg-white dark:bg-gray-900 border rounded-md p-6 shadow-md dark:border-gray-700">
+    <div className="min-h-screen flex justify-center items-start bg-slate-200 dark:bg-gray-800 mt-16 px-4">
+      <div className="w-full sm:w-4/5 md:w-2/3 lg:w-1/2 bg-white dark:bg-gray-900 border rounded-md p-6 mt-8 shadow-md dark:border-gray-700">
         <h1 className="text-2xl font-semibold mb-4 text-slate-800 dark:text-white">
           Profile
         </h1>

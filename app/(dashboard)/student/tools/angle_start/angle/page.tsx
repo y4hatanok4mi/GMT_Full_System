@@ -7,10 +7,10 @@ const AnglesTool = () => {
   const [angle, setAngle] = useState<number>(45); // Default to an acute angle
 
   return (
-    <div className="bg-slate-100 dark:bg-slate-800 p-4 flex flex-col items-center min-h-screen">
+    <div className="bg-slate-100 dark:bg-slate-800 p-4 mt-16 flex flex-col items-center min-h-screen">
       {/* Top Background Section */}
       <div className="w-full p-4">
-        <h1 className="text-2xl sm:text-3xl font-bold text-white text-center">
+        <h1 className="text-xl sm:text-3xl font-bold text-center">
           Interactive Tool for Angles
         </h1>
       </div>

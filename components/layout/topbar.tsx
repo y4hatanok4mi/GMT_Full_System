@@ -47,7 +47,7 @@ const TopBar: FC = () => {
   };
 
   return (
-    <header className="w-full bg-white dark:bg-gray-900 p-4 flex justify-between items-center shadow-md z-50 relative text-gray-800 dark:text-white">
+    <header className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 p-4 flex justify-between items-center shadow-md z-50 text-gray-800 dark:text-white">
       {/* Logo */}
       <div className="text-2xl font-bold">
         <Link href="/student">
@@ -166,17 +166,17 @@ const TopBar: FC = () => {
               animate="visible"
               exit="exit"
               transition={{ type: "tween", duration: 0.3 }}
-              className="fixed top-0 right-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 flex flex-col p-5 text-gray-800 dark:text-white"
+              className="fixed top-0 right-0 w-64 h-full bg-white dark:bg-gray-900 shadow-lg z-50 flex flex-col text-gray-800 dark:text-white"
             >
               <div className="flex justify-end mb-6">
                 <button
                   onClick={() => setIsMobileNavOpen(false)}
-                  className="text-gray-700 dark:text-gray-300"
+                  className="text-gray-700 dark:text-gray-300 p-2"
                 >
                   <X size={24} />
                 </button>
               </div>
-              <nav className="flex flex-col gap-4">
+              <nav className="flex flex-col gap-2 w-full">
                 {[
                   { path: "/student", label: "Home" },
                   { path: "/student/modules", label: "Modules" },
@@ -189,19 +189,19 @@ const TopBar: FC = () => {
                     key={path}
                     href={path}
                     onClick={() => setIsMobileNavOpen(false)}
-                    className={`py-2 px-3 rounded-md transition-all duration-200 transform ${
+                    className={` block w-full text-left py-3 px-4 ${
                       isActive(path)
                         ? "bg-green-500 text-white"
-                        : "text-gray-700 dark:text-gray-300 hover:text-green-500 hover:bg-gray-100 dark:hover:bg-gray-800 hover:scale-105"
+                        : "text-gray-700 dark:text-gray-300 hover:text-green-500 hover:bg-gray-100 dark:hover:bg-gray-800"
                     }`}
                   >
                     {label}
                   </Link>
                 ))}
-                <form action={handleSignOut} className="mt-4">
+                <form action={handleSignOut} className="mt-4 w-full">
                   <button
                     type="submit"
-                    className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300 hover:text-red-500"
+                    className="flex items-center gap-2 w-full py-3 px-4 text-sm text-left text-gray-700 dark:text-gray-300 hover:text-red-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                   >
                     <LogOut /> Sign Out
                   </button>

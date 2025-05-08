@@ -74,6 +74,8 @@ const QuestionPage = async ({
 
   const requiredFields = [
     question?.question,
+    question?.type,
+    question?.correctAnswer,
   ];
 
   const requiredFieldsCount = requiredFields.length;
@@ -98,7 +100,7 @@ const QuestionPage = async ({
                 <BreadcrumbList>
                   <BreadcrumbItem>
                     <BreadcrumbLink
-                      href={`/admin/data-management/modules/${moduleId}/lessons/${lessonId}`}
+                      href={`/admin/data-management/modules/${moduleId}`}
                     >
                       {modules?.name}
                     </BreadcrumbLink>

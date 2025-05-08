@@ -106,8 +106,7 @@ const StudentReportPage = async ({ params }: StudentReportPageProps) => {
                 <strong>Email:</strong> {currentStudent.email}
               </p>
               <p>
-                <strong>School:</strong>{" "}
-                {getFullSchoolName(currentStudent.school)}
+                <strong>School:</strong> {getFullSchoolName(currentStudent.school)}
               </p>
               <p>
                 <strong>Student ID:</strong> {currentStudent.id_no}
@@ -127,79 +126,80 @@ const StudentReportPage = async ({ params }: StudentReportPageProps) => {
               Module Reports
             </h1>
 
-            {joinedModules.map(({ module, joinedAt }) => {
-              const isCompleted = module.completedBy.length > 0;
-              const completedAt = isCompleted
-                ? module.completedBy[0].completedAt
-                : null;
+            {joinedModules.length === 0 ? (
+              <div className="p-4 text-center bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100 rounded-md border border-yellow-300 dark:border-yellow-700">
+                <p className="font-medium flex justify-center items-center">This student has not started any module yet.</p>
+              </div>
+            ) : (
+              joinedModules.map(({ module, joinedAt }) => {
+                const isCompleted = module.completedBy.length > 0;
+                const completedAt = isCompleted
+                  ? module.completedBy[0].completedAt
+                  : null;
 
-              return (
-                <div
-                  key={module.id}
-                  className={`p-4 rounded-md text-sm ${
-                    isCompleted
-                      ? "bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700"
-                      : "bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600"
-                  }`}
-                >
-                  <h2 className="text-lg font-bold mb-1">{module.name}</h2>
-                  <p>
-                    Status:{" "}
-                    <span
-                      className={`inline-block px-2 py-0.5 rounded-full text-xs text-white ${
-                        isCompleted ? "bg-green-500" : "bg-yellow-500"
-                      }`}
-                    >
-                      {isCompleted ? "Completed" : "In Progress"}
-                    </span>
-                  </p>
-                  <p>Started: {formatDate(joinedAt)}</p>
-                  {completedAt && (
-                    <p>Completion Date: {formatDate(completedAt)}</p>
-                  )}
+                return (
+                  <div
+                    key={module.id}
+                    className={`p-4 rounded-md text-sm ${
+                      isCompleted
+                        ? "bg-green-100 dark:bg-green-900 border border-green-300 dark:border-green-700"
+                        : "bg-slate-200 dark:bg-slate-700 border border-slate-300 dark:border-slate-600"
+                    }`}
+                  >
+                    <h2 className="text-lg font-bold mb-1">{module.name}</h2>
+                    <p>
+                      Status:{" "}
+                      <span
+                        className={`inline-block px-2 py-0.5 rounded-full text-xs text-white ${
+                          isCompleted ? "bg-green-500" : "bg-yellow-500"
+                        }`}
+                      >
+                        {isCompleted ? "Completed" : "In Progress"}
+                      </span>
+                    </p>
+                    <p>Started: {formatDate(joinedAt)}</p>
+                    {completedAt && <p>Completion Date: {formatDate(completedAt)}</p>}
 
-                  <div className="mt-2">
-                    <p className="font-semibold">Lesson Scores:</p>
-                    {module.lesson.length > 0 ? (
-                      module.lesson.map((lesson) => {
-                        const passedResult = lesson.exerciseResult.find(
-                          (res) => res.isPassed
-                        );
-                        const latestResult = lesson.exerciseResult[0];
-                        const hasFailedAttempts =
-                          lesson.exerciseResult.length > 0 && !passedResult;
+                    <div className="mt-2">
+                      <p className="font-semibold">Lesson Scores:</p>
+                      {module.lesson.length > 0 ? (
+                        module.lesson.map((lesson) => {
+                          const passedResult = lesson.exerciseResult.find(
+                            (res) => res.isPassed
+                          );
+                          const latestResult = lesson.exerciseResult[0];
+                          const hasFailedAttempts =
+                            lesson.exerciseResult.length > 0 && !passedResult;
 
-                        return (
-                          <div key={lesson.id} className="mt-2">
-                            <p className="font-medium">{lesson.title}</p>
-                            <div className="ml-4">
-                              {latestResult ? (
-                                <>
-                                  {latestResult.score} /{" "}
-                                  {lesson.question.length} (
-                                  {passedResult
-                                    ? `Completed on ${formatDate(
-                                        passedResult.createdAt
-                                      )}`
-                                    : hasFailedAttempts
-                                    ? "Ongoing"
-                                    : "Failed"}
-                                  )
-                                </>
-                              ) : (
-                                "Not started yet."
-                              )}
+                          return (
+                            <div key={lesson.id} className="mt-2">
+                              <p className="font-medium">{lesson.title}</p>
+                              <div className="ml-4">
+                                {latestResult ? (
+                                  <>
+                                    {latestResult.score} / {lesson.question.length} (
+                                    {passedResult
+                                      ? `Completed on ${formatDate(passedResult.createdAt)}`
+                                      : hasFailedAttempts
+                                      ? "Ongoing"
+                                      : "Failed"}
+                                    )
+                                  </>
+                                ) : (
+                                  "Not started yet."
+                                )}
+                              </div>
                             </div>
-                          </div>
-                        );
-                      })
-                    ) : (
-                      <p className="ml-4">No lessons in this module.</p>
-                    )}
+                          );
+                        })
+                      ) : (
+                        <p className="ml-4">No lessons in this module.</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })
+            )}
           </div>
         </div>
       </SidebarInset>

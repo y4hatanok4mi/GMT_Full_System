@@ -4,9 +4,9 @@ import Link from "next/link";
 
 const StartAnglesTool = () => {
   return (
-    <div className="flex justify-center bg-slate-100 dark:bg-slate-800 min-h-screen">
+    <div className="flex justify-center mt-16 bg-slate-100 dark:bg-slate-800 min-h-screen">
       <div className="w-full max-w-3xl p-6">
-        <h1 className="text-2xl md:text-3xl font-bold mt-5 mb-7 text-center text-gray-900 dark:text-white">
+        <h1 className="text-xl md:text-3xl font-bold mt-5 mb-7 text-center text-gray-900 dark:text-white">
           Angles
         </h1>
 

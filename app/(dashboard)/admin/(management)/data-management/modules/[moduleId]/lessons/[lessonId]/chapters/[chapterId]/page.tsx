@@ -72,7 +72,7 @@ const ChaptersPage = async ({
               <BreadcrumbList>
                 <BreadcrumbItem>
                   <BreadcrumbLink
-                    href={`/admin/data-management/modules/${moduleId}/lessons/${lessonId}`}
+                    href={`/admin/data-management/modules/${moduleId}`}
                   >
                     {moduleData?.name}
                   </BreadcrumbLink>
