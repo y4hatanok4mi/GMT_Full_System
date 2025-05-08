@@ -34,7 +34,7 @@ export const ModuleCard = async () => {
   });
 
   return (
-    <div className="bg-white border border-slate-100 dark:border-gray-700 dark:bg-gray-800 p-4 rounded-xl shadow w-full min-h-52">
+    <div className="bg-white border border-slate-100 dark:border-gray-700 dark:bg-gray-800 p-4 rounded-xl shadow-lg w-full min-h-52">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-lg text-black dark:text-white">
           Modules Progress

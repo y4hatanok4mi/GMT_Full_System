@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export const ToolCard = async () => {
   return (
-    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border dark:border-gray-700">
+    <div className="bg-white dark:bg-gray-800 p-4 rounded-xl border dark:border-gray-700 shadow-lg">
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-semibold text-lg text-black dark:text-white">
           Interactive Tools
