@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import axios from "axios";
-import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import DOMPurify from "dompurify";
-import { Volume2, Loader2 } from "lucide-react"; // Import icons
-
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import { Volume2, Loader2 } from "lucide-react";
 
 interface ReadTextProps {
   value: string;
