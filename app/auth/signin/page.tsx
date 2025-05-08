@@ -170,7 +170,7 @@ export default function SignIn() {
               <p className="text-sm text-start">
                 <Link
                   href={"/auth/reset"}
-                  className="text-slate-100 hover:underline"
+                  className=" dark:text-slate-100 hover:underline"
                 >
                   Forgot Password?
                 </Link>
