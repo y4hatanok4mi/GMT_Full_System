@@ -10,6 +10,7 @@ export const authRoutes = [
     "/auth/signup",
     "/auth/reset",
     "/auth/verification",
+    "/"
 ];
 
 /**

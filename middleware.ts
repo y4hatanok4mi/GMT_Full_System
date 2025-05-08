@@ -1,20 +1,15 @@
 import { apiAuthPrefix, authRoutes } from "@/routes";
-import { auth } from "@/auth"
-import prisma from "./lib/prisma";
+import { auth } from "@/auth";
+import { is } from "@react-three/fiber/dist/declarations/src/core/utils";
 
 export default auth(async (req) => {
   const { nextUrl } = req;
   const isLoggedIn = !!req.auth;
+  console.log("isLoggedIn:", isLoggedIn, req.auth);
 
-  if (nextUrl.pathname.startsWith("/api/verify-email")) {
-    return;
-  }
-
-  if (nextUrl.pathname.startsWith("/api/uploadthing")) {
-    return;
-  }
-
-  if (nextUrl.pathname.startsWith("/auth/reset-password")) {
+  if (nextUrl.pathname.startsWith("/api/verify-email") || 
+      nextUrl.pathname.startsWith("/api/uploadthing") || 
+      nextUrl.pathname.startsWith("/auth/reset-password")) {
     return;
   }
 
@@ -27,12 +22,12 @@ export default auth(async (req) => {
 
   if (isAuthRoute) {
     if (isLoggedIn) {
-      const role = req.auth?.user?.role;
+      const user = req.auth?.user;
+      const role = user?.role;
 
+      // Redirect based on user role if they are logged in
       if (role === "admin") {
         return Response.redirect(new URL("/admin", nextUrl));
-      } else if (role === "teacher") {
-        return Response.redirect(new URL("/teacher", nextUrl));
       } else if (role === "student") {
         return Response.redirect(new URL("/student", nextUrl));
       }
@@ -50,6 +45,6 @@ export default auth(async (req) => {
 export const config = {
   matcher: [
     "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-    "/(api|trpc)(.*)",
+    "/(api|trpc)(.*)", // Protect API routes and ensure proper authentication
   ],
 };
