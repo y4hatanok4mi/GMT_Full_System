@@ -42,7 +42,7 @@ const ReadText = ({ value }: ReadTextProps) => {
   return (
     <div className="flex flex-col items-center gap-4 dark:bg-slate-900 dark:text-white p-4 rounded-md">
       <div
-        className="w-full text-left whitespace-pre-wrap"
+        className="w-full text-left whitespace-pre-wrap sm:text-sm"
         dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(value) }}
       />
 
