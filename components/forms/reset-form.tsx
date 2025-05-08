@@ -78,7 +78,7 @@ export default function ResetPasswordForm() {
       <FloatingShape
         color="bg-lime-500"
         size="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
-        position="top-[70%] left-[10%] sm:top-[60%] sm:left-[15%] md:top-[60%] md:left-[10%]"
+        position="top-[70%] left-[10%] sm:top-[20%] sm:left-[15%] md:top-[60%] md:left-[10%]"
         delay={0}
         shape="square"
         direction="normal"
@@ -92,7 +92,7 @@ export default function ResetPasswordForm() {
         direction="reverse"
       />
 
-      <Card className="w-full max-w-md z-10 bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
+      <Card className="w-full max-w-md z-10">
         <CardHeader className="flex flex-col items-center justify-center text-center">
           <CardTitle className="text-3xl font-bold text-gray-800 dark:text-gray-100">
             <p>

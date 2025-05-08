@@ -1,8 +1,15 @@
-"use client"; // Ensure client-side rendering
+"use client";
 
-import { useState, useEffect, Suspense } from "react"; // Add Suspense import
+import { useState, useEffect, Suspense } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import LoadingButton from "@/components/loading-button";
 import ErrorMessage from "@/components/error-message";
 import { useForm } from "react-hook-form";
@@ -10,22 +17,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { ResetPasswordSchema } from "@/lib/schema";
 import { PasswordInput } from "@/components/ui/password-input";
-import { useRouter, useSearchParams } from "next/navigation"; // Ensure useSearchParams is used properly
+import { useRouter, useSearchParams } from "next/navigation";
 import PasswordStrengthMeter from "@/components/password-meter";
 import FloatingShape from "@/components/floating-shapes";
 import { Input } from "@/components/ui/input";
 import { handleResetPassword } from "@/app/actions/authActions";
 import toast from "react-hot-toast";
 
-// Component to wrap useSearchParams
 function ResetPasswordWrapper() {
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
 
-  return <ResetPassword email={email} />;
+  return <ResetPasswordForm email={email} />;
 }
 
-export default function ResetPassword({ email }: { email: string | null }) {
+function ResetPasswordForm({ email }: { email: string | null }) {
   const [globalError, setGlobalError] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const router = useRouter();
@@ -39,7 +45,7 @@ export default function ResetPassword({ email }: { email: string | null }) {
     },
   });
 
-  const { trigger, control } = form;
+  const { trigger } = form;
 
   useEffect(() => {
     if (!email) {
@@ -77,7 +83,6 @@ export default function ResetPassword({ email }: { email: string | null }) {
 
   return (
     <div className="min-h-screen flex items-center justify-center relative p-4 bg-white dark:bg-black overflow-x-hidden">
-      {/* Responsive Floating Shapes */}
       <FloatingShape
         color="bg-yellow-500"
         size="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
@@ -131,7 +136,7 @@ export default function ResetPassword({ email }: { email: string | null }) {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-              {/* Email (Read-Only) */}
+              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -145,7 +150,6 @@ export default function ResetPassword({ email }: { email: string | null }) {
                   </FormItem>
                 )}
               />
-
               {/* Password */}
               <FormField
                 control={form.control}
@@ -161,7 +165,6 @@ export default function ResetPassword({ email }: { email: string | null }) {
                   </FormItem>
                 )}
               />
-
               {/* Confirm Password */}
               <FormField
                 control={form.control}
@@ -193,8 +196,6 @@ export default function ResetPassword({ email }: { email: string | null }) {
               </div>
             </form>
           </Form>
-
-          {/* Bottom Link */}
           <p className="text-xs mt-2 text-center text-gray-500">@GeomeTriks</p>
         </CardContent>
       </Card>
@@ -202,7 +203,7 @@ export default function ResetPassword({ email }: { email: string | null }) {
   );
 }
 
-export function ResetPasswordPage() {
+export default function ResetPasswordPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <ResetPasswordWrapper />
