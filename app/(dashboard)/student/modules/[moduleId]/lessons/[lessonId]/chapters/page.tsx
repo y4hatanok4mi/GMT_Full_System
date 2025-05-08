@@ -146,13 +146,13 @@ const LessonDiscussion = () => {
     <div className="min-h-screen w-full bg-slate-100 dark:bg-slate-900 text-black dark:text-white">
       <LessonTopBar params={{ moduleId, lessonId }} lessonName={lessonName} />
 
-      <div className="flex-grow pt-20 pb-28 px-4 sm:px-8">
+      <div className="flex-grow pt-24 pb-20 px-4 sm:px-8">
         <div className="mx-auto max-w-4xl">
           {/* Progress Bar */}
-          <Progress value={progressPercentage} className="h-2 w-full mb-6" />
+          <Progress value={progressPercentage} className="h-2 w-full mb-4" />
 
           {/* ReadText Section */}
-          <div className="text-base sm:text-lg text-gray-700 dark:text-gray-200 mb-6">
+          <div className="text-base sm:text-lg text-gray-700 dark:text-gray-200">
             <ReadText
               value={
                 chapters[currentChapterIndex]?.description ||
@@ -163,7 +163,7 @@ const LessonDiscussion = () => {
 
           {/* Video Section */}
           {chapters[currentChapterIndex]?.videoUrl && (
-            <div className="relative aspect-video mt-4 mb-6">
+            <div className="relative aspect-video">
               {chapters[currentChapterIndex]?.videoUrl.includes(
                 "youtube.com"
               ) ||

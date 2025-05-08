@@ -90,7 +90,7 @@ export const QuestionsForm = ({
   return (
     <div className="border bg-slate-100 border-slate-100 dark:bg-slate-800 dark:border-gray-900 rounded-md p-4">
       <div className="font-medium flex items-center justify-between text-slate-800 dark:text-white">
-        Lesson Questions
+        Exercise Questions
         <Button onClick={toggleCreating} variant={"ghost"} className="text-slate-700 dark:text-white">
           {isCreating ? (
             <>Cancel</>

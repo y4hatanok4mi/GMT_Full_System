@@ -134,7 +134,7 @@ const LessonsPage = async ({
             <div>
               <div className="flex items-center gap-x-2">
                 <IconCircle Icon={ListChecks} size={24} iconColor="text-slate-200" />
-                <h2>Lesson Questions</h2>
+                <h2>Lesson Exercise</h2>
               </div>
               <RequiredFieldStatus isCompleted={hasPublishedQuestions} />
               <QuestionsForm

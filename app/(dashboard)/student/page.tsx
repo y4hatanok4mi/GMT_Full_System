@@ -45,7 +45,7 @@ const LearningPage = async () => {
       <SurveyModalWrapper userId={userId} />
 
       {/* User Info */}
-      <div className="flex flex-col sm:flex-row gap-6 justify-start items-center p-8 mt-8 w-full sm:w-3/4">
+      <div className="flex flex-col sm:flex-row gap-6 justify-start items-center p-8 w-full sm:w-3/4">
         <div className="relative w-32 h-32">
           <Image
             src={currentUser.image || "/user.png"}
