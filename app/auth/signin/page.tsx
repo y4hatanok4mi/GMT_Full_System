@@ -136,7 +136,7 @@ export default function SignIn() {
                 name="id_no"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Student ID</FormLabel>
+                    <FormLabel>ID No.</FormLabel>
                     <FormControl>
                       <Input
                         type="text"
