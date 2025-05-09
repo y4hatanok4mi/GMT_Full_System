@@ -91,9 +91,9 @@ const TopBar: FC = () => {
               <Image
                 src={userData.avatar || "/user.png"}
                 alt="Profile"
-                width={40}
-                height={40}
-                className="object-cover"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
               />
             </button>
           </PopoverTrigger>
