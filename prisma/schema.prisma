@@ -267,7 +267,6 @@ model Chapter {
   imageUrl    String?
   description String?
   isPublished Boolean           @default(false)
-  isCompleted Boolean           @default(false)
   chapterOrder ChapterOrder[]
   progress    ChapterProgress[]
 

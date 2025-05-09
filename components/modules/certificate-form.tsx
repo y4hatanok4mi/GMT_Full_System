@@ -1,3 +1,4 @@
+// Responsive CertificateForm.tsx
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
@@ -16,10 +17,10 @@ const CertificateForm: React.FC<CertificateProps> = ({
   moduleId,
 }) => {
   const certificateRef = useRef<HTMLDivElement>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [certificateNumber, setCertificateNumber] = useState<string>("");
   const [isModuleCompleted, setIsModuleCompleted] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
+  const [renderForDownload, setRenderForDownload] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchModuleCompletion = async () => {
@@ -57,30 +58,41 @@ const CertificateForm: React.FC<CertificateProps> = ({
     fetchModuleCompletion();
   }, [moduleId]);
 
-  const downloadPDF = async () => {
-    if (certificateRef.current) {
-      const canvas = await html2canvas(certificateRef.current, {
-        scale: 2,
-        useCORS: true,
-        backgroundColor: null,
-      });
-      const imgData = canvas.toDataURL("image/png");
-
-      const pdf = new jsPDF("landscape", "px", "a4");
-      pdf.addImage(imgData, "PNG", 0, 0, 632, 447);
-      pdf.save(`Certificate-${certificateNumber}.pdf`);
+  useEffect(() => {
+    if (renderForDownload) {
+      setTimeout(() => {
+        generatePDF();
+      }, 100);
     }
+  }, [renderForDownload]);
+
+  const generatePDF = async () => {
+    if (!certificateRef.current) return;
+
+    const canvas = await html2canvas(certificateRef.current, {
+      scale: 2,
+      useCORS: true,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF("landscape", "px", "a4");
+    pdf.addImage(imgData, "PNG", 0, 0, 632, 447);
+    pdf.save(`Certificate-${certificateNumber}.pdf`);
+    setRenderForDownload(false);
+  };
+
+  const handleDownload = () => {
+    setRenderForDownload(true);
   };
 
   return (
     <div className="flex flex-col justify-center border dark:bg-slate-800 rounded-lg dark:border-slate-700 dark:text-white">
-      <div className="container mx-auto p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">
+      <div className="container mx-auto p-4 sm:p-6 bg-white dark:bg-slate-800 rounded-lg shadow-lg">
+        <h1 className="text-xl sm:text-2xl font-bold text-center mb-6">
           Certificate of Completion
         </h1>
 
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleDownload}
           disabled={!isModuleCompleted || loading}
           className={`w-full py-3 rounded-lg font-bold transition ${
             isModuleCompleted
@@ -94,58 +106,51 @@ const CertificateForm: React.FC<CertificateProps> = ({
               <span>Checking Completion</span>
             </div>
           ) : (
-            "View Certificate"
+            "Download Certificate"
           )}
         </button>
-
-        {isModalOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg w-[850px] h-[700px] relative flex flex-col items-center">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="absolute top-2 right-4 text-gray-700 dark:text-gray-300 text-xl font-bold"
-              >
-                ✕
-              </button>
-
-              <div
-                ref={certificateRef}
-                className="relative w-full h-full flex flex-col items-center justify-center p-6 border-4 border-gray-700 dark:border-gray-200"
-                style={{
-                  backgroundImage: "url('/Polygons.png')",
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-              >
-                <div className="absolute top-3 right-3 text-gray-900 dark:text-white text-lg font-bold">
-                  {certificateNumber}
-                </div>
-
-                <div className="flex flex-col gap-20 absolute top-1/2 transform -translate-y-1/2 w-full justify-center items-center">
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-8">
-                    {userName}
-                  </h2>
-
-                  <h2 className="text-xl font-semibold text-gray-900 dark:text-white mt-6 text-center">
-                    {moduleName}
-                  </h2>
-                </div>
-
-                <p className="absolute bottom-14 text-lg text-gray-900 dark:text-white text-center w-full">
-                  Awarded on {new Date().toLocaleDateString()}
-                </p>
-              </div>
-
-              <button
-                onClick={downloadPDF}
-                className="mt-4 px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition w-full"
-              >
-                Download Certificate
-              </button>
-            </div>
-          </div>
-        )}
       </div>
+
+      {/* Hidden but visible for DOM to capture */}
+      {renderForDownload && (
+        <div
+          style={{
+            position: "absolute",
+            top: "-10000px",
+            left: "-10000px",
+            opacity: 0,
+            pointerEvents: "none",
+            zIndex: -1,
+          }}
+        >
+          <div
+            ref={certificateRef}
+            className="w-[842px] h-[595px] p-6 border-4 border-gray-700 dark:border-gray-200 flex flex-col justify-center items-center relative"
+            style={{
+              backgroundImage: "url('/Polygons.png')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          >
+            <div className="absolute top-3 right-3 text-gray-900 dark:text-white text-base font-bold">
+              {certificateNumber}
+            </div>
+
+            <div className="flex flex-col gap-10 sm:gap-20 absolute top-1/2 transform -translate-y-1/2 w-full px-4 justify-center items-center text-center">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                {userName}
+              </h2>
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                {moduleName}
+              </h2>
+            </div>
+
+            <p className="absolute bottom-10 text-sm sm:text-base text-gray-900 dark:text-white text-center w-full">
+              Awarded on {new Date().toLocaleDateString()}
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

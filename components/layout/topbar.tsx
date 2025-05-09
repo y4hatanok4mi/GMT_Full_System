@@ -87,13 +87,13 @@ const TopBar: FC = () => {
         {/* Profile Dropdown */}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
+            <button className="relative w-10 h-10 rounded-full overflow-hidden border-2 border-gray-300 dark:border-gray-600">
               <Image
                 src={userData.avatar || "/user.png"}
                 alt="Profile"
-                layout="fill"
-                objectFit="cover"
                 className="rounded-full"
+                objectFit="cover"
+                layout="fill"
               />
             </button>
           </PopoverTrigger>

@@ -8,6 +8,7 @@ import { useRouter, useParams } from "next/navigation";
 import { LessonTopBar } from "@/components/layout/lesson-topbar";
 import { Progress } from "@/components/ui/progress";
 import ReadText from "@/components/read-text-tts";
+import ImageModal from "@/components/image-modal";
 
 const LessonDiscussion = () => {
   const router = useRouter();
@@ -23,6 +24,7 @@ const LessonDiscussion = () => {
   const [currentChapterIndex, setCurrentChapterIndex] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [completedChapters, setCompletedChapters] = useState<number>(0);
+  const [isImageModalOpen, setIsImageModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchChapters = async () => {
@@ -192,19 +194,30 @@ const LessonDiscussion = () => {
 
           {/* Image Section */}
           {chapters[currentChapterIndex]?.imageUrl && (
-            <Image
-              width={800}
-              height={600}
-              src={chapters[currentChapterIndex]?.imageUrl}
-              alt={chapters[currentChapterIndex]?.title || "Chapter Image"}
-              className="w-full h-auto mt-4 rounded-md"
-            />
+            <>
+              <Image
+                width={600}
+                height={400}
+                src={chapters[currentChapterIndex]?.imageUrl}
+                alt={chapters[currentChapterIndex]?.title || "Chapter Image"}
+                className="w-full max-w-[500px] h-auto mt-4 rounded-md mx-auto cursor-pointer transition hover:opacity-80"
+                onClick={() => setIsImageModalOpen(true)}
+              />
+
+              {isImageModalOpen && (
+                <ImageModal
+                  src={chapters[currentChapterIndex]?.imageUrl}
+                  alt={chapters[currentChapterIndex]?.title}
+                  onClose={() => setIsImageModalOpen(false)}
+                />
+              )}
+            </>
           )}
         </div>
       </div>
 
       {/* Bottom Controls */}
-      <div className="p-4 bg-slate-100 dark:bg-slate-800 shadow-lg fixed bottom-0 left-0 right-0 z-10">
+      <div className="p-4 bg-slate-200 dark:bg-slate-800 shadow-lg fixed bottom-0 left-0 right-0 z-10">
         <div className="flex flex-wrap justify-center gap-2 sm:gap-4">
           <Button
             onClick={goToPreviousChapter}

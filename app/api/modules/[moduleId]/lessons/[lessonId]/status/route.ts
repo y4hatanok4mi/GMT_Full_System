@@ -1,14 +1,25 @@
 import { NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { auth } from "@/auth";
 
 // GET lesson completion status
-export async function GET(request: Request, { params }: { params: { moduleId: string; lessonId: string } }) {
-  const { lessonId, moduleId } = params;
-  console.log("Fetching lesson status for lessonId:", lessonId);
+export async function GET(request: Request, { params }: { params: { lessonId: string } }) {
+  const { lessonId } = params;
+  const user = await auth();
+  const userId = Number(user?.user.id);
+
+  if (!lessonId) {
+    return NextResponse.json({ message: "Lesson not found!" }, { status: 404 });
+  }
+
+  if (!userId) {
+    return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+  }
 
   try {
     const progress = await prisma.lessonProgress.findFirst({
       where: {
+        userId: userId, 
         lessonId: lessonId,
         isCompleted: true,
       },
@@ -16,7 +27,7 @@ export async function GET(request: Request, { params }: { params: { moduleId: st
     console.log("Lesson status:", progress);
 
     if (!progress) {
-      return NextResponse.json({ message: "Lesson not found!" }, { status: 404 });
+      return NextResponse.json({ message: "Lesson progress not found!" }, { status: 404 });
     }
 
     return NextResponse.json({ isCompleted: progress.isCompleted });

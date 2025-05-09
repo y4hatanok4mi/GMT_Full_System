@@ -4,7 +4,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import axios from "axios";  // Import Axios
+import axios from "axios";
 
 interface LessonRetakeProps {
   params: {
@@ -22,27 +22,36 @@ const LessonRetake = ({ params }: LessonRetakeProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center mt-10 p-4">
-      <div className="flex flex-col items-center justify-center text-center">
-        <Image
-          width={300}
-          height={300}
-          src="/sad-face.png"
-          alt="Face"
-        />
-        <h1 className="mt-4 text-2xl">Aww! You failed the lesson exercise.</h1>
-        <p className="mt-4 text-md text-slate-600">
-          But don&apos;t worry you can still retake the lesson to review.
+    <div className="flex flex-col min-h-screen p-4 bg-slate-100 dark:bg-slate-800 dark:text-white">
+      <div className="flex-grow flex flex-col items-center justify-center text-center">
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
+          <Image
+            src="/sad-face.png"
+            alt="Sad face"
+            width={200}
+            height={200}
+            className="h-auto mx-auto"
+          />
+        </div>
+
+        <h1 className="mt-6 text-2xl md:text-3xl font-semibold">
+          Aww! You failed the lesson exercise.
+        </h1>
+        <p className="mt-4 text-base text-slate-600 dark:text-slate-300">
+          But don&apos;t worry — you can still retake the lesson to review.
         </p>
-        <p className="mt-2 text-md text-slate-600">Fighting!</p>
+        <p className="mt-2 text-base text-slate-600 dark:text-slate-300">Fighting!</p>
       </div>
-      <div className="flex items-center justify-center p-8 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10">
-        <Button
-          onClick={goBackToLesson} // Trigger the lesson completion and points update
-          className="w-60"
-        >
-          Retake Lesson
-        </Button>
+
+      <div className="w-full p-4 bg-white shadow-lg dark:bg-slate-900">
+        <div className="max-w-md mx-auto">
+          <Button
+            onClick={goBackToLesson}
+            className="w-full text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+          >
+            Retake Lesson
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -49,10 +49,11 @@ const ModuleOverviewPage = async ({
     : 0;
 
   return (
-    <div className="flex flex-col items-center px-4 py-6 bg-slate-50 dark:bg-gray-900 text-black dark:text-white min-h-screen">
+    <div className="flex flex-col items-center px-4 py-6 mt-16 bg-slate-50 dark:bg-gray-900 text-black dark:text-white min-h-screen">
       <div className="w-full max-w-4xl space-y-6">
         {/* Progress Bar */}
         <div className="w-full">
+          <h2 className="text-lg font-semibold mb-2">Module Progress</h2>
           <Progress value={progressPercentage} className="h-2 w-full" />
           <p className="text-sm mt-2 text-gray-700 dark:text-gray-300 text-right">
             {Math.round(progressPercentage)}% completed

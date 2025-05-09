@@ -62,7 +62,7 @@ const LessonCompletion = ({ params }: LessonCompletionProps) => {
       );
 
       if (response.status === 200) {
-        setIsLessonCompleted(true); // Update state
+        setIsLessonCompleted(true);
         await checkAndCompleteModule();
       } else {
         throw new Error("Failed to complete lesson");
@@ -76,32 +76,44 @@ const LessonCompletion = ({ params }: LessonCompletionProps) => {
   };
 
   return (
-    <div className="flex flex-col items-center pt-10 h-screen p-4 dark:bg-slate-800 dark:text-white">
-      <div className="flex flex-col items-center justify-center text-center">
-        <Image width={300} height={300} src="/three-stars.png" alt="Stars" />
-        <h1 className="text-2xl md:text-3xl font-bold text-center dark:text-white">
+    <div className="flex flex-col min-h-screen p-4 bg-slate-100 dark:bg-slate-800 dark:text-white">
+      <div className="flex-grow flex flex-col items-center justify-center text-center">
+        <div className="w-full max-w-xs sm:max-w-sm md:max-w-md">
+          <Image
+            src="/three-stars.png"
+            alt="Stars"
+            width={200}
+            height={200}
+            className="h-auto mx-auto mb-6"
+          />
+        </div>
+        <h1 className="text-2xl md:text-3xl font-bold mb-2">
           Congratulations! Lesson Completed!
         </h1>
-        <p className="mt-4 text-md text-slate-600 dark:text-slate-300">
+        <p className="mt-2 text-base sm:text-lg text-slate-600 dark:text-slate-300">
           You’re one step closer to reaching your goal!
         </p>
-        <p className="mt-2 text-md text-slate-600 dark:text-slate-300">Well done!</p>
+        <p className="text-base sm:text-lg text-slate-600 dark:text-slate-300">
+          Well done!
+        </p>
 
         {!isLessonCompleted && (
-          <div className="flex flex-row items-center gap-2 p-4">
-            <Image width={50} height={50} src="/star.png" alt="Stars" />
+          <div className="flex items-center gap-2 mt-4">
+            <Image src="/star.png" alt="Stars" width={40} height={40} />
             <p className="text-slate-600 dark:text-slate-300">+10 points</p>
           </div>
         )}
       </div>
 
-      <div className="flex items-center justify-center p-8 bg-white shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-900">
-        <Button
-          onClick={completeLesson}
-          className="w-60 text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
-        >
-          Continue
-        </Button>
+      <div className="w-full p-4 bg-white shadow-lg dark:bg-slate-900">
+        <div className="max-w-md mx-auto">
+          <Button
+            onClick={completeLesson}
+            className="w-full text-white bg-green-500 hover:bg-green-600 dark:bg-green-600 dark:hover:bg-green-700"
+          >
+            Continue
+          </Button>
+        </div>
       </div>
     </div>
   );

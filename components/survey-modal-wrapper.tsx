@@ -12,7 +12,7 @@ export default function SurveyModalWrapper({ userId }: { userId: string }) {
       const data = await res.json();
       
       if (!data?.primaryStyle) {
-        setIsOpen(true); // Show survey if no learning style is set
+        setIsOpen(true);
       }
     };
 

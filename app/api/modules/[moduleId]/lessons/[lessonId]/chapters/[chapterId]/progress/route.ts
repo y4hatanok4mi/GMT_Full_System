@@ -49,16 +49,6 @@ export const POST = async (
       return new NextResponse("Chapter Not Found", { status: 404 });
     }
 
-    // Update the isCompleted field in the chapter table
-    await prisma.chapter.update({
-      where: {
-        id: chapterId,
-      },
-      data: {
-        isCompleted,
-      },
-    });
-
     // Mark chapter progress
     let progress = await prisma.chapterProgress.findUnique({
       where: {
