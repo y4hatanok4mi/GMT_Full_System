@@ -2,22 +2,37 @@ import { auth } from "@/auth";
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request, { params }: { params: { moduleId: string } }) {
+export async function GET(
+  req: Request,
+  { params }: { params: { moduleId: string; lessonId: string } }
+) {
   try {
     const user = await auth();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { moduleId } = params;
+    const { moduleId, lessonId } = params;
     const userId = Number(user.user.id);
 
+    // ✅ Filter chapterOrder by both user and current lesson
     const existingChapterOrder = await prisma.chapterOrder.findMany({
-      where: { userId },
+      where: {
+        userId,
+        lessonId,
+      },
       orderBy: { order: "asc" },
-      include: { chapter: { include: { lesson: true, category: true } } },
+      include: {
+        chapter: {
+          include: {
+            lesson: true,
+            category: true,
+          },
+        },
+      },
     });
 
+    // ✅ If found, return with progress
     if (existingChapterOrder.length > 0) {
       const chaptersWithProgress = await Promise.all(
         existingChapterOrder.map(async (entry) => {
@@ -37,37 +52,43 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
       return NextResponse.json({ chapters: chaptersWithProgress });
     }
 
+    // ✅ Fetch user preferences
     const preferences = await prisma.userPreferences.findUnique({
       where: { userId },
       select: { primaryStyle: true, secondaryStyle: true },
     });
 
     if (!preferences) {
-      return NextResponse.json({ error: "Preferences not found" }, { status: 404 });
+      return NextResponse.json(
+        { error: "Preferences not found" },
+        { status: 404 }
+      );
     }
 
     const { primaryStyle, secondaryStyle } = preferences;
     const allStyles = ["Visual", "Read & Write", "Auditory"];
-    const tertiaryStyle = allStyles.find(
-      (style) => style !== primaryStyle && style !== secondaryStyle
-    ) || "Visual";
+    const tertiaryStyle =
+      allStyles.find(
+        (style) => style !== primaryStyle && style !== secondaryStyle
+      ) || "Visual";
 
-    // Fetch chapters directly based on user preferences, ordered by createdAt
+    // ✅ Fetch chapters only for current lesson
     const chapters = await prisma.chapter.findMany({
       where: {
         isPublished: true,
         lesson: {
           isPublished: true,
           moduleId,
+          id: lessonId,
         },
         category: {
           name: {
-            in: [primaryStyle, secondaryStyle, tertiaryStyle], // Only chapters matching the user's preferences
+            in: [primaryStyle, secondaryStyle, tertiaryStyle],
           },
         },
       },
       orderBy: {
-        createdAt: "asc", // Order by creation date (ascending)
+        createdAt: "asc",
       },
       include: {
         lesson: true,
@@ -80,9 +101,9 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
     const limits = {
       primary: Math.round(totalChapters * 0.5),
       secondary: Math.round(totalChapters * 0.3),
-      tertiary: totalChapters - (
-        Math.round(totalChapters * 0.5) + Math.round(totalChapters * 0.3)
-      ),
+      tertiary:
+        totalChapters -
+        (Math.round(totalChapters * 0.5) + Math.round(totalChapters * 0.3)),
     };
 
     const groupedChapters = {
@@ -110,6 +131,7 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
     addChapters("secondary");
     addChapters("tertiary");
 
+    // ✅ Save chapter order specific to this lesson
     await prisma.$transaction(
       selectedChapters.map((chapter, index) =>
         prisma.chapterOrder.create({
@@ -145,6 +167,9 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
     return NextResponse.json({ chapters: chaptersWithProgress });
   } catch (error) {
     console.error("Error fetching chapters:", error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
 }
