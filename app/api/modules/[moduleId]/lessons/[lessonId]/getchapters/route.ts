@@ -52,13 +52,22 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
       (style) => style !== primaryStyle && style !== secondaryStyle
     ) || "Visual";
 
-    const allChapters = await prisma.chapter.findMany({
+    // Fetch chapters directly based on user preferences, ordered by createdAt
+    const chapters = await prisma.chapter.findMany({
       where: {
         isPublished: true,
         lesson: {
           isPublished: true,
           moduleId,
         },
+        category: {
+          name: {
+            in: [primaryStyle, secondaryStyle, tertiaryStyle], // Only chapters matching the user's preferences
+          },
+        },
+      },
+      orderBy: {
+        createdAt: "asc", // Order by creation date (ascending)
       },
       include: {
         lesson: true,
@@ -66,13 +75,7 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
       },
     });
 
-    const groupedChapters = {
-      primary: allChapters.filter((c) => c.category?.name === primaryStyle),
-      secondary: allChapters.filter((c) => c.category?.name === secondaryStyle),
-      tertiary: allChapters.filter((c) => c.category?.name === tertiaryStyle),
-    };
-
-    const totalChapters = allChapters.length;
+    const totalChapters = chapters.length;
 
     const limits = {
       primary: Math.round(totalChapters * 0.5),
@@ -82,7 +85,13 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
       ),
     };
 
-    const selectedChapters: typeof allChapters = [];
+    const groupedChapters = {
+      primary: chapters.filter((c) => c.category?.name === primaryStyle),
+      secondary: chapters.filter((c) => c.category?.name === secondaryStyle),
+      tertiary: chapters.filter((c) => c.category?.name === tertiaryStyle),
+    };
+
+    const selectedChapters: typeof chapters = [];
     const usedChapterIds = new Set<string>();
 
     const addChapters = (type: "primary" | "secondary" | "tertiary") => {
@@ -100,17 +109,6 @@ export async function GET(req: Request, { params }: { params: { moduleId: string
     addChapters("primary");
     addChapters("secondary");
     addChapters("tertiary");
-
-    // Optionally: Limit to 10 chapters max
-    if (selectedChapters.length < 10) {
-      for (const chapter of allChapters) {
-        if (selectedChapters.length >= 10) break;
-        if (!usedChapterIds.has(chapter.id)) {
-          selectedChapters.push(chapter);
-          usedChapterIds.add(chapter.id);
-        }
-      }
-    }
 
     await prisma.$transaction(
       selectedChapters.map((chapter, index) =>

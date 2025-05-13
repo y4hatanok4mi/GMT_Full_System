@@ -29,30 +29,40 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [userPoints, setUserPoints] = useState<number>(0);
   const [notification, setNotification] = useState<string | null>(null);
-  const [notificationType, setNotificationType] = useState<"success" | "error" | null>(null);
+  const [notificationType, setNotificationType] = useState<
+    "success" | "error" | null
+  >(null);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
-  const [answerStatus, setAnswerStatus] = useState<"correct" | "incorrect" | null>(null);
+  const [answerStatus, setAnswerStatus] = useState<
+    "correct" | "incorrect" | null
+  >(null);
   const [isChecked, setIsChecked] = useState<boolean>(false);
-  const [isRetakeAllowed, setIsRetakeAllowed] = useState<boolean>(false);  // Track if retake is allowed
+  const [isRetakeAllowed, setIsRetakeAllowed] = useState<boolean>(false); // Track if retake is allowed
   const router = useRouter();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         // Fetch questions for the lesson
-        const { data: questionData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getquestions`);
+        const { data: questionData } = await axios.get(
+          `/api/modules/${moduleId}/lessons/${lessonId}/getquestions`
+        );
         const randomizedQuestions = shuffleArray(questionData?.questions || []);
-        
+
         // Shuffle options for each question
-        const shuffledQuestionsWithOptions = randomizedQuestions.map((question: any) => ({
-          ...question,
-          options: shuffleArray(question.options),
-        }));
+        const shuffledQuestionsWithOptions = randomizedQuestions.map(
+          (question: any) => ({
+            ...question,
+            options: shuffleArray(question.options),
+          })
+        );
 
         setQuestions(shuffledQuestionsWithOptions);
 
         // Fetch lesson name
-        const { data: lessonData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/getlesson`);
+        const { data: lessonData } = await axios.get(
+          `/api/modules/${moduleId}/lessons/${lessonId}/getlesson`
+        );
         setLessonName(lessonData?.lesson?.title || "Lesson Name Not Found");
 
         // Fetch user points (if needed)
@@ -60,14 +70,16 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
         setUserPoints(pointsData.points || 0);
 
         // Check if a retake is allowed (based on previous exercise result)
-        const { data: existingResult } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`);
+        const { data: existingResult } = await axios.get(
+          `/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`
+        );
         if (existingResult) {
-          const passingScoreThreshold = (existingResult.totalQuestions * 60) / 100;  // 60% passing score
+          const passingScoreThreshold =
+            (existingResult.totalQuestions * 60) / 100; // 60% passing score
           if (existingResult.score < passingScoreThreshold) {
-            setIsRetakeAllowed(true);  // Allow retake only if score is below passing threshold
+            setIsRetakeAllowed(true); // Allow retake only if score is below passing threshold
           }
         }
-
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -99,11 +111,14 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
       }
 
       // Submit the selected answer and get the result
-      const response = await axios.post(`/api/modules/${moduleId}/lessons/${lessonId}/questions/${currentQuestion.id}/submit-answer`, {
-        studentId: userId,
-        questionId: currentQuestion.id,
-        selectedOptionId: selectedAnswer,
-      });
+      const response = await axios.post(
+        `/api/modules/${moduleId}/lessons/${lessonId}/questions/${currentQuestion.id}/submit-answer`,
+        {
+          studentId: userId,
+          questionId: currentQuestion.id,
+          selectedOptionId: selectedAnswer,
+        }
+      );
 
       const { isCorrect } = response.data;
       setAnswerStatus(isCorrect ? "correct" : "incorrect");
@@ -130,7 +145,9 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
   const completeQuestions = async () => {
     try {
       // Fetch the exercise result (user's score)
-      const { data: existingResult } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`);
+      const { data: existingResult } = await axios.get(
+        `/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`
+      );
       if (!existingResult) {
         alert("Exercise result not found.");
         return;
@@ -139,7 +156,9 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
       const { score } = existingResult;
 
       // Fetch the total number of questions for the exercise
-      const { data: questionData } = await axios.get(`/api/modules/${moduleId}/lessons/${lessonId}/get-questions-count`);
+      const { data: questionData } = await axios.get(
+        `/api/modules/${moduleId}/lessons/${lessonId}/get-questions-count`
+      );
       if (!questionData || !questionData.count) {
         alert("Questions not found.");
         return;
@@ -152,12 +171,19 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
 
       // Check if the student's score meets or exceeds the passing threshold
       if (score >= passingScoreThreshold) {
-        await axios.post(`/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`, {
-          score: score,
-        });
-        router.push(`/student/modules/${moduleId}/lessons/${lessonId}/complete`);
+        await axios.post(
+          `/api/modules/${moduleId}/lessons/${lessonId}/exercise-result`,
+          {
+            score: score,
+          }
+        );
+        router.push(
+          `/student/modules/${moduleId}/lessons/${lessonId}/complete`
+        );
       } else {
-        router.replace(`/student/modules/${moduleId}/lessons/${lessonId}/retake`);
+        router.replace(
+          `/student/modules/${moduleId}/lessons/${lessonId}/retake`
+        );
       }
     } catch (error) {
       console.error("Error completing lesson:", error);
@@ -174,7 +200,8 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
           Question {currentQuestionIndex + 1} of {questions.length}
         </div>
         <h2 className="text-xl md:text-2xl font-bold text-center h-auto mb-4">
-          {questions[currentQuestionIndex]?.question || "No question available."}
+          {questions[currentQuestionIndex]?.question ||
+            "No question available."}
         </h2>
 
         {questions[currentQuestionIndex]?.image && (
@@ -191,18 +218,24 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
 
         <div className="flex flex-col gap-2 w-full md:w-3/4 lg:w-1/2 space-y-2">
           {questions[currentQuestionIndex]?.type === "MULTIPLE_CHOICE" ? (
-            questions[currentQuestionIndex]?.options?.map((option: { text: string, id: string }, index: number) => (
-              <button
-                key={index}
-                className={`w-full p-2 md:p-4 border rounded-md transition-all
-                  ${selectedAnswer === option.id ? 'bg-blue-500 text-white' : 'bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600'}`}
-                onClick={() => handleAnswerSelection(option.id)}
-                disabled={isChecked}
-              >
-                {option.text}
-              </button>
-            ))
-          ) : (
+            questions[currentQuestionIndex]?.options?.map(
+              (option: { text: string; id: string }, index: number) => (
+                <button
+                  key={index}
+                  className={`w-full p-2 md:p-4 border rounded-md transition-all
+        ${
+          selectedAnswer === option.id
+            ? "bg-blue-500 text-white"
+            : "bg-slate-200 dark:bg-slate-700 dark:hover:bg-slate-600"
+        }`}
+                  onClick={() => handleAnswerSelection(option.id)}
+                  disabled={isChecked}
+                >
+                  {option.text}
+                </button>
+              )
+            )
+          ) : questions[currentQuestionIndex]?.type === "FILL_IN_THE_BLANK" ? (
             <input
               type="text"
               placeholder="Type your answer here..."
@@ -211,6 +244,10 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
               className="w-full p-2 border rounded-md bg-white dark:bg-slate-700 dark:text-white text-gray-900"
               disabled={isChecked}
             />
+          ) : (
+            <div className="text-center text-red-500">
+              Unsupported question type.
+            </div>
           )}
         </div>
       </div>
@@ -218,13 +255,23 @@ const ExercisePage = ({ params }: ExercisePageProps) => {
       <div className="flex items-center justify-center p-4 bg-slate-200 shadow-lg fixed bottom-0 left-0 right-0 z-10 dark:bg-slate-800">
         <div className="flex flex-col md:flex-col space-x-4 items-center">
           {notification && (
-            <div className={`w-full text-lg text-center py-2 rounded-md 
-              ${notificationType === "success" ? "text-green-500" : "text-red-500"}`}>
+            <div
+              className={`w-full text-lg text-center py-2 rounded-md 
+              ${
+                notificationType === "success"
+                  ? "text-green-500"
+                  : "text-red-500"
+              }`}
+            >
               {notification}
             </div>
           )}
           {!isChecked ? (
-            <Button onClick={checkAnswer} className="w-40 md:w-60" disabled={!selectedAnswer}>
+            <Button
+              onClick={checkAnswer}
+              className="w-40 md:w-60"
+              disabled={!selectedAnswer}
+            >
               Submit
             </Button>
           ) : currentQuestionIndex === questions.length - 1 ? (

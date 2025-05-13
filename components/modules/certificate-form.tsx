@@ -145,7 +145,7 @@ const CertificateForm: React.FC<CertificateProps> = ({
               </h2>
             </div>
 
-            <p className="absolute bottom-10 text-sm sm:text-base text-gray-900 dark:text-white text-center w-full">
+            <p className="absolute bottom-10 pb-8 text-sm sm:text-base text-gray-900 dark:text-white text-center w-full">
               Awarded on {new Date().toLocaleDateString()}
             </p>
           </div>
