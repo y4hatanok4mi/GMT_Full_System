@@ -14,10 +14,10 @@ const AreaTool = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 mt-16 flex flex-col items-center w-full lg:w-3/4 mx-auto">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white p-4 mt-16 flex flex-col items-center w-full mx-auto">
       <h1 className="text-xl sm:text-2xl md:text-3xl font-bold p-4 text-center">Interactive Tool for Area</h1>
 
-      <div className="flex flex-col lg:flex-row w-full gap-6">
+      <div className="flex flex-col lg:flex-row w-3/4 gap-6">
         {/* Text Content */}
         <div className="w-full lg:w-1/2 text-sm sm:text-base md:text-lg px-4">
           <p className="mb-4">

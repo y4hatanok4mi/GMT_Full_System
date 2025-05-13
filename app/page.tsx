@@ -10,9 +10,9 @@ const DefaultPage = () => {
   }, []);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 p-4">
+    <h1 className="flex items-center justify-center h-screen bg-gray-100 dark:bg-gray-900 p-4">
       GeomeTriks
-    </div>
+    </h1>
   );
 };
 

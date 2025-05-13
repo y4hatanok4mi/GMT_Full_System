@@ -1,5 +1,6 @@
-describe('landing page', () => {
-  it('passes', () => {
-    cy.visit('http://localhost:3000/student')
-  })
-})
+describe("Landing Page", () => {
+  it("should redirect unauthenticated user to signin", () => {
+    cy.visit("/");
+    cy.url().should("include", "/auth/signin");
+  });
+});
