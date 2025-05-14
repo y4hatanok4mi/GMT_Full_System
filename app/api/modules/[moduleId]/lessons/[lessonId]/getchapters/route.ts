@@ -15,7 +15,7 @@ export async function GET(
     const { moduleId, lessonId } = params;
     const userId = Number(user.user.id);
 
-    // ✅ Filter chapterOrder by both user and current lesson
+    // Check existing order
     const existingChapterOrder = await prisma.chapterOrder.findMany({
       where: {
         userId,
@@ -32,7 +32,6 @@ export async function GET(
       },
     });
 
-    // ✅ If found, return with progress
     if (existingChapterOrder.length > 0) {
       const chaptersWithProgress = await Promise.all(
         existingChapterOrder.map(async (entry) => {
@@ -52,7 +51,7 @@ export async function GET(
       return NextResponse.json({ chapters: chaptersWithProgress });
     }
 
-    // ✅ Fetch user preferences
+    // Get preferences
     const preferences = await prisma.userPreferences.findUnique({
       where: { userId },
       select: { primaryStyle: true, secondaryStyle: true },
@@ -72,7 +71,7 @@ export async function GET(
         (style) => style !== primaryStyle && style !== secondaryStyle
       ) || "Visual";
 
-    // ✅ Fetch chapters only for current lesson
+    // Fetch all chapters matching those categories
     const chapters = await prisma.chapter.findMany({
       where: {
         isPublished: true,
@@ -96,8 +95,14 @@ export async function GET(
       },
     });
 
-    const totalChapters = chapters.length;
+    // Divide by category
+    const groupedChapters = {
+      primary: chapters.filter((c) => c.category?.name === primaryStyle),
+      secondary: chapters.filter((c) => c.category?.name === secondaryStyle),
+      tertiary: chapters.filter((c) => c.category?.name === tertiaryStyle),
+    };
 
+    const totalChapters = chapters.length;
     const limits = {
       primary: Math.round(totalChapters * 0.5),
       secondary: Math.round(totalChapters * 0.3),
@@ -106,22 +111,22 @@ export async function GET(
         (Math.round(totalChapters * 0.5) + Math.round(totalChapters * 0.3)),
     };
 
-    const groupedChapters = {
-      primary: chapters.filter((c) => c.category?.name === primaryStyle),
-      secondary: chapters.filter((c) => c.category?.name === secondaryStyle),
-      tertiary: chapters.filter((c) => c.category?.name === tertiaryStyle),
-    };
-
     const selectedChapters: typeof chapters = [];
     const usedChapterIds = new Set<string>();
+    const usedChapterNames = new Set<string>();
 
     const addChapters = (type: "primary" | "secondary" | "tertiary") => {
       let count = 0;
       for (const chapter of groupedChapters[type]) {
+        const chapterName = chapter.title.trim().toLowerCase();
         if (count >= limits[type]) break;
-        if (!usedChapterIds.has(chapter.id)) {
+        if (
+          !usedChapterIds.has(chapter.id) &&
+          !usedChapterNames.has(chapterName)
+        ) {
           selectedChapters.push(chapter);
           usedChapterIds.add(chapter.id);
+          usedChapterNames.add(chapterName);
           count++;
         }
       }
@@ -131,7 +136,7 @@ export async function GET(
     addChapters("secondary");
     addChapters("tertiary");
 
-    // ✅ Save chapter order specific to this lesson
+    // Save order
     await prisma.$transaction(
       selectedChapters.map((chapter, index) =>
         prisma.chapterOrder.create({
@@ -145,6 +150,7 @@ export async function GET(
       )
     );
 
+    // Include progress
     const chaptersWithProgress = await Promise.all(
       selectedChapters.map(async (chapter) => {
         const progress = await prisma.chapterProgress.upsert({
