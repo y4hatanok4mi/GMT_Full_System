@@ -51,7 +51,7 @@ export async function GET(
       return NextResponse.json({ chapters: chaptersWithProgress });
     }
 
-    // Get preferences
+    // Get user preferences
     const preferences = await prisma.userPreferences.findUnique({
       where: { userId },
       select: { primaryStyle: true, secondaryStyle: true },
@@ -71,7 +71,7 @@ export async function GET(
         (style) => style !== primaryStyle && style !== secondaryStyle
       ) || "Visual";
 
-    // Fetch all chapters matching those categories
+    // Fetch chapters by style
     const chapters = await prisma.chapter.findMany({
       where: {
         isPublished: true,
@@ -95,46 +95,76 @@ export async function GET(
       },
     });
 
-    // Divide by category
-    const groupedChapters = {
-      primary: chapters.filter((c) => c.category?.name === primaryStyle),
-      secondary: chapters.filter((c) => c.category?.name === secondaryStyle),
-      tertiary: chapters.filter((c) => c.category?.name === tertiaryStyle),
-    };
+    // Step 1: Group chapters by base title (e.g., "Chapter 1")
+    const baseChapterMap = new Map<
+      string,
+      { [style: string]: (typeof chapters)[0] }
+    >();
 
-    const totalChapters = chapters.length;
-    const limits = {
-      primary: Math.round(totalChapters * 0.5),
-      secondary: Math.round(totalChapters * 0.3),
-      tertiary:
-        totalChapters -
-        (Math.round(totalChapters * 0.5) + Math.round(totalChapters * 0.3)),
-    };
+    for (const chapter of chapters) {
+      const baseMatch = chapter.title.match(/^(Chapter\s*\d+)/i);
+      if (!baseMatch) continue;
+
+      const baseTitle = baseMatch[1].trim();
+
+      if (!baseChapterMap.has(baseTitle)) {
+        baseChapterMap.set(baseTitle, {});
+      }
+
+      const entry = baseChapterMap.get(baseTitle)!;
+      if (chapter.category?.name) {
+        entry[chapter.category.name] = chapter;
+      }
+    }
+
+    // Step 2: Sort base chapters numerically
+    const baseChapterEntries = Array.from(baseChapterMap.entries()).sort(
+      ([a], [b]) => {
+        const aNum = parseInt(a.replace(/\D/g, ""), 10);
+        const bNum = parseInt(b.replace(/\D/g, ""), 10);
+        return aNum - bNum;
+      }
+    );
+
+    const totalBaseChapters = baseChapterEntries.length;
+    const limitPrimary = Math.floor(totalBaseChapters * 0.5);
+    const limitSecondary = Math.floor(totalBaseChapters * 0.3);
+    const limitTertiary = totalBaseChapters - (limitPrimary + limitSecondary);
 
     const selectedChapters: typeof chapters = [];
-    const usedChapterIds = new Set<string>();
-    const usedChapterNames = new Set<string>();
 
-    const addChapters = (type: "primary" | "secondary" | "tertiary") => {
-      let count = 0;
-      for (const chapter of groupedChapters[type]) {
-        const chapterName = chapter.title.trim().toLowerCase();
-        if (count >= limits[type]) break;
-        if (
-          !usedChapterIds.has(chapter.id) &&
-          !usedChapterNames.has(chapterName)
-        ) {
-          selectedChapters.push(chapter);
-          usedChapterIds.add(chapter.id);
-          usedChapterNames.add(chapterName);
-          count++;
-        }
+    for (let i = 0; i < baseChapterEntries.length; i++) {
+      const [_baseTitle, versions] = baseChapterEntries[i];
+
+      if (i < limitPrimary && versions[primaryStyle]) {
+        selectedChapters.push(versions[primaryStyle]);
+      } else if (
+        i < limitPrimary + limitSecondary &&
+        versions[secondaryStyle]
+      ) {
+        selectedChapters.push(versions[secondaryStyle]);
+      } else if (versions[tertiaryStyle]) {
+        selectedChapters.push(versions[tertiaryStyle]);
+      } else {
+        // fallback
+        const fallback =
+          versions[primaryStyle] ||
+          versions[secondaryStyle] ||
+          versions[tertiaryStyle];
+        if (fallback) selectedChapters.push(fallback);
       }
-    };
+    }
 
-    addChapters("primary");
-    addChapters("secondary");
-    addChapters("tertiary");
+    // Step 3: Always include lesson takeaway chapters if any
+    const takeawayChapters = chapters.filter((ch) =>
+      /takeaway/i.test(ch.title)
+    );
+
+    for (const chapter of takeawayChapters) {
+      if (!selectedChapters.find((c) => c.id === chapter.id)) {
+        selectedChapters.push(chapter);
+      }
+    }
 
     // Save order
     await prisma.$transaction(
