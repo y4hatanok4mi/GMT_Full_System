@@ -63,15 +63,20 @@ export function AccountCreationChart({ data }: AccountCreationChartProps) {
             }}
           >
             <CartesianGrid vertical={false} />
-            {/* YAxis starts from 0 and increments by 3 */}
             <YAxis
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              domain={[0, 'dataMax']} // Start from 0, and go to max data value
-              interval="preserveStart" // Ensures ticks start from 0 and are incremented
+              domain={[0, "dataMax"]}
+              interval="preserveStart"
               tickFormatter={(value) => value.toString()}
-              ticks={Array.from({ length: Math.ceil(Math.max(...data.map(d => d.count)) / 3) + 1 }, (_, i) => i * 3)} // Generate ticks from 0, incremented by 3
+              ticks={Array.from(
+                {
+                  length:
+                    Math.ceil(Math.max(...data.map((d) => d.count)) / 3) + 1,
+                },
+                (_, i) => i * 3
+              )}
             />
             <XAxis
               dataKey="date"
@@ -88,7 +93,7 @@ export function AccountCreationChart({ data }: AccountCreationChartProps) {
               }}
             />
             <ChartTooltip
-              content={(
+              content={
                 <ChartTooltipContent
                   className="w-[150px]"
                   nameKey="created"
@@ -100,14 +105,36 @@ export function AccountCreationChart({ data }: AccountCreationChartProps) {
                     });
                   }}
                 />
-              )}
+              }
             />
             <Line
               dataKey="count"
               type="monotone"
               stroke={`var(--color-created)`}
               strokeWidth={2}
-              dot={false}
+              dot={({ cx, cy, payload }) => {
+                return (
+                  <g>
+                    <circle
+                      cx={cx}
+                      cy={cy}
+                      r={12}
+                      fill={`var(--color-created)`}
+                    />
+                    <text
+                      x={cx}
+                      y={cy}
+                      textAnchor="middle"
+                      dominantBaseline="central"
+                      fill="#fff"
+                      fontSize={10}
+                      fontWeight="bold"
+                    >
+                      {payload.count}
+                    </text>
+                  </g>
+                );
+              }}
             />
           </LineChart>
         </ChartContainer>

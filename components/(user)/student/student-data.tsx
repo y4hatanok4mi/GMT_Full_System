@@ -223,6 +223,7 @@ export function UserDataTable({ role }: UserDataTableProps) {
         .toLowerCase()
         .includes(filterValue.toLowerCase());
     },
+    getColumnCanGlobalFilter: (column) => column.id === "name", // ✅ Only "name" column searchable
     state: {
       sorting,
       columnFilters,

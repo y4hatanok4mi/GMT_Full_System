@@ -13,7 +13,6 @@ import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
 import prisma from "@/lib/prisma";
 import { redirect } from "next/navigation";
 
-// Helper function to format date as YYYY-MM-DD
 const formatDate = (date: Date) => {
   const year = date.getFullYear();
   const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -29,22 +28,20 @@ export default async function AdminPage() {
     return redirect("/auth/signin");
   }
 
-  // Query data and group by date
-  const creationStats = await prisma.user.groupBy({
-    by: ["createdAt"],
-    _count: {
-      createdAt: true,
-    },
-    orderBy: {
-      createdAt: "asc",
-    },
-  });
+const creationStats = await prisma.$queryRaw<
+  { date: string; count: number }[]
+>`SELECT 
+    TO_CHAR("createdAt", 'YYYY-MM-DD') as date, 
+    COUNT(*) as count 
+  FROM "User" 
+  GROUP BY date 
+  ORDER BY date ASC`;
 
-  // Transform data to group by date (ignoring time) and count occurrences
-  const formattedData = creationStats.map(entry => ({
-    date: formatDate(entry.createdAt), // Format to "YYYY-MM-DD"
-    count: entry._count.createdAt, // Get the count of accounts created on that date
-  }));
+
+const formattedData = creationStats.map(entry => ({
+  date: entry.date,
+  count: Number(entry.count),
+}));
 
   return (
     <div>
